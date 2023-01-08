@@ -31,4 +31,4 @@ Previously I have worked for multiple clients as a developer / tech lead / archi
 
 These days, I mostly do work around DEVOPS/Kubernetes/Helm/Jenkins/Prometheus/IAC and the like.
 
-In my free time, I like to make saw dust with some woodworking tools having chord and without. I build wooden furnitrue/machines by making its 3D design using CAD tools like sketchup.
+In my free time, I like to make saw dust with woodworking tools having chord and without. I build wooden furnitrue/machines by making its 3D design using CAD tools like sketchup.
