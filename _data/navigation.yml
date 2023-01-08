@@ -1,0 +1,39 @@
+header:
+  - titles:
+      # @start locale config
+      en      : &EN       About
+      # @end locale config
+    url: /about.html
+  
+  - titles:
+      # @start locale config
+      en      : &EN       Certifcations / Education
+      # @end locale config
+    url: /certiifcations.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       Skills
+      # @end locale config
+    url: /skills.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       Tools
+      # @end locale config
+    url: /tools.html
+    
+  - titles:
+        # @start locale config
+      en      : &EN       Projects
+        # @end locale config
+    url: /projects.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       Employers
+      # @end locale config
+    url: /employers.
+   
+
+ 
