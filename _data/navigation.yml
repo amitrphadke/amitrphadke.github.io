@@ -33,7 +33,7 @@ header:
       # @start locale config
       en      : &EN       Employers
       # @end locale config
-    url: /employers.
+    url: /employers.html
    
 
  
