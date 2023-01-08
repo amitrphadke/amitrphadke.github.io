@@ -3,8 +3,8 @@ layout: page
 #articles:
 #   excerpt_type: html
 ---
-
-DEVOPS / SRE professional with over 19 + years of experience in BFSI, Retail, Telecom and Manufacturing domain. Hands on experience in DEVOPS / AWS / AZURE / Kubernetes / Jenkins spanning right from design, development to maintenance. Have broad range of experience from greenfield to brown field projects.
+# SUMMARY
+DEVOPS / SRE professional with over 18 + years of experience in BFSI, Retail, Telecom and Manufacturing domain. Hands on experience in DEVOPS / AWS / AZURE / Kubernetes / Jenkins spanning right from design, development to maintenance. Have broad range of experience from greenfield to brown field projects.
 
 # ROLES & RESPONSIBILITIES
 
