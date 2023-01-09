@@ -19,7 +19,7 @@ DEVOPS / SRE professional with over 18 + years of experience in BFSI, Retail, Te
  - Designing / Implementing Alerting
  - Implementing DBDEVOPS
 
-**Technlogdy Lead**
+**Technologyy Lead**
 - In-charge of the development team  
 - Managed the development schedule 
 - GAP analysis and sign-off on the requirement  
