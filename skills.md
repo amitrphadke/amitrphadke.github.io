@@ -2,15 +2,17 @@
 layout: page
 #articles:
 #   excerpt_type: html
+aside:
+  toc: true
 ---
-**Tools:** 
+## Tools
 - Jenkins, Bitbucket, Kubernetes, Kibana, Instana, Grafana, Venafi, Fortanix,
 Docker, AWS Code build, Azure DEVOPS, 
 - Visual Studio, Microsoft SQL Server,
 Azure web portal, Azure Dev-ops, Office 365, re-sharper, SharePoint
 Designer, MS Visio, Git-HUB, Redgate SQL, Postgress, Redis.
 
-**Programming:** 
+## Programming
 - Object Oriented Design (OOD),
 - Desktop based application,
 - Web based application. 
@@ -22,7 +24,7 @@ Designer, MS Visio, Git-HUB, Redgate SQL, Postgress, Redis.
 - Windows Client OS, 
 - Shell.
 
-**Program Exposures:** 
+## Program Exposures 
 - DEVOPS Implementation
 - Server Consolidation
 - Application Migration 
@@ -31,13 +33,7 @@ Designer, MS Visio, Git-HUB, Redgate SQL, Postgress, Redis.
 - Digital Transformation
 - Consulting assignments
 
-
-
-
-
-
-
-**Project Management:**
+## Project Management
 - Client communications 
 - Status reporting
 - Team management
