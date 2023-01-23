@@ -25,7 +25,7 @@ titles:
   # @end locale config
 key: page-about
 ---
-Hi, I’m Amit Phadke working as an SRE / DEVOPS architect at CISCO.  I have travelled to mulitple countries like Australia / Germany / Belgium and worked extentensively at client locations. 
+Hi, I’m Amit Phadke working as an SRE / DEVOPS architect.  I have travelled to mulitple countries like Australia / Germany / Belgium and worked extentensively at client locations. 
 
 Previously I have worked for multiple clients as a developer / tech lead / architect in diffrent domain like BFSI, Retail, Telecom and Manufacturing. There I was mostly responsible for the development and managment of the system, which uses different technologies / tools like DEVOPS , .net, sharepoint, cloud etc. 
 
