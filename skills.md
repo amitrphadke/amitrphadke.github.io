@@ -5,7 +5,7 @@ layout: page
 aside:
   toc: true
 ---
-## Tools
+## Tools & Technologies
 - Jenkins, Bitbucket, Kubernetes, Kibana, Instana, Grafana, Venafi, Fortanix,
 Docker, AWS Code build, Azure DEVOPS, 
 - Visual Studio, Microsoft SQL Server,
