@@ -7,9 +7,15 @@ header:
   
   - titles:
       # @start locale config
-      en      : &EN       Certifcations / Education
+      en      : &EN       Certifications / Education
       # @end locale config
-    url: /certiifcations.html
+    url: /certifications.html
+
+  - titles:
+      # @start locale config
+      en      : &EN       Learning
+      # @end locale config
+    url: /learning/
 
   - titles:
       # @start locale config

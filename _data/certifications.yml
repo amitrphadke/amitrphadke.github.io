@@ -1,0 +1,58 @@
+# One block per certification. status: planned | studying | scheduled | passed | failed | expired
+# This file drives /certifications.html and /learning/. Add a block, commit, done.
+in_progress:
+  - id: ccdv-f
+    name: Claude Certified Developer – Foundations
+    code: CCDV-F
+    vendor: Anthropic
+    status: studying
+    started: 2026-09-05
+    exam_date: 2026-11-03
+    exam_time: "10:30 IST, Pearson VUE online"
+    registered: true
+    funded_by: employer
+    format: "53 questions · 120 min · pass 720/1000 scaled · valid 12 months"
+    blueprint_url: https://claudecertificationguide.com/ccdv-f
+    journey_url: /learning/ccdv-f/
+    tracker_url: /learning/ccdv-f/tracker/
+    tag: ccdv-f
+    domains:
+      - {name: "Applications & Integration", weight: 33.1}
+      - {name: "Model Selection & Optimisation", weight: 16.8}
+      - {name: "Agents & Workflows", weight: 14.7}
+      - {name: "Prompt & Context Engineering", weight: 11.0}
+      - {name: "Tools & MCPs", weight: 10.6}
+      - {name: "Security & Safety", weight: 8.1}
+      - {name: "Claude Code", weight: 3.1}
+      - {name: "Eval, Testing & Debugging", weight: 2.6}
+    plan: "9 chapters over 60 days, 1.5 h/day: 45 min docs, 45 min lab built with Claude Code on a real DevOps project"
+    progress_pct: 3          # updated at each weekly publish
+    last_update: 2026-09-07
+
+achieved:
+  - name: DevOps Professional
+    vendor: ""
+    status: passed
+  - name: Azure 70-534 – Architecting Microsoft Azure Solutions
+    vendor: Microsoft
+    status: passed
+  - name: Exam 70-528 – Microsoft .NET Framework 2.0, Web-Based Client Development
+    vendor: Microsoft
+    status: passed
+  - name: Exam 70-536 – Microsoft .NET Framework 2.0, Application Development Foundation
+    vendor: Microsoft
+    status: passed
+  - name: Exam 70-630 – Microsoft Office SharePoint Server 2007, Configuring (MCTS)
+    vendor: Microsoft
+    status: passed
+  - name: NSE NCFM Certification – Financial Markets, A Beginners' Module
+    vendor: NSE
+    status: passed
+
+education:
+  - degree: M.S. Software Systems (WILP)
+    institute: BITS, Pilani
+    years: 2011 – 2013
+  - degree: B.E. Electronics and Power
+    institute: GCOE, Amravati University
+    years: 1999 – 2004
