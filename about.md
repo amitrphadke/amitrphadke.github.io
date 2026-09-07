@@ -25,10 +25,10 @@ titles:
   # @end locale config
 key: page-about
 ---
-Hi, I’m Amit Phadke working as an SRE / DEVOPS architect.  I have travelled to mulitple countries like Australia / Germany / Belgium and worked extentensively at client locations. 
+Hi, I'm Amit Phadke, a Software Architect specialising in DevSecOps and SRE. I currently work at UST, architecting an enterprise DevSecOps platform for a global information and software services provider. I have travelled to multiple countries like Australia / Germany / Belgium and worked extensively at client locations.
 
-Previously I have worked for multiple clients as a developer / tech lead / architect in diffrent domain like BFSI, Retail, Telecom and Manufacturing. There I was mostly responsible for the development and managment of the system, which uses different technologies / tools like DEVOPS , .net, sharepoint, cloud etc. 
+Previously I have worked for multiple clients as a developer / tech lead / architect in different domains like BFSI, Retail, Telecom and Manufacturing. There I was mostly responsible for the development and management of systems using different technologies / tools like DevOps, .NET, SharePoint, cloud etc.
 
-These days, I mostly do work around DEVOPS/Kubernetes/Helm/Jenkins/Prometheus/IAC and the like.
+These days, I mostly do work around DevSecOps / Kubernetes (EKS) / Helm / Terraform / GitHub Actions / ArgoCD / OpenTelemetry / Prometheus / Grafana and the like.
 
-In my free time, I like to make saw dust with woodworking tools having chord and without. I build wooden furnitrue/machines by making its 3D design using CAD tools like sketchup.
+In my free time, I like to make sawdust with woodworking tools, corded and cordless. I build wooden furniture / machines by making their 3D design using CAD tools like SketchUp.

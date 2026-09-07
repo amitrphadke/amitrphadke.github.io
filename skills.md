@@ -7,36 +7,43 @@ aside:
 ---
 # Skills
 
+## Key Skills
+- Kubernetes, EKS, Helm, Docker
+- AWS, Azure
+- Terraform (IaC), Checkov (policy-as-code)
+- GitHub Actions, ArgoCD, Jenkins, Azure DevOps, AWS CodeBuild
+- OpenTelemetry (ADOT), Prometheus (AMP), Grafana (AMG), Instana, Kibana / ELK Stack
+- Git, GitHub, Bitbucket
+- SonarQube, DevSecOps (SAST, container scanning, security gating)
+- Agile, Waterfall, Jira
+
 ## Tools
 - Jenkins, Bitbucket, Kubernetes, Kibana, Instana, Grafana, Venafi, Fortanix,
-Docker, AWS Code build, Azure DEVOPS, 
+Docker, AWS CodeBuild, Azure DevOps, Harbor, JFrog, OpsGenie, Kafka
 - Visual Studio, Microsoft SQL Server,
-Azure web portal, Azure Dev-ops, Office 365, re-sharper, SharePoint
-Designer, MS Visio, Git-HUB, Redgate SQL, Postgress, Redis.
+Azure portal, Office 365, ReSharper, SharePoint
+Designer, MS Visio, GitHub, Redgate SQL, Postgres, Redis
 
 ## Programming
-- Object Oriented Design (OOD),
-- Desktop based application,
-- Web based application. 
-- C#, JavaScript, .Net Core, ASP.Net MVC, 
-- Azure native application development, 
-- Microservices, 
-- UML, 
-- Windows Server OS,
-- Windows Client OS, 
-- Shell.
+- Object Oriented Design (OOD)
+- Desktop and web based applications
+- C#, JavaScript, .NET Core, ASP.NET MVC, Groovy, Shell
+- Azure native application development
+- Microservices
+- UML
+- Windows Server / Client OS
 
-## Program Exposures 
-- DEVOPS Implementation
+## Program Exposures
+- DevSecOps / DevOps Implementation
 - Server Consolidation
-- Application Migration 
-- Application Modernization
+- Application Migration
+- Application Modernisation
 - Platform Evaluation
 - Digital Transformation
-- Consulting assignments
+- Consulting and presales assignments
 
 ## Project Management
-- Client communications 
+- Client communications
 - Status reporting
 - Team management
 - Transition Management
