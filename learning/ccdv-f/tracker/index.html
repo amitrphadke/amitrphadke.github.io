@@ -2157,6 +2157,9 @@ function renderPlan(){
   const today = todayStr();
   const main = document.getElementById("view-plan");
   const nav = document.getElementById("navlist");
+  const openKeys = new Set([...main.querySelectorAll("details[data-k][open]")].map(d=>d.dataset.k));
+  const firstRender = !main.children.length;
+  const scrollY = window.scrollY;
   main.innerHTML=""; nav.innerHTML="";
   CHAPTERS.forEach(ch=>{
     const isNow = today>=ch.start && today<=ch.end;
@@ -2176,7 +2179,7 @@ function renderPlan(){
         if(Array.isArray(r)){ const e=LIB_BY_URL[r[1]]; return e?`<li><a class="lib" href="#lib-${e.id}" data-golib="${e.id}">${esc(r[0])}</a> <span class="orig">read here in Library · <a href="${r[1]}" target="_blank" rel="noopener">original ↗</a></span></li>`:`<li><a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`; }
         return `<li>${esc(r)}</li>`; }).join("");
       const steps = (l.steps||[]).map(x=>`<li>${esc(x)}</li>`).join("");
-      const detail = (reads||steps||l.done)?`<details class="daydetail"><summary>Read · steps · done-when</summary><div class="dd">
+      const detail = (reads||steps||l.done)?`<details class="daydetail" data-k="${ch.id}:day${i}"><summary>Read · steps · done-when</summary><div class="dd">
           ${reads?`<b>Read (45 min)</b><ul class="readlist">${reads}</ul>`:""}
           ${steps?`<b>Build steps (45 min)</b><ol>${steps}</ol>`:""}
           ${l.done?`<span class="dw">${esc(l.done)}</span>`:""}</div></details>`:"";
@@ -2206,18 +2209,22 @@ function renderPlan(){
         <div class="chprog"><b>${pct}%</b><div class="bar"><i style="width:${pct}%"></i></div></div>
       </div>
       <div class="chbody">
-        <details ${isNow||ch.exam?"open":""}><summary>Schedule <span class="cnt">${lDone}/${ch.lessons.length} days done</span></summary>
+        <details data-k="${ch.id}:sched" ${isNow||ch.exam?"open":""}><summary>Schedule <span class="cnt">${lDone}/${ch.lessons.length} days done</span></summary>
           <table><thead><tr><th></th><th>Day</th><th>Learn (45 min) and build (45 min) — expand a day for reading list, steps and done-when</th></tr></thead><tbody>${lessonsHtml}</tbody></table>
         </details>
-        <details><summary>Study material <span class="cnt">read before the labs</span></summary><div class="notes">${ch.notes}</div></details>
-        ${ch.links.length?`<details><summary>Links</summary><div class="links">${linksHtml}</div></details>`:""}
-        <details><summary>Chapter checklist <span class="cnt">${cDone}/${ch.checklist.length}</span></summary><ul class="ck">${ckHtml}</ul>${quizLine}</details>
-        ${ch.qa.length?`<details><summary>Self-check <span class="cnt">${ch.qa.length} questions · tap to reveal</span></summary><ul class="qa">${qaHtml}</ul></details>`:""}
-        ${ch.exam?"":`<details><summary>Weekly retrospective <span class="cnt">${Object.values(retro).filter(v=>v&&v.trim()).length}/${RETRO_PROMPTS.length} answered</span></summary><div class="retro">${retroHtml}<div class="hint">Saved automatically. Fill on the review day.</div></div></details>`}
-        <details><summary>My notes</summary><textarea data-note="${ch.id}" placeholder="What clicked, what didn't, questions for the next session…">${esc(noteVal)}</textarea><div class="hint">Saved automatically.</div></details>
+        <details data-k="${ch.id}:notes"><summary>Study material <span class="cnt">read before the labs</span></summary><div class="notes">${ch.notes}</div></details>
+        ${ch.links.length?`<details data-k="${ch.id}:links"><summary>Links</summary><div class="links">${linksHtml}</div></details>`:""}
+        <details data-k="${ch.id}:check"><summary>Chapter checklist <span class="cnt">${cDone}/${ch.checklist.length}</span></summary><ul class="ck">${ckHtml}</ul>${quizLine}</details>
+        ${ch.qa.length?`<details data-k="${ch.id}:qa"><summary>Self-check <span class="cnt">${ch.qa.length} questions · tap to reveal</span></summary><ul class="qa">${qaHtml}</ul></details>`:""}
+        ${ch.exam?"":`<details data-k="${ch.id}:retro"><summary>Weekly retrospective <span class="cnt">${Object.values(retro).filter(v=>v&&v.trim()).length}/${RETRO_PROMPTS.length} answered</span></summary><div class="retro">${retroHtml}<div class="hint">Saved automatically. Fill on the review day.</div></div></details>`}
+        <details data-k="${ch.id}:mynotes"><summary>My notes</summary><textarea data-note="${ch.id}" placeholder="What clicked, what didn't, questions for the next session…">${esc(noteVal)}</textarea><div class="hint">Saved automatically.</div></details>
       </div>`;
     main.appendChild(s);
   });
+  if(!firstRender){
+    main.querySelectorAll("details[data-k]").forEach(d=>{ d.open = openKeys.has(d.dataset.k); });
+    window.scrollTo(0, scrollY);
+  }
 }
 
 /* ============================================================
