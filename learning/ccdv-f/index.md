@@ -49,6 +49,15 @@ I have spent twenty years automating other people's delivery pipelines. Over the
 
 The [tracker]({{ c.tracker_url }}) is a single self-contained page: the day-by-day plan with study material per chapter, an 80-question practice bank, a spaced-repetition deck of exam traps, a per-domain readiness dashboard, a printable cheat sheet, and a library of 62 digests of the official documentation the exam draws on. This public copy is read-only in spirit — anything you tick saves only in your own browser — but the material is free to use if you are preparing for the same exam. Corrections are welcome by [email](mailto:amitrameshphadke@gmail.com).
 
+## Mind maps
+
+I learn best from mind maps, so the whole plan and study material also exist as FreeMind files that open in SimpleMind (File → Import → FreeMind) or any mind-map app that reads `.mm`: a [master map](mindmaps/00%20CCDV-F%20master%20map.mm) of the exam, and one map per chapter with the daily plan, study material, documentation digests, self-check questions and traps as branches.
+
+{% assign maps = site.static_files | where_exp: "f", "f.path contains '/learning/ccdv-f/mindmaps/'" | sort: "path" %}
+<ul>
+{% for f in maps %}<li><a href="{{ f.path | relative_url }}">{{ f.basename }}</a></li>
+{% endfor %}</ul>
+
 ## Weekly journal
 
 {% assign posts = site.tags[c.tag] | sort: "date" | reverse %}
