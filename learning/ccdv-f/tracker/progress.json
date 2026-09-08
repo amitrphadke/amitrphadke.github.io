@@ -1,7 +1,9 @@
 {
  "state": {
   "ch0:l0": true,
-  "ch0:c0": true
+  "ch0:c0": true,
+  "ch0:c1": true,
+  "ch0:c2": true
  },
- "savedAt": "2026-09-08T12:48:56.000Z"
+ "savedAt": "2026-09-08T12:49:00.090Z"
 }
