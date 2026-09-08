@@ -51,9 +51,13 @@ The [tracker]({{ c.tracker_url }}) is a single self-contained page: the day-by-d
 
 ## Mind maps
 
-I learn best from mind maps, so the whole plan and study material also exist as FreeMind files that open in SimpleMind (File → Import → FreeMind) or any mind-map app that reads `.mm`: a [master map](mindmaps/00%20CCDV-F%20master%20map.mm) of the exam, and one map per chapter with the daily plan, study material, documentation digests, self-check questions and traps as branches.
+I learn best from mind maps, so the whole plan and study material also exist as maps: a master map of the exam and one per chapter, with the daily plan, study material, documentation digests, self-check questions and traps as branches.
 
-{% assign maps = site.static_files | where_exp: "f", "f.path contains '/learning/ccdv-f/mindmaps/'" | sort: "path" %}
+<a class="button button--primary button--rounded" href="mindmaps/">Open the interactive mind maps</a>
+
+The same maps are available as FreeMind files for SimpleMind (File → Import → FreeMind) or any app that reads `.mm`:
+
+{% assign maps = site.static_files | where_exp: "f", "f.path contains '/learning/ccdv-f/mindmaps/'" | where_exp: "f", "f.extname == '.mm'" | sort: "path" %}
 <ul>
 {% for f in maps %}<li><a href="{{ f.path | relative_url }}">{{ f.basename }}</a></li>
 {% endfor %}</ul>
