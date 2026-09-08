@@ -47,7 +47,7 @@ I have spent twenty years automating other people's delivery pipelines. Over the
 
 ## What is in the tracker
 
-The [tracker]({{ c.tracker_url }}) is a single self-contained page: the day-by-day plan with study material per chapter, an 80-question practice bank, a spaced-repetition deck of exam traps, a per-domain readiness dashboard, a printable cheat sheet, and a library of 62 digests of the official documentation the exam draws on. This public copy is read-only in spirit — anything you tick saves only in your own browser — but the material is free to use if you are preparing for the same exam. Corrections are welcome by [email](mailto:amitrameshphadke@gmail.com).
+The [tracker]({{ c.tracker_url }}) is a single self-contained page: the day-by-day plan with study material per chapter, an 80-question practice bank, a spaced-repetition deck of exam traps, a per-domain readiness dashboard, a printable cheat sheet, and a library of 62 digests of the official documentation the exam draws on. Visitors see my live progress read-only; the material itself is free to use if you are preparing for the same exam. Corrections are welcome by [email](mailto:amitrameshphadke@gmail.com).
 
 ## Mind maps
 

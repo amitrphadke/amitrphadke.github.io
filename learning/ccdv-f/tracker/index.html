@@ -265,7 +265,7 @@
   <div class="hwrap">
     <div>
       <h1>CCDV-F Study Tracker</h1>
-      <p>Claude Certified Developer – Foundations · Amit Phadke · 1.5 hrs/day · exam Tue 3 Nov 2026, 10:30 IST (check-in 10:00) · <a href="/learning/ccdv-f/" style="color:#ffd28a">back to the journey page</a> · <a href="/learning/ccdv-f/mindmaps/" style="color:#ffd28a">mind maps</a></p>
+      <p>Claude Certified Developer – Foundations · Amit Phadke · 1.5 hrs/day · exam Tue 3 Nov 2026, 10:30 IST (check-in 10:00) · <a href="/learning/ccdv-f/" style="color:#ffd28a">journey page</a> · <a href="/learning/ccdv-f/mindmaps/" style="color:#ffd28a">mind maps</a></p>
     </div>
     <div class="stats">
       <div class="stat exam"><b id="daysLeft">–</b><span>days to exam</span></div>
@@ -294,7 +294,7 @@
     <div id="navlist"></div>
     <div class="tools">
       <button id="btnToday">Jump to today</button>
-      <button id="btnExport">Export progress (copy JSON)</button>
+      <button id="btnExport">Copy progress JSON</button>
       <button id="btnImport">Import progress (paste JSON)</button>
       <button id="btnReset">Reset all progress</button>
       <div class="storenote" id="storeNote"></div>
@@ -2036,22 +2036,87 @@ const SR_INTERVALS = {1:1, 2:2, 3:4, 4:7, 5:14};
    ============================================================ */
 const KEY = "ccdvf-progress-v2";
 const OLD_KEY = "ccdvf-progress-v1";
-let mem = {};
+/* ------------------------------------------------------------
+   SITE MODE — progress lives in the GitHub repo as progress.json.
+   Everyone sees the owner's progress (read-only). The owner signs in
+   once per browser with a fine-grained GitHub token (Contents: read &
+   write on this repo only); the page then writes progress.json through
+   the GitHub API and GitHub Pages republishes it.
+   ------------------------------------------------------------ */
+const GH = { owner: "amitrphadke", repo: "amitrphadke.github.io", branch: "master", path: "learning/ccdv-f/tracker/progress.json" };
+const TOKEN_KEY = "ccdvf-gh-token";
+let ownerMode = false, ghSha = null, saveTimer = null, saving = false, pendingSave = false;
+const ghUrl = () => `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.path}`;
+const ghHeaders = t => ({ "Authorization": "Bearer " + t, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" });
+const b64enc = s => btoa(unescape(encodeURIComponent(s)));
+const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
+function getToken(){ try{ return localStorage.getItem(TOKEN_KEY) || ""; }catch(e){ return ""; } }
 const store = {
-  mode: "memory",
+  mode: "viewer", status: "",
   async load(){
-    let v = null;
-    try{ if(window.storage){ this.mode="artifact"; const r = await window.storage.get(KEY,false); if(r) v=JSON.parse(r.value); else { const o=await window.storage.get(OLD_KEY,false); if(o) v=JSON.parse(o.value);} } }catch(e){}
-    if(v) return v;
-    try{ const s = localStorage.getItem(KEY) || localStorage.getItem(OLD_KEY); this.mode = this.mode==="artifact"?"artifact":"browser"; if(s) return JSON.parse(s); }catch(e){ if(this.mode!=="artifact") this.mode="memory"; }
+    const t = getToken();
+    if(t){
+      try{
+        const r = await fetch(`${ghUrl()}?ref=${GH.branch}&t=${Date.now()}`, { headers: ghHeaders(t), cache: "no-store" });
+        if(r.status === 401 || r.status === 403){ this.status = "Token rejected — sign in again."; }
+        else if(r.status === 404){ ownerMode = true; this.mode = "owner"; ghSha = null; return {}; }
+        else if(r.ok){ const j = await r.json(); ghSha = j.sha; ownerMode = true; this.mode = "owner"; const d = JSON.parse(b64dec(j.content) || "{}"); return d.state || {}; }
+      }catch(e){ this.status = "GitHub unreachable — showing the published copy."; }
+    }
+    try{
+      const r = await fetch(`progress.json?t=${Date.now()}`, { cache: "no-store" });
+      if(r.ok){ const d = await r.json(); return d.state || {}; }
+    }catch(e){}
     return {};
   },
   async save(obj){
-    mem = obj;
-    try{ if(window.storage){ await window.storage.set(KEY, JSON.stringify(obj), false); return; } }catch(e){}
+    if(!ownerMode) return;
     try{ localStorage.setItem(KEY, JSON.stringify(obj)); }catch(e){}
-  }
+    clearTimeout(saveTimer); saveTimer = setTimeout(()=>this.flush(), 1500);
+    this.status = "Saving…"; renderStoreNote();
+  },
+  async flush(){
+    if(saving){ pendingSave = true; return; }
+    saving = true; const t = getToken();
+    const body = { message: "tracker: progress update " + new Date().toISOString().slice(0,16).replace("T"," "), content: b64enc(JSON.stringify({ state, savedAt: new Date().toISOString() }, null, 1)), branch: GH.branch };
+    if(ghSha) body.sha = ghSha;
+    try{
+      let r = await fetch(ghUrl(), { method: "PUT", headers: { ...ghHeaders(t), "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if(r.status === 409 || r.status === 422){ // stale sha — refetch and retry once
+        const g = await fetch(`${ghUrl()}?ref=${GH.branch}&t=${Date.now()}`, { headers: ghHeaders(t), cache: "no-store" });
+        if(g.ok){ body.sha = (await g.json()).sha; r = await fetch(ghUrl(), { method: "PUT", headers: { ...ghHeaders(t), "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
+      }
+      if(r.ok){ const j = await r.json(); ghSha = j.content.sha; this.status = "Saved to GitHub ✓ " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
+      else { this.status = "Save failed (" + r.status + ") — check the token."; }
+    }catch(e){ this.status = "Save failed — offline?"; }
+    saving = false; renderStoreNote();
+    if(pendingSave){ pendingSave = false; this.flush(); }
+  },
+  watch(){}
 };
+function renderStoreNote(){
+  const el = document.getElementById("storeNote"); if(!el) return;
+  el.innerHTML = ownerMode
+    ? `<b>Owner mode</b> — ${esc(store.status || "changes save to GitHub automatically")} · <a href="#" data-signout="1">sign out</a>`
+    : `Viewing Amit's live progress (read-only). ${esc(store.status || "")} <a href="#" data-signin="1">Owner sign-in</a>`;
+}
+function applyViewerLock(){
+  document.querySelectorAll("input[type=checkbox][data-id], textarea[data-note], textarea[data-retro], input[data-exam]").forEach(el => { el.disabled = !ownerMode; });
+  document.querySelectorAll("#btnReset, #btnImport").forEach(b => { b.hidden = !ownerMode; });
+}
+async function ownerSignIn(){
+  const t = prompt("Paste a GitHub fine-grained token with Contents: read & write on " + GH.owner + "/" + GH.repo + ".\nIt is stored only in this browser.");
+  if(!t) return;
+  try{ localStorage.setItem(TOKEN_KEY, t.trim()); }catch(e){ alert("This browser blocks local storage; cannot keep the token."); return; }
+  state = await store.load() || {};
+  if(!ownerMode){ alert("GitHub did not accept that token: " + (store.status || "unknown error")); try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} }
+  render();
+}
+function ownerSignOut(){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ownerMode = false; store.mode = "viewer"; store.status = ""; render(); }
+document.addEventListener("click", e => {
+  if(e.target.closest("[data-signin]")){ e.preventDefault(); ownerSignIn(); }
+  else if(e.target.closest("[data-signout]")){ e.preventDefault(); ownerSignOut(); }
+});
 let state = {};   // ticks, notes{}, retro{}, quiz{}, exams{}, sr{}
 let view = "plan";
 let quizRun = null;   // {key, items:[{d,i}], sel:{}, graded:false, end:ts, timer}
@@ -2356,9 +2421,7 @@ function renderHeader(){
   const due=dueTraps().length;
   document.getElementById("srDue").textContent = due;
   document.getElementById("srBadge").textContent = due; document.getElementById("srBadge").hidden = !due;
-  document.getElementById("storeNote").textContent =
-    store.mode==="memory" ? "Progress is kept only while this page is open — use Export to keep it." :
-    store.mode==="browser" ? "Public copy on amitphadke.com — ticks and notes save only in this browser. Amit's live progress is tracked separately." : "Progress is saved to your account.";
+  renderStoreNote(); applyViewerLock();
 }
 function switchView(v){
   view=v;
