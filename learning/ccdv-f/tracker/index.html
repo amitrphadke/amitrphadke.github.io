@@ -213,6 +213,17 @@
   .cheat li{margin:2px 0;font-size:13.5px;break-inside:avoid}
   .cheat .trapline{color:var(--amber);font-weight:500}
 
+  /* ---------- courses ---------- */
+  .course{border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:14px 18px;margin:10px 0}
+  .course h3{margin:0;font-size:15.5px}
+  .course .meta{font-size:12.5px;color:var(--ink-3);margin:2px 0 6px}
+  .course .cbar{height:6px;background:#e6eaf1;border-radius:999px;overflow:hidden;margin:6px 0 8px}
+  .course .cbar i{display:block;height:100%;background:var(--done)}
+  .course .grp{font-weight:600;font-size:13.5px;margin:10px 0 2px}
+  .course .grp span{font-weight:400;color:var(--sea);font-size:12px;margin-left:6px}
+  ul.ck.compact li{padding:3px 0;font-size:13.5px}
+  .chcourses .grp{font-weight:600;font-size:13.5px;margin:8px 0 2px}
+  .chcourses .grp a{font-weight:400;font-size:12px;margin-left:6px}
   /* ---------- library ---------- */
   .libnav{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
   .libnav a{font-size:12.5px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--ink-2);background:#fff}
@@ -280,6 +291,7 @@
   </div>
   <div class="tabs" role="tablist">
     <button class="tab on" data-view="plan" role="tab">Study plan</button>
+    <button class="tab" data-view="courses" role="tab">Courses</button>
     <button class="tab" data-view="quiz" role="tab">Question bank</button>
     <button class="tab" data-view="traps" role="tab">Trap review <span class="badge" id="srBadge">0</span></button>
     <button class="tab" data-view="dash" role="tab">Domain dashboard</button>
@@ -303,6 +315,7 @@
 
   <main id="main">
     <div class="view on" id="view-plan"></div>
+    <div class="view" id="view-courses"></div>
     <div class="view" id="view-quiz"></div>
     <div class="view" id="view-traps"></div>
     <div class="view" id="view-dash"></div>
@@ -384,7 +397,7 @@ const CHAPTERS = [
 <li>Domain 8 — make an inventory REST API reusable across several apps → <b>build an MCP server exposing the operations as tools</b>.</li>
 <li>Pattern: every sample rewards the Anthropic-recommended architecture, not the cleverest one.</li></ul>
 <h4>Daily routine (1.5 h)</h4>
-<ul><li>45 min learn from the docs or course → 45 min build the day's lab. Each day below has a <b>Read</b> list, numbered <b>Steps</b> and a <b>Done when</b> line — tick the day only when that line is true.</li>
+<ul><li>45 min learn → 45 min build the day's lab. Learning is video-first: each chapter lists the Anthropic Academy lessons to watch that week (🎓 Course lessons, also in the Courses tab); the Read list and Study material are the reference behind them. Each day has numbered <b>Steps</b> and a <b>Done when</b> line — tick the day only when that line is true.</li>
 <li>Build every lab <b>with Claude Code</b>, not by hand — end each session with <code>/cost</code> and note tokens used.</li>
 <li>Keep one <code>notes/&lt;domain&gt;.md</code> per chapter; it becomes your revision sheet in Chapter 8.</li>
 <li>Sunday = review day: finish the notes file, do the chapter Self-check, take the domain quiz in the Question bank tab, fill the Weekly retrospective.</li>
@@ -449,7 +462,7 @@ const CHAPTERS = [
    read:[["Vision","https://docs.claude.com/en/docs/build-with-claude/vision"],["PDF support","https://docs.claude.com/en/docs/build-with-claude/pdf-support"],["Files API","https://docs.claude.com/en/docs/build-with-claude/files"]],
    steps:["Send a PNG as {type:\"image\", source:{type:\"base64\", media_type:\"image/png\", data:...}} together with a text block asking for a description.","Send the same image by URL source; note both forms.","Send a 3-page PDF as a document block and ask for a summary with page references.","Note the limits from the docs (max image size/pixels, max PDF pages) into notes/api-basics.md."],
    done:"Image (base64 and URL) and PDF requests both succeed; limits are written down."},
-  {d:"2026-09-12", t:"Academy: Building with the Claude API — modules 1–2 with quizzes", b:"Fix anything the quiz exposed",
+  {d:"2026-09-12", t:"Academy catch-up: finish the chapter's Building with the Claude API lessons and their quiz", b:"Fix anything the quiz exposed",
    read:[["Course: Building with the Claude API","https://academy.claude.com/courses/building-with-the-claude-api"],["Course: Claude Platform 101","https://academy.claude.com/courses/claude-platform-101"]],
    steps:["Watch modules 1–2 at 1.25× speed; pause and run every code sample in your own lab instead of the notebook.","Take the module quizzes; for each wrong answer, find the sentence in the docs that settles it and paste the link into notes.","Add three questions of your own to the Self-check list below (in My notes)."],
    done:"Both module quizzes passed; every miss has a docs link in notes."},
@@ -2023,6 +2036,72 @@ const LIBRARY = [
 ];
 const LIB_BY_URL = {}; LIBRARY.forEach(e=>e.u.forEach(u=>{ LIB_BY_URL[u]=e; }));
 const LIB_BY_ID = {}; LIBRARY.forEach(e=>{ LIB_BY_ID[e.id]=e; });
+/* ============================================================
+   OFFICIAL ANTHROPIC COURSES — free, video-first, with quizzes and
+   completion badges (academy.claude.com, mirrored on
+   anthropic.skilljar.com). Verified 8 Sep 2026. Each lesson group is
+   assigned to the chapter in which to watch it; ticks are tracked as
+   course:<courseId>:<n> and count toward chapter progress.
+   ============================================================ */
+const COURSES = [
+{id:"cp101", title:"Claude Platform 101", url:"https://academy.claude.com/courses/claude-platform-101", hours:1.5, quiz:true, note:"The 90-minute orientation: what every later course assumes you know. Watch it whole in the first two days.",
+ groups:[
+  {ch:"ch0", name:"Whole course", lessons:["What is the Claude Platform?","Your first API call","Choosing the right model","The agent loop explained","What is tool use?","What is thinking?","Built-in tools","Skills","MCP","Context management","What are managed agents?","Building your first managed agent","Building with Claude Code","Claude Platform 101 Quiz"]}
+ ]},
+{id:"bca", title:"Building with the Claude API", url:"https://academy.claude.com/courses/building-with-the-claude-api", hours:9, quiz:true, note:"The core CCDV-F course — 67 video lessons with Python, 8 quizzes and a final assessment. It touches all eight exam domains; the plan spreads its modules across Chapters 1–8 so each module lands in the week that builds on it.",
+ groups:[
+  {ch:"ch1", name:"Accessing Claude with the API", lessons:["Accessing the API","Getting an API key","Making a request","Multi-turn conversations","System prompts","Temperature","Response streaming","Structured data","Quiz: Accessing Claude with the API"]},
+  {ch:"ch1", name:"Features of Claude (input types)", lessons:["Image support","PDF support","Citations"]},
+  {ch:"ch2", name:"Tool Use with Claude", lessons:["Introducing tool use","Project overview","Tool functions","Tool schemas","Handling message blocks","Sending tool results","Multi-turn conversations with tools","Implementing multiple turns","Using multiple tools","Fine grained tool calling","The text edit tool","The web search tool","Quiz: Tool use"]},
+  {ch:"ch2", name:"Features of Claude (caching, files)", lessons:["Prompt caching","Rules of prompt caching","Prompt caching in action","Code execution and the Files API","Quiz: Features of Claude"]},
+  {ch:"ch3", name:"Prompt Engineering Techniques", lessons:["Prompt engineering","Being clear and direct","Being specific","Structure with XML tags","Providing examples","Quiz: Prompt engineering"]},
+  {ch:"ch3", name:"Extended thinking + RAG and Agentic Search", lessons:["Extended thinking","Introducing RAG","Text chunking strategies","Text embeddings","The full RAG flow","Implementing the RAG flow","BM25 lexical search","A Multi-Index RAG pipeline"]},
+  {ch:"ch4", name:"Agents and Workflows", lessons:["Agents and workflows","Parallelization workflows","Chaining workflows","Routing workflows","Agents and tools","Environment inspection","Workflows vs agents","Quiz: Agents and workflows"]},
+  {ch:"ch5", name:"Model Context Protocol", lessons:["Introducing MCP","MCP clients","Project setup","Defining tools with MCP","The server inspector","Implementing a client","Defining resources","Accessing resources","Defining prompts","Prompts in the client","Quiz: MCP"]},
+  {ch:"ch6", name:"Anthropic Apps", lessons:["Anthropic apps","Claude Code setup","Claude Code in action","Enhancements with MCP servers"]},
+  {ch:"ch7", name:"Prompt Evaluation", lessons:["Prompt evaluation","A typical eval workflow","Generating test datasets","Running the eval","Model based grading","Code based grading","Quiz: Prompt evaluation"]},
+  {ch:"ch8", name:"Final assessment", lessons:["Final Assessment Quiz","Course Wrap Up"]}
+ ]},
+{id:"mcp1", title:"Introduction to Model Context Protocol", url:"https://academy.claude.com/courses/introduction-to-model-context-protocol", hours:1, quiz:true, note:"Same lessons as the MCP module of the big course, packaged with its own final assessment — take the assessment for the extra practice; skip the lessons if you finished the module.",
+ groups:[{ch:"ch5", name:"Whole course", lessons:["Introducing MCP","MCP clients","Project setup","Defining tools with MCP","The server inspector","Implementing a client","Defining resources","Accessing resources","Defining prompts","Prompts in the client","MCP review","Final assessment on MCP"]}]},
+{id:"mcp2", title:"Model Context Protocol: Advanced Topics", url:"https://academy.claude.com/courses/model-context-protocol-advanced-topics", hours:1.5, quiz:true, note:"Transports, roots, sampling, notifications — the material behind the 'stdio vs Streamable HTTP' and 'who controls what' exam questions.",
+ groups:[{ch:"ch5", name:"Whole course", lessons:["Sampling","Sampling walkthrough","Log and progress notifications","Notifications walkthrough","Roots","Roots walkthrough","JSON message types","The STDIO transport","The StreamableHTTP transport","StreamableHTTP in depth","State and the StreamableHTTP transport","Assessment on MCP concepts","Wrapping up"]}]},
+{id:"cc101", title:"Claude Code 101", url:"https://academy.claude.com/courses/claude-code-101", hours:1.5, quiz:true, note:"Beginner-to-intermediate Claude Code: the workflow, CLAUDE.md, subagents, skills, MCP, hooks. You use most of this daily; the value is the vocabulary the exam uses.",
+ groups:[{ch:"ch6", name:"Whole course", lessons:["What is Claude Code?","How Claude Code works","Installing Claude Code","Your first prompt","The explore → plan → code → commit workflow","Context management","Code review","The CLAUDE.md file","Subagents","Skills","MCP","Hooks","Course quiz"]}]},
+{id:"ccia", title:"Claude Code in Action", url:"https://academy.claude.com/courses/claude-code-in-action", hours:1, quiz:true, note:"Long unattended sessions, permission modes, hooks, headless and GitHub Actions — this is the 'Claude Hooks' and headless material the blueprint names.",
+ groups:[{ch:"ch6", name:"Whole course", lessons:["Steering long sessions","A CLAUDE.md that follows","Verification skills","Permission modes","Hooks","Routines and headless","GitHub Actions and Code Review","Trust it: Verifying unsupervised runs","Plugins","Course Quiz"]}]},
+{id:"skills", title:"Introduction to agent skills", url:"https://academy.claude.com/courses/introduction-to-agent-skills", hours:1, quiz:false, note:"Skills vs other Claude Code features — feeds the 'tools vs Skills vs MCP' trade-off sub-skill (4.1%).",
+ groups:[{ch:"ch6", name:"Whole course", lessons:["What are skills?","Creating your first skill","Configuration and multi-file skills","Skills vs. other Claude Code features","Sharing skills","Troubleshooting skills"]}]},
+{id:"subagents", title:"Introduction to subagents", url:"https://academy.claude.com/courses/introduction-to-subagents", hours:0.75, quiz:false, note:"Context isolation and delegation — the same ideas the Agents & Workflows domain tests.",
+ groups:[{ch:"ch4", name:"Whole course", lessons:["What are subagents?","Creating a subagent","Designing effective subagents","Using subagents effectively"]}]},
+{id:"sdlc", title:"The AI-Native SDLC Playbook", url:"https://academy.claude.com/courses/ai-native-sdlc-playbook", hours:1, quiz:false, note:"Evals in CI, hooks as approval gates, PR review loops — production judgement for the Security and Eval domains, and very close to your day job.",
+ groups:[{ch:"ch7", name:"Whole course", lessons:["Introduction","Capture as intent.md","Requirements and design","Claude Code plan mode as the default starting point","The CLAUDE.md","Skills as institutional knowledge","Parallel sessions and subagents","Give Claude a feedback loop","Continuous evals in CI","AI in the PR review loop","Hooks as approval gates","CI/CD integration and deployment","Closing the loop on metrics","Closing thoughts"]}]},
+{id:"bedrock", title:"Claude with Amazon Bedrock (selected lessons)", url:"https://academy.claude.com/courses/claude-with-amazon-bedrock", hours:1, quiz:true, note:"The full course repeats the API course on boto3. Watch only the platform lessons — the blueprint's 'Accelerators' sub-skill asks when to choose the Claude API vs Bedrock vs Vertex.",
+ groups:[{ch:"ch8", name:"Platform lessons only", lessons:["Overview of Claude Models","Accessing the API (Bedrock setup)","Making a request","Controlling model output","Batch tool use"]}]},
+{id:"prep", title:"Partner Academy: CCDV-F Prep Course (partner login)", url:"https://anthropic-partners.skilljar.com/path/claude-certified-developer-foundations", hours:12.9, quiz:false, note:"The official prep path — five text/video courses, ~13 h. Only visible after partner validation; if UST's login works, do modules 1 and 4 as revision in Chapter 8 and the others as time allows.",
+ groups:[
+  {ch:"ch3", name:"1 · MSO Foundations (57 min)", lessons:["MSO Foundations"]},
+  {ch:"ch4", name:"2 · Production-Grade Prompting, Agents & Tool Use (209 min)", lessons:["Production-Grade Prompting, Agents & Tool Use"]},
+  {ch:"ch6", name:"3 · Claude Code, MCP & Integration (142 min)", lessons:["Claude Code, MCP & Integration"]},
+  {ch:"ch7", name:"4 · Production Engineering, Evals & Security (211 min)", lessons:["Production Engineering, Evals & Security"]},
+  {ch:"ch8", name:"5 · Accelerators & IP Contribution (155 min)", lessons:["Accelerators & IP Contribution"]}
+ ]},
+{id:"gh", title:"GitHub notebooks: anthropics/courses (self-paced, no video)", url:"https://github.com/anthropics/courses", hours:6, quiz:false, note:"Older Jupyter notebooks (written for Claude 3 — swap the model ID). Use the Prompt Evaluations course in Chapter 7: it is the only Anthropic material dedicated to evals.",
+ groups:[
+  {ch:"ch3", name:"Prompt Engineering Interactive Tutorial (chapters 1–9)", lessons:["Basic Prompt Structure","Being Clear and Direct","Assigning Roles","Separating Data from Instructions","Formatting Output & Speaking for Claude","Precognition (Thinking Step by Step)","Using Examples","Avoiding Hallucinations","Building Complex Prompts"]},
+  {ch:"ch2", name:"Tool Use notebooks", lessons:["Tool use overview","Your first simple tool","Forcing JSON with tool use","The complete tool use workflow","Tool choice","Building a chatbot with multiple tools"]},
+  {ch:"ch7", name:"Prompt Evaluations", lessons:["Evaluations 101","Human-graded evals with Workbench","Simple code-graded evals","Classification eval","Promptfoo intro","Classification evals with promptfoo","Custom graders","Model-graded evals","Custom model-graded evals"]}
+ ]},
+{id:"yt", title:"Anthropic on YouTube (optional, no sign-in)", url:"https://www.youtube.com/playlist?list=PLmWCw1CzcFim2obQ-w3ohbULOfwp5lApR", hours:3, quiz:false, note:"Short official explainers for the three concepts the exam over-samples, plus the Code with Claude 2026 sessions for context.",
+ groups:[
+  {ch:"ch2", name:"Explainers", lessons:["Prompt caching explainer playlist (youtube.com/playlist?list=PLf2m23nhTg1OQAT3n_OD0g3P3gnK6pxW-)","Tool use demo (youtube.com/watch?v=6wkFb2_cUik)"]},
+  {ch:"ch3", name:"Explainers", lessons:["Extended thinking (youtube.com/watch?v=t3nnDXa81Hs)","Prompt engineering roundtable (youtube.com/watch?v=T9aRN5JkmL8)"]},
+  {ch:"ch6", name:"Code with Claude 2026", lessons:["What's new in Claude Code","The thinking lever","Getting more out of the Claude Platform"]}
+ ]}
+];
+const COURSE_BY_ID = {}; COURSES.forEach(c=>{ COURSE_BY_ID[c.id]=c; });
+function courseItems(c){ const out=[]; let n=0; c.groups.forEach(g=>g.lessons.forEach(l=>{ out.push({id:"course:"+c.id+":"+n, ch:g.ch, group:g.name, title:l}); n++; })); return out; }
+function courseItemsForChapter(chId){ const out=[]; COURSES.forEach(c=>courseItems(c).forEach(it=>{ if(it.ch===chId) out.push({...it, course:c}); })); return out; }
 const RETRO_PROMPTS = [
   "What did I build this week, and does it still run from a clean checkout?",
   "Which concept is still fuzzy? (Write the question you could not answer.)",
@@ -2096,26 +2175,35 @@ const store = {
 };
 function renderStoreNote(){
   const el = document.getElementById("storeNote"); if(!el) return;
-  el.innerHTML = ownerMode
-    ? `<b>Owner mode</b> — ${esc(store.status || "changes save to GitHub automatically")} · <a href="#" data-signout="1">sign out</a>`
-    : `Viewing Amit's live progress (read-only). ${esc(store.status || "")} <a href="#" data-signin="1">Owner sign-in</a>`;
+  if(ownerMode){ el.innerHTML = `<b>Owner mode</b> — ${esc(store.status || "changes save to GitHub automatically")} · <a href="#" data-signout="1">sign out</a>`; return; }
+  const open = el.dataset.signin === "1";
+  el.innerHTML = `Viewing Amit's live progress (read-only). ${esc(store.status || "")} ` + (open
+    ? `<form data-signinform="1" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"><input type="password" name="tok" placeholder="GitHub fine-grained token" autocomplete="off" style="width:100%;font-size:12px;padding:5px 6px"><div style="display:flex;gap:6px"><button type="submit" class="primary" style="font-size:12px;padding:4px 8px">Sign in</button><button type="button" data-signincancel="1" style="font-size:12px;padding:4px 8px">Cancel</button></div><div class="hint">Contents: read &amp; write on ${GH.owner}/${GH.repo}. Kept only in this browser.</div></form>`
+    : `<a href="#" data-signin="1">Owner sign-in</a>`);
 }
 function applyViewerLock(){
   document.querySelectorAll("input[type=checkbox][data-id], textarea[data-note], textarea[data-retro], input[data-exam]").forEach(el => { el.disabled = !ownerMode; });
   document.querySelectorAll("#btnReset, #btnImport").forEach(b => { b.hidden = !ownerMode; });
 }
-async function ownerSignIn(){
-  const t = prompt("Paste a GitHub fine-grained token with Contents: read & write on " + GH.owner + "/" + GH.repo + ".\nIt is stored only in this browser.");
-  if(!t) return;
-  try{ localStorage.setItem(TOKEN_KEY, t.trim()); }catch(e){ alert("This browser blocks local storage; cannot keep the token."); return; }
+async function ownerSignIn(tok){
+  const t = (tok||"").trim(); if(!t) return;
+  try{ localStorage.setItem(TOKEN_KEY, t); }catch(e){ store.status = "This browser blocks local storage; cannot keep the token."; renderStoreNote(); return; }
+  store.status = "Checking token…"; renderStoreNote();
   state = await store.load() || {};
-  if(!ownerMode){ alert("GitHub did not accept that token: " + (store.status || "unknown error")); try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} }
+  if(!ownerMode){ store.status = "GitHub did not accept that token. " + (store.status||""); try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} }
+  else store.status = "";
+  const el=document.getElementById("storeNote"); if(el) delete el.dataset.signin;
   render();
 }
 function ownerSignOut(){ try{ localStorage.removeItem(TOKEN_KEY); }catch(e){} ownerMode = false; store.mode = "viewer"; store.status = ""; render(); }
 document.addEventListener("click", e => {
-  if(e.target.closest("[data-signin]")){ e.preventDefault(); ownerSignIn(); }
+  const note=document.getElementById("storeNote");
+  if(e.target.closest("[data-signin]")){ e.preventDefault(); note.dataset.signin="1"; renderStoreNote(); const i=note.querySelector("input[name=tok]"); if(i) i.focus(); }
+  else if(e.target.closest("[data-signincancel]")){ e.preventDefault(); delete note.dataset.signin; renderStoreNote(); }
   else if(e.target.closest("[data-signout]")){ e.preventDefault(); ownerSignOut(); }
+});
+document.addEventListener("submit", e => {
+  const f=e.target.closest("form[data-signinform]"); if(!f) return; e.preventDefault(); ownerSignIn(f.tok.value);
 });
 let state = {};   // ticks, notes{}, retro{}, quiz{}, exams{}, sr{}
 let view = "plan";
@@ -2135,6 +2223,7 @@ function itemIds(ch){
   const ids=[];
   ch.lessons.forEach((l,i)=>ids.push(ch.id+":l"+i));
   ch.checklist.forEach((c,i)=>ids.push(ch.id+":c"+i));
+  courseItemsForChapter(ch.id).forEach(it=>ids.push(it.id));
   return ids;
 }
 function chPct(ch){ const ids=itemIds(ch); const d=ids.filter(i=>state[i]).length; return ids.length?Math.round(100*d/ids.length):0; }
@@ -2194,6 +2283,9 @@ function renderPlan(){
     const noteVal = (state.notes&&state.notes[ch.id])||"";
     const retro = (state.retro&&state.retro[ch.id])||{};
     const retroHtml = RETRO_PROMPTS.map((p,i)=>`<label>${esc(p)}<textarea data-retro="${ch.id}" data-i="${i}">${esc(retro[i]||"")}</textarea></label>`).join("");
+    const crsAll = courseItemsForChapter(ch.id); const crsDone = crsAll.filter(it=>state[it.id]).length;
+    const byCourse = {}; crsAll.forEach(it=>{ (byCourse[it.course.id]=byCourse[it.course.id]||{c:it.course,groups:{}}); (byCourse[it.course.id].groups[it.group]=byCourse[it.course.id].groups[it.group]||[]).push(it); });
+    const courseHtml = Object.values(byCourse).map(b=>Object.entries(b.groups).map(([g,items])=>`<div class="grp">${esc(b.c.title)} — ${esc(g)} <a href="${b.c.url}" target="_blank" rel="noopener">open course ↗</a></div><ul class="ck compact">${items.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="p-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="p-${it.id}">${esc(it.title)}</label></li>`).join("")}</ul>`).join("")).join("");
     const lDone = ch.lessons.filter((l,i)=>state[ch.id+":l"+i]).length;
     const cDone = ch.checklist.filter((c,i)=>state[ch.id+":c"+i]).length;
     const keys = ch.keys||[];
@@ -2212,7 +2304,8 @@ function renderPlan(){
         <details data-k="${ch.id}:sched" ${isNow||ch.exam?"open":""}><summary>Schedule <span class="cnt">${lDone}/${ch.lessons.length} days done</span></summary>
           <table><thead><tr><th></th><th>Day</th><th>Learn (45 min) and build (45 min) — expand a day for reading list, steps and done-when</th></tr></thead><tbody>${lessonsHtml}</tbody></table>
         </details>
-        <details data-k="${ch.id}:notes"><summary>Study material <span class="cnt">read before the labs</span></summary><div class="notes">${ch.notes}</div></details>
+        ${courseHtml?`<details data-k="${ch.id}:courses" ${isNow?"open":""}><summary>🎓 Course lessons this chapter <span class="cnt">${crsDone}/${crsAll.length} watched</span></summary><div class="chcourses">${courseHtml}<div class="hint">Watch these first — they are Anthropic's own videos with quizzes. The study material below is the reference to come back to. Ticks here and in the Courses tab are the same.</div></div></details>`:""}
+        <details data-k="${ch.id}:notes"><summary>Study material <span class="cnt">reference — read after the videos</span></summary><div class="notes">${ch.notes}</div></details>
         ${ch.links.length?`<details data-k="${ch.id}:links"><summary>Links</summary><div class="links">${linksHtml}</div></details>`:""}
         <details data-k="${ch.id}:check"><summary>Chapter checklist <span class="cnt">${cDone}/${ch.checklist.length}</span></summary><ul class="ck">${ckHtml}</ul>${quizLine}</details>
         ${ch.qa.length?`<details data-k="${ch.id}:qa"><summary>Self-check <span class="cnt">${ch.qa.length} questions · tap to reveal</span></summary><ul class="qa">${qaHtml}</ul></details>`:""}
@@ -2225,6 +2318,23 @@ function renderPlan(){
     main.querySelectorAll("details[data-k]").forEach(d=>{ d.open = openKeys.has(d.dataset.k); });
     window.scrollTo(0, scrollY);
   }
+}
+
+/* ============================================================
+   RENDER — courses view
+   ============================================================ */
+function renderCourses(){
+  const el=document.getElementById("view-courses");
+  const chName = id => { const c=CHAPTERS.find(x=>x.id===id); return c?(c.num==="★"?"Exam day":"Ch "+c.num):id; };
+  const totalItems = COURSES.reduce((a,c)=>a+courseItems(c).length,0);
+  const totalDone = COURSES.reduce((a,c)=>a+courseItems(c).filter(it=>state[it.id]).length,0);
+  const cards = COURSES.map(c=>{
+    const items=courseItems(c); const done=items.filter(it=>state[it.id]).length; const pct=items.length?Math.round(100*done/items.length):0;
+    const groups = c.groups.map(g=>{ const its=items.filter(it=>it.group===g.name&&it.ch===g.ch); return `<div class="grp">${esc(g.name)}<span>watch in ${chName(g.ch)}</span></div><ul class="ck compact">${its.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="c-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="c-${it.id}">${esc(it.title)}</label></li>`).join("")}</ul>`; }).join("");
+    return `<div class="course"><h3><a href="${c.url}" target="_blank" rel="noopener">${esc(c.title)} ↗</a></h3><div class="meta">≈ ${c.hours} h · ${items.length} lessons${c.quiz?" · quizzes + completion badge":""} · ${done}/${items.length} done</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="hint">${esc(c.note)}</div>${groups}</div>`;
+  }).join("");
+  el.innerHTML=`<div class="card"><h2>Anthropic's own courses</h2><div class="sub">Free video courses from Anthropic Academy (academy.claude.com — sign in with your personal Gmail so completions and badges are saved), plus the official prep path and the older GitHub notebooks. Every lesson is assigned to the chapter where it fits, appears in that chapter's plan, and counts toward chapter progress. Tick lessons as you finish them — the Academy keeps its own progress, this page keeps yours alongside the labs. ${totalDone}/${totalItems} lessons done overall.</div>
+    <div class="tip"><b>How to use them:</b> on each study day, watch the chapter's assigned lessons first (they are short — most are 5–10 minutes), then do the day's build steps, and use the Study material and Library digests only as reference when the video moves fast. Take every quiz; wrong answers go into that chapter's My notes as a one-line trap.</div></div>${cards}`;
 }
 
 /* ============================================================
@@ -2438,7 +2548,7 @@ function switchView(v){
   document.getElementById("sidenav").hidden = v!=="plan";
   try{ localStorage.setItem("ccdvf-view", v); }catch(e){}
 }
-function render(){ renderPlan(); renderQuiz(); renderTraps(); renderDash(); renderCheat(); renderLib(); renderHeader(); }
+function render(){ renderPlan(); renderCourses(); renderQuiz(); renderTraps(); renderDash(); renderCheat(); renderLib(); renderHeader(); }
 function goLib(id){ switchView("lib"); const el=document.getElementById("lib-"+id); if(el){ el.scrollIntoView({behavior:"smooth",block:"start"}); el.classList.add("hit"); setTimeout(()=>el.classList.remove("hit"),1600); } }
 
 /* ============================================================
