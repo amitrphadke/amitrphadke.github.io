@@ -265,7 +265,7 @@
   <div class="hwrap">
     <div>
       <h1>CCDV-F Study Tracker</h1>
-      <p>Claude Certified Developer – Foundations · Amit Phadke · 1.5 hrs/day · exam Tue 3 Nov 2026, 10:30 IST (check-in 10:00) · <a href="/learning/ccdv-f/" style="color:#ffd28a">back to the journey page</a></p>
+      <p>Claude Certified Developer – Foundations · Amit Phadke · 1.5 hrs/day · exam Tue 3 Nov 2026, 10:30 IST (check-in 10:00) · <a href="/learning/ccdv-f/" style="color:#ffd28a">back to the journey page</a> · <a href="/learning/ccdv-f/mindmaps/" style="color:#ffd28a">mind maps</a></p>
     </div>
     <div class="stats">
       <div class="stat exam"><b id="daysLeft">–</b><span>days to exam</span></div>
@@ -338,9 +338,9 @@ const CHAPTERS = [
    read:[["Official CCDV-F Exam Guide (Anthropic PDF)","https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F1783542875%2FClaude+Certified+Developer+%E2%80%93+Foundations+Exam+Guide.pdf"],["Partner Academy — register and find the prep course","https://anthropic-partners.skilljar.com"],["Community blueprint page (weights, sub-skills)","https://claudecertificationguide.com/ccdv-f"]],
    steps:["Register with your UST email amit.phadke@ust.com (partner-organisation status unlocks the exam guide and the free prep course — if UST is not listed as a partner, register anyway and use the public Claude Academy course instead).","Download the Exam Guide PDF and store it in the lab repo under docs/.","Copy the domain table into notes/00-exam-guide.md: domain, weight, and the task statements under each.","Highlight every verb in the task statements (\"select\", \"implement\", \"troubleshoot\") — these tell you how questions are framed."],
    done:"notes/00-exam-guide.md exists with all 8 domains, their weights and task statements."},
-  {d:"2026-09-05", t:"Claude Console: create API key, load $10–20 credit, find the usage dashboard", b:"Store key in .env, never commit",
+  {d:"2026-09-05", t:"Claude Console (personal Gmail, not UST): API key, $10 credit, spend limit, usage dashboard — Max covers Claude Code, not the API", b:"Store key in .env, never commit",
    read:[["Claude Console","https://platform.claude.com"],["API getting started","https://docs.claude.com/en/api/overview"]],
-   steps:["Create an organisation and a workspace named ccdvf-lab so spend is isolated.","Create one API key; name it by machine (macbook-air) so you can revoke it later.","Add $10–20 of credit; set a monthly spend limit on the workspace.","Open Usage and Cost pages — note where per-model token counts appear; you will reconcile against them in Chapter 2."],
+   steps:["Sign in to platform.claude.com with your personal Gmail (the same Anthropic account as your Max subscription — the Console is a separate, pay-as-you-go product; Max covers claude.ai and Claude Code but not API calls made from your own Python code).","Create an organisation and a workspace named ccdvf-lab so spend is isolated; create one API key named by machine (macbook-air) so you can revoke it later.","Add $10 of credit and set a monthly spend limit of $20 on the workspace — the whole 60-day plan should cost well under that if you use Haiku for bulk runs.","Open Usage and Cost pages — note where per-model token counts appear; you will reconcile against them in Chapter 2.","Claude Code itself runs on your Max subscription: run claude, sign in with the Gmail account, and never paste the API key into it."],
    done:"Key in .env, .env in .gitignore, spend limit set, you can point at the usage dashboard."},
   {d:"2026-09-06", t:"Local lab: git repo, Python venv, pip install anthropic mcp python-dotenv", b:"hello.py — first client.messages.create() call",
    read:[["Python SDK quickstart","https://docs.claude.com/en/api/client-sdks"]],
