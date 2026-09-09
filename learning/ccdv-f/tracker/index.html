@@ -112,6 +112,22 @@
   .learn{display:block;font-weight:500}
   .build{display:block;color:var(--ink-2);font-size:13px;margin-top:2px}
   .build::before{content:"Build: ";font-weight:600;color:var(--sea)}
+  .examfocus{background:#fff8ec;border:1px solid #f1d9a6;border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--ink-2);margin:6px 0 10px;line-height:1.45}
+  .examfocus b{display:block;color:#7a4a00;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+  .examfocus .mmlink{display:block;margin-top:5px;font-size:13px}
+  .watch{margin:5px 0 4px}
+  .watch>b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:#6b4fbb;margin-bottom:1px}
+  .watch ul.ck.compact{margin:0 0 0 2px}
+  .watch ul.ck.compact li{padding:2px 0;grid-template-columns:26px 1fr auto}
+  .watch ul.ck.compact li .lnk{padding:0 6px;border:1px solid #d9d2f0;border-radius:4px;background:#f6f3ff}
+  .watch .lnk{text-decoration:none;font-size:11px;color:#6b4fbb;margin-left:4px}
+  td.t .dw{display:block;background:var(--sea-soft);padding:4px 8px;border-radius:4px;margin-top:5px;font-size:13px;color:var(--ink-2)}
+  td.t .dw::before{content:"Done when: ";font-weight:600;color:var(--sea)}
+  .daydetail .dd .refs{margin-top:6px}
+  .daydetail .dd .refs b{display:inline;text-transform:none;letter-spacing:0;font-size:13px;margin:0}
+  .refnotes{margin:6px 0 14px}
+  .refnotes summary{font-size:13px;color:var(--sea)}
+  .cheat .notes{font-size:13.5px;margin-top:6px}
   .daydetail{margin-top:6px}
   .daydetail summary{font-weight:500;font-size:13px;color:var(--sea);padding:2px 0}
   .daydetail summary::before{border-color:var(--sea)}
@@ -2263,6 +2279,28 @@ function allTraps(){
 function trapState(id){ return (state.sr&&state.sr[id])||{box:0,due:todayStr()}; }
 function dueTraps(){ const t=todayStr(); return allTraps().filter(x=>trapState(x.id).due<=t); }
 
+
+/* Videos-first plan: which Academy lessons to watch on which day */
+const EXAM_FOCUS = {
+  ch0:"Nothing content-wise — but know the logistics cold: 53 questions, 120 min, 720 scaled to pass, retakes after 14/30/90 days (max 4 per year), and the 8 domain weights.",
+  ch1:"Applications & Integration (33.1%) — read a Messages request/response field by field; every stop_reason and what to do next; streaming event order; structured output; image/PDF content blocks and citations; error codes and retry strategy.",
+  ch2:"Applications & Integration + Tools & MCPs — tool schema design, the tool_use → tool_result loop, tool_choice, parallel tool calls; prompt-caching rules (breakpoints, 5-min vs 1-h TTL, minimum cacheable size, cache_read vs cache_creation); Batches API (50% cheaper, up to 24 h); Files API and code execution.",
+  ch3:"Model Selection & Optimisation (16.8%) + Prompt & Context Engineering (11%) — choose the model for a cost/latency/capability trade-off; extended thinking (budget_tokens, adaptive) and when it is wasted; clear-direct-XML-examples prompting; context-window arithmetic; RAG choices (chunking, embeddings, hybrid BM25).",
+  ch4:"Agents & Workflows (14.7%) — the five workflow patterns (chaining, routing, parallelisation, orchestrator-workers, evaluator-optimiser) vs an autonomous agent loop; when NOT to build an agent; subagent context isolation; Agent SDK basics.",
+  ch5:"Tools & MCPs (10.6%) — MCP primitives (tools, resources, prompts) and who controls each (model, app, user); stdio vs Streamable HTTP; sampling, roots, notifications; when a plain tool beats an MCP server.",
+  ch6:"Claude Code (3.1%, but its vocabulary appears everywhere) — CLAUDE.md, commands vs skills vs hooks vs subagents vs MCP vs plugins; permission modes; headless/CI runs.",
+  ch7:"Security & Safety (8.1%) + Eval, Testing & Debugging (2.6%) — prompt injection and its mitigations, least-privilege tools, guardrails and human-in-the-loop; the eval workflow (dataset → run → code- or model-graded); debugging a bad response systematically.",
+  ch8:"Everything, in scenario form — timed practice, then trap drills. The one new fact: when to pick the Claude API vs Bedrock vs Vertex."
+};
+function dayWatchMap(ch){
+  const items = courseItemsForChapter(ch.id).filter(it=>it.course.academy);
+  const n = ch.lessons.length; const useDays = n>=4 ? n-1 : n;   // last day of a full week is the review day
+  const map = ch.lessons.map(()=>[]);
+  if(!items.length || !useDays) return map;
+  const per = Math.ceil(items.length/useDays); let k=0;
+  for(let d=0; d<useDays && k<items.length; d++){ const take = Math.min(per, items.length-k, Math.ceil((items.length-k)/(useDays-d))); map[d]=items.slice(k,k+take); k+=take; }
+  return map;
+}
 /* ============================================================
    RENDER — plan view
    ============================================================ */
@@ -2285,18 +2323,20 @@ function renderPlan(){
 
     const s=document.createElement("section");
     s.className="ch"+(isNow?" now":"")+(ch.exam?" exam":""); s.id=ch.id;
+    const watchMap = dayWatchMap(ch);
     const lessonsHtml = ch.lessons.map((l,i)=>{
       const id=ch.id+":l"+i, done=!!state[id];
-      const reads = (l.read||[]).map(r=>{
-        if(typeof r==="string" && r.startsWith("lib:")){ const e=LIB_BY_ID[r.slice(4)]; return e?`<li><a class="lib" href="#lib-${e.id}" data-golib="${e.id}">${esc(e.title)}</a> <span class="orig">in Library</span></li>`:""; }
-        if(Array.isArray(r)){ const e=LIB_BY_URL[r[1]]; return e?`<li><a class="lib" href="#lib-${e.id}" data-golib="${e.id}">${esc(r[0])}</a> <span class="orig">read here in Library · <a href="${r[1]}" target="_blank" rel="noopener">original ↗</a></span></li>`:`<li><a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`; }
-        return `<li>${esc(r)}</li>`; }).join("");
+      const refs = (l.read||[]).map(r=>{
+        if(typeof r==="string" && r.startsWith("lib:")){ const e=LIB_BY_ID[r.slice(4)]; return e?`<a class="lib" href="#lib-${e.id}" data-golib="${e.id}">${esc(e.title)}</a>`:""; }
+        if(Array.isArray(r)){ const e=LIB_BY_URL[r[1]]; return e?`<a class="lib" href="#lib-${e.id}" data-golib="${e.id}">${esc(r[0])}</a>`:`<a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a>`; }
+        return esc(r); }).filter(Boolean).join(" · ");
       const steps = (l.steps||[]).map(x=>`<li>${esc(x)}</li>`).join("");
-      const detail = (reads||steps||l.done)?`<details class="daydetail" data-k="${ch.id}:day${i}"><summary>Read · steps · done-when</summary><div class="dd">
-          ${reads?`<b>Read (45 min)</b><ul class="readlist">${reads}</ul>`:""}
-          ${steps?`<b>Build steps (45 min)</b><ol>${steps}</ol>`:""}
-          ${l.done?`<span class="dw">${esc(l.done)}</span>`:""}</div></details>`:"";
-      return `<tr class="${done?'done':''}${l.d===today?' today':''}"><td class="c"><input type="checkbox" data-id="${id}" ${done?'checked':''} aria-label="Done"></td><td class="d">${fmt(l.d)}</td><td class="t"><span class="learn">${esc(l.t)}</span><span class="build">${esc(l.b)}</span>${detail}</td></tr>`;
+      const w = watchMap[i]||[];
+      const watch = w.length?`<div class="watch"><b>Watch</b><ul class="ck compact">${w.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="w-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="w-${it.id}">${esc(it.title)}</label> <a class="lnk" href="${it.course.url}${it.slug?'/'+it.slug:''}" target="_blank" rel="noopener" title="${esc(it.course.title)} — ${esc(it.group)}">▶</a></li>`).join("")}</ul></div>`:"";
+      const detail = (steps||refs)?`<details class="daydetail" data-k="${ch.id}:day${i}"><summary>Build steps${refs?" · if stuck":""}</summary><div class="dd">
+          ${steps?`<ol>${steps}</ol>`:""}
+          ${refs?`<div class="refs"><b>If stuck, read in the Library:</b> ${refs}</div>`:""}</div></details>`:"";
+      return `<tr class="${done?'done':''}${l.d===today?' today':''}"><td class="c"><input type="checkbox" data-id="${id}" ${done?'checked':''} aria-label="Done"></td><td class="d">${fmt(l.d)}</td><td class="t"><span class="learn">${esc(l.t)}</span>${watch}<span class="build">${esc(l.b)}</span>${l.done?`<span class="dw">${esc(l.done)}</span>`:""}${detail}</td></tr>`;
     }).join("");
     const ckHtml = ch.checklist.map((c,i)=>{
       const id=ch.id+":c"+i, done=!!state[id];
@@ -2325,11 +2365,11 @@ function renderPlan(){
         <div class="chprog"><b>${pct}%</b><div class="bar"><i style="width:${pct}%"></i></div></div>
       </div>
       <div class="chbody">
+        ${EXAM_FOCUS[ch.id]?`<div class="examfocus"><b>What the exam tests here</b> ${esc(EXAM_FOCUS[ch.id])} <span class="mmlink"><a href="https://www.amitphadke.com/learning/ccdv-f/mindmaps/#${ch.id}" target="_blank" rel="noopener">🧠 mind map of this chapter ↗</a> · <a href="#" data-gocheat="${ch.id}">reference notes in Cheat sheet</a></span></div>`:""}
         <details data-k="${ch.id}:sched" ${isNow||ch.exam?"open":""}><summary>Schedule <span class="cnt">${lDone}/${ch.lessons.length} days done</span></summary>
-          <table><thead><tr><th></th><th>Day</th><th>Learn (45 min) and build (45 min) — expand a day for reading list, steps and done-when</th></tr></thead><tbody>${lessonsHtml}</tbody></table>
+          <table><thead><tr><th></th><th>Day</th><th>Watch the lessons, then build (≈45 + 45 min) — tick the day when the done-when is true</th></tr></thead><tbody>${lessonsHtml}</tbody></table>
         </details>
-        ${courseHtml?`<details data-k="${ch.id}:courses" ${isNow?"open":""}><summary>🎓 Course lessons this chapter <span class="cnt">${crsDone}/${crsAll.length} watched</span></summary><div class="chcourses">${courseHtml}<div class="hint">Watch these first — they are Anthropic's own videos with quizzes. The study material below is the reference to come back to. Ticks here and in the Courses tab are the same.</div></div></details>`:""}
-        <details data-k="${ch.id}:notes"><summary>Study material <span class="cnt">reference — read after the videos</span></summary><div class="notes">${ch.notes}</div></details>
+        ${courseHtml?`<details data-k="${ch.id}:courses"><summary>All course material for this chapter <span class="cnt">${crsDone}/${crsAll.length} done</span></summary><div class="chcourses">${courseHtml}<div class="hint">The same video lessons as in the schedule above, plus optional notebooks / YouTube / partner-prep modules. Ticks here, in the schedule and in the Courses tab are the same.</div></div></details>`:""}
         ${ch.links.length?`<details data-k="${ch.id}:links"><summary>Links</summary><div class="links">${linksHtml}</div></details>`:""}
         <details data-k="${ch.id}:check"><summary>Chapter checklist <span class="cnt">${cDone}/${ch.checklist.length}</span></summary><ul class="ck">${ckHtml}</ul>${quizLine}</details>
         ${ch.qa.length?`<details data-k="${ch.id}:qa"><summary>Self-check <span class="cnt">${ch.qa.length} questions · tap to reveal</span></summary><ul class="qa">${qaHtml}</ul></details>`:""}
@@ -2510,11 +2550,11 @@ function renderDash(){
    ============================================================ */
 function renderCheat(){
   const el=document.getElementById("view-cheat");
-  const secs = CHAPTERS.filter(c=>(c.cheat&&c.cheat.length)||(c.traps&&c.traps.length)).map(c=>{
+  const secs = CHAPTERS.filter(c=>(c.cheat&&c.cheat.length)||(c.traps&&c.traps.length)||c.notes).map(c=>{
     const lines=(c.cheat||[]).map(x=>`<li>${esc(x)}</li>`).join("");
     const traps=(c.traps||[]).map(t=>`<li class="trapline">${esc(t[0])} → ${esc(t[1])}</li>`).join("");
     const mine=(state.notes&&state.notes[c.id]||"").trim();
-    return `<h2>${c.num==="★"?"":c.num+" · "}${esc(c.title)}</h2><ul>${lines}${traps}</ul>${mine?`<div class="hint" style="margin:4px 0 0"><b>My notes:</b> ${esc(mine).replace(/\n/g,"<br>")}</div>`:""}`;
+    return `<h2 id="cheat-${c.id}">${c.num==="★"?"":c.num+" · "}${esc(c.title)}</h2><ul>${lines}${traps}</ul>${mine?`<div class="hint" style="margin:4px 0 0"><b>My notes:</b> ${esc(mine).replace(/\n/g,"<br>")}</div>`:""}${c.notes?`<details class="refnotes" data-k="cheat:${c.id}"><summary>Reference notes — the long-form study material for this chapter</summary><div class="notes">${c.notes}</div></details>`:""}`;
   }).join("");
   el.innerHTML=`<div class="card cheat"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2 style="border:0;margin:0;font-size:19px">Cheat sheet</h2><div class="sub" style="margin:0">Every key fact and trap from all chapters, plus your own notes. Print it on 30 Oct and read it twice — for memory only; nothing goes into the exam room.</div></div><button data-print="1">Print / save as PDF</button></div>${secs}</div>`;
 }
@@ -2614,6 +2654,7 @@ document.addEventListener("click", e=>{
   const b=e.target.closest("[data-startquiz]"); if(b){ switchView("quiz"); startQuiz(b.dataset.startquiz); return; }
   if(e.target.closest("[data-gradequiz]")){ gradeQuiz(); return; }
   if(e.target.closest("[data-endquiz]")){ if(quizRun&&!quizRun.graded&&!confirm("Abandon this quiz? Nothing will be recorded.")) return; if(quizRun) clearInterval(quizRun.timer); quizRun=null; renderQuiz(); return; }
+  const gc=e.target.closest("[data-gocheat]"); if(gc){ e.preventDefault(); switchView("cheat"); const h=document.getElementById("cheat-"+gc.dataset.gocheat); if(h){ const d=h.parentElement.querySelector(`details[data-k="cheat:${gc.dataset.gocheat}"]`); if(d) d.open=true; h.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
   const g=e.target.closest("[data-goquiz]"); if(g){ e.preventDefault(); switchView("quiz"); window.scrollTo({top:0}); return; }
   const rv=e.target.closest("[data-reveal]"); if(rv){ rv.closest(".srcard").classList.add("show"); return; }
   const sr=e.target.closest("[data-sr]"); if(sr){ markTrap(sr.dataset.sr, sr.dataset.ok==="1"); return; }
