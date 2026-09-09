@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CCDV-F tracker — Claude Academy auto-tick
 // @namespace    https://www.amitphadke.com/
-// @version      1.0.0
+// @version      1.1.0
 // @description  When a lesson on academy.claude.com shows as completed, tick it in the study tracker on amitphadke.com (writes progress.json in the site repo through the GitHub API).
 // @author       Amit Phadke
 // @match        https://academy.claude.com/*
@@ -27,18 +27,27 @@
   const b64dec = s => decodeURIComponent(escape(atob(String(s).replace(/\n/g, ''))));
 
   // ---------- token ----------
-  function getToken() { return GM_getValue('ghToken', ''); }
+  // Token is kept in the userscript manager's storage AND in this site's localStorage (some managers do not persist GM values between pages).
+  const LS_KEY = 'ccdvf-tracker-gh-token';
+  function lsGet(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function gmGet(k, d) { try { const v = GM_getValue(k, d); return v == null ? d : v; } catch (e) { return d; } }
+  function gmSet(k, v) { try { GM_setValue(k, v); } catch (e) {} }
+  function getToken() { const g = gmGet('ghToken', ''); if (g) { if (!lsGet(LS_KEY)) lsSet(LS_KEY, g); return g; } const l = lsGet(LS_KEY); if (l) gmSet('ghToken', l); return l; }
+  function setToken(v) { gmSet('ghToken', v); lsSet(LS_KEY, v); }
   function askToken(msg) {
     const box = document.createElement('div');
     box.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:999999;background:#14213d;color:#fff;padding:12px 14px;border-radius:8px;font:13px system-ui;max-width:320px;box-shadow:0 6px 24px rgba(0,0,0,.3)';
     box.innerHTML = `<div style="font-weight:600;margin-bottom:6px">CCDV-F tracker sync</div><div style="color:#b9c3d9;margin-bottom:8px">${msg || 'Paste the GitHub token (Contents: read & write on the site repo). Stored only in Tampermonkey.'}</div><input type="password" style="width:100%;padding:6px;border-radius:5px;border:1px solid #2a3757;background:#1b2540;color:#fff"><div style="margin-top:8px;display:flex;gap:6px"><button style="padding:5px 10px;border-radius:5px;border:0;background:#0b7a75;color:#fff;cursor:pointer">Save</button><button style="padding:5px 10px;border-radius:5px;border:1px solid #2a3757;background:transparent;color:#fff;cursor:pointer">Later</button></div>`;
     document.body.appendChild(box);
     const [save, later] = box.querySelectorAll('button'); const inp = box.querySelector('input');
-    save.onclick = () => { if (inp.value.trim()) { GM_setValue('ghToken', inp.value.trim()); box.remove(); toast('Token saved — syncing…'); sync(true); } };
+    const doSave = () => { const v = inp.value.trim(); if (!v) return; setToken(v); box.remove(); toast('Token saved — syncing…'); sync(true); };
+    save.onclick = doSave; inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); doSave(); } }); setTimeout(() => inp.focus(), 50);
     later.onclick = () => box.remove();
   }
   GM_registerMenuCommand('Set GitHub token for tracker sync', () => askToken());
   GM_registerMenuCommand('Sync tracker now', () => sync(true));
+  GM_registerMenuCommand('Forget GitHub token', () => { setToken(''); toast('Token removed.'); });
 
   // ---------- ui ----------
   function toast(msg, ms = 3500) {
@@ -55,14 +64,29 @@
     const r = await gm({ method: 'GET', url: COURSES_URL + '?t=' + Date.now() });
     coursesMap = JSON.parse(r.responseText).courses; coursesAt = Date.now(); return coursesMap;
   }
-  function scanPage() {
-    const m = location.pathname.match(/^\/courses\/([^\/]+)/); if (!m) return null;
-    const slug = m[1]; const seen = new Set(); const done = [];
-    document.querySelectorAll(`a[href^="/courses/${slug}/"]`).forEach(a => {
-      const ls = a.getAttribute('href').split('/').pop(); if (seen.has(ls)) return; seen.add(ls);
+  function completedFromDoc(doc, slug) {
+    const seen = new Set(); const done = [];
+    doc.querySelectorAll(`a[href^="/courses/${slug}/"]`).forEach(a => {
+      const ls = a.getAttribute('href').split('/').pop(); if (!ls || seen.has(ls)) return; seen.add(ls);
       if (/\(completed\)/i.test(a.textContent) || a.querySelector('[aria-label*="ompleted" i]')) done.push(ls);
     });
-    return { slug, done };
+    return done;
+  }
+  const pageCache = {};
+  async function completedFromCoursePage(slug) {
+    const c = pageCache[slug]; if (c && Date.now() - c.at < 20e3) return c.done;
+    try {
+      const r = await gm({ method: 'GET', url: `${location.origin}/courses/${slug}?t=${Date.now()}`, headers: { Accept: 'text/html' } });
+      const doc = new DOMParser().parseFromString(r.responseText, 'text/html');
+      const done = completedFromDoc(doc, slug); pageCache[slug] = { at: Date.now(), done }; return done;
+    } catch (e) { return []; }
+  }
+  async function scanPage() {
+    const m = location.pathname.match(/^\/courses\/([^\/]+)/); if (!m) return null;
+    const slug = m[1];
+    const done = new Set(completedFromDoc(document, slug));
+    (await completedFromCoursePage(slug)).forEach(x => done.add(x));   // lesson pages don't show the markers; the course page does
+    return { slug, done: [...done].sort() };
   }
 
   // ---------- github ----------
@@ -81,9 +105,11 @@
   // ---------- sync ----------
   let busy = false, lastKey = '';
   async function sync(force) {
-    if (busy) return; const scan = scanPage(); if (!scan) return;
+    if (busy) return; if (!location.pathname.startsWith('/courses/')) return;
+    busy = true; let scan; try { scan = await scanPage(); } finally { busy = false; } if (!scan) return;
     const key = scan.slug + ':' + scan.done.join(','); if (!force && key === lastKey) return; lastKey = key;
-    const tok = getToken(); if (!tok) { if (force || !GM_getValue('askedOnce')) { GM_setValue('askedOnce', true); askToken(); } return; }
+    if (busy) return;
+    const tok = getToken(); if (!tok) { if (force || !gmGet('askedOnce', false) && !lsGet('ccdvf-tracker-asked')) { gmSet('askedOnce', true); lsSet('ccdvf-tracker-asked', '1'); askToken(); } return; }
     busy = true;
     try {
       const courses = await loadCourses(); const course = courses[scan.slug];
@@ -105,7 +131,7 @@
   }
 
   // run on load, on SPA navigation, and when the sidebar changes (a lesson just got marked complete)
-  let debounce = null; const schedule = () => { clearTimeout(debounce); debounce = setTimeout(() => sync(false), 2500); };
+  let debounce = null; const schedule = () => { clearTimeout(debounce); debounce = setTimeout(() => sync(false), 4000); };
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
   let lastPath = location.pathname; setInterval(() => { if (location.pathname !== lastPath) { lastPath = location.pathname; lastKey = ''; schedule(); } }, 1000);
   schedule();
