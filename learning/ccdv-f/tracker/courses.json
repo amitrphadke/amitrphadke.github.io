@@ -1,0 +1,229 @@
+{
+ "generated": "2026-09-09T04:20:29.839Z",
+ "courses": {
+  "claude-platform-101": {
+   "courseId": "cp101",
+   "title": "Claude Platform 101",
+   "lessons": {
+    "what-is-the-claude-platform": "course:cp101:0",
+    "your-first-api-call": "course:cp101:1",
+    "choosing-the-right-model": "course:cp101:2",
+    "the-agent-loop-explained": "course:cp101:3",
+    "what-is-tool-use": "course:cp101:4",
+    "what-is-thinking": "course:cp101:5",
+    "built-in-tools": "course:cp101:6",
+    "skills": "course:cp101:7",
+    "mcp": "course:cp101:8",
+    "context-management": "course:cp101:9",
+    "what-are-managed-agents": "course:cp101:10",
+    "building-your-first-managed-agent": "course:cp101:11",
+    "building-with-claude-code": "course:cp101:12",
+    "claude-platform-101-quiz": "course:cp101:13"
+   }
+  },
+  "building-with-the-claude-api": {
+   "courseId": "bca",
+   "title": "Building with the Claude API",
+   "lessons": {
+    "accessing-the-api": "course:bca:0",
+    "getting-an-api-key": "course:bca:1",
+    "making-a-request": "course:bca:2",
+    "multi-turn-conversations": "course:bca:3",
+    "system-prompts": "course:bca:4",
+    "temperature": "course:bca:5",
+    "response-streaming": "course:bca:6",
+    "structured-data": "course:bca:7",
+    "quiz-on-accessing-claude-with-the-api": "course:bca:8",
+    "image-support": "course:bca:9",
+    "pdf-support": "course:bca:10",
+    "citations": "course:bca:11",
+    "introducing-tool-use": "course:bca:12",
+    "project-overview": "course:bca:13",
+    "tool-functions": "course:bca:14",
+    "tool-schemas": "course:bca:15",
+    "handling-message-blocks": "course:bca:16",
+    "sending-tool-results": "course:bca:17",
+    "multi-turn-conversations-with-tools": "course:bca:18",
+    "implementing-multiple-turns": "course:bca:19",
+    "using-multiple-tools": "course:bca:20",
+    "fine-grained-tool-calling": "course:bca:21",
+    "the-text-edit-tool": "course:bca:22",
+    "the-web-search-tool": "course:bca:23",
+    "quiz-on-tool-use-with-claude": "course:bca:24",
+    "prompt-caching": "course:bca:25",
+    "rules-of-prompt-caching": "course:bca:26",
+    "prompt-caching-in-action": "course:bca:27",
+    "code-execution-and-the-files-api": "course:bca:28",
+    "quiz-on-features-of-claude": "course:bca:29",
+    "prompt-engineering": "course:bca:30",
+    "being-clear-and-direct": "course:bca:31",
+    "being-specific": "course:bca:32",
+    "structure-with-xml-tags": "course:bca:33",
+    "providing-examples": "course:bca:34",
+    "quiz-on-prompt-engineering-techniques": "course:bca:35",
+    "extended-thinking": "course:bca:36",
+    "introducing-retrieval-augmented-generation": "course:bca:37",
+    "text-chunking-strategies": "course:bca:38",
+    "text-embeddings": "course:bca:39",
+    "the-full-rag-flow": "course:bca:40",
+    "implementing-the-rag-flow": "course:bca:41",
+    "bm25-lexical-search": "course:bca:42",
+    "a-multi-index-rag-pipeline": "course:bca:43",
+    "agents-and-workflows": "course:bca:44",
+    "parallelization-workflows": "course:bca:45",
+    "chaining-workflows": "course:bca:46",
+    "routing-workflows": "course:bca:47",
+    "agents-and-tools": "course:bca:48",
+    "environment-inspection": "course:bca:49",
+    "workflows-vs-agents": "course:bca:50",
+    "quiz-on-agents-and-workflows": "course:bca:51",
+    "introducing-mcp": "course:bca:52",
+    "mcp-clients": "course:bca:53",
+    "project-setup": "course:bca:54",
+    "defining-tools-with-mcp": "course:bca:55",
+    "the-server-inspector": "course:bca:56",
+    "implementing-a-client": "course:bca:57",
+    "defining-resources": "course:bca:58",
+    "accessing-resources": "course:bca:59",
+    "defining-prompts": "course:bca:60",
+    "prompts-in-the-client": "course:bca:61",
+    "quiz-on-model-context-protocol": "course:bca:62",
+    "anthropic-apps": "course:bca:63",
+    "claude-code-setup": "course:bca:64",
+    "claude-code-in-action": "course:bca:65",
+    "enhancements-with-mcp-servers": "course:bca:66",
+    "prompt-evaluation": "course:bca:67",
+    "a-typical-eval-workflow": "course:bca:68",
+    "generating-test-datasets": "course:bca:69",
+    "running-the-eval": "course:bca:70",
+    "model-based-grading": "course:bca:71",
+    "code-based-grading": "course:bca:72",
+    "quiz-on-prompt-evaluation": "course:bca:73",
+    "final-assessment": "course:bca:74"
+   }
+  },
+  "introduction-to-model-context-protocol": {
+   "courseId": "mcp1",
+   "title": "Introduction to Model Context Protocol",
+   "lessons": {
+    "introducing-mcp": "course:mcp1:0",
+    "mcp-clients": "course:mcp1:1",
+    "defining-tools-with-mcp": "course:mcp1:3",
+    "the-server-inspector": "course:mcp1:4",
+    "implementing-a-client": "course:mcp1:5",
+    "defining-resources": "course:mcp1:6",
+    "accessing-resources": "course:mcp1:7",
+    "defining-prompts": "course:mcp1:8",
+    "prompts-in-the-client": "course:mcp1:9",
+    "mcp-review": "course:mcp1:10",
+    "final-assessment-on-mcp": "course:mcp1:11"
+   }
+  },
+  "model-context-protocol-advanced-topics": {
+   "courseId": "mcp2",
+   "title": "Model Context Protocol: Advanced Topics",
+   "lessons": {
+    "sampling": "course:mcp2:0",
+    "sampling-walkthrough": "course:mcp2:1",
+    "log-and-progress-notifications": "course:mcp2:2",
+    "notifications-walkthrough": "course:mcp2:3",
+    "roots": "course:mcp2:4",
+    "roots-walkthrough": "course:mcp2:5",
+    "json-message-types": "course:mcp2:6",
+    "the-stdio-transport": "course:mcp2:7",
+    "the-streamablehttp-transport": "course:mcp2:8",
+    "streamablehttp-in-depth": "course:mcp2:9",
+    "state-and-the-streamablehttp-transport": "course:mcp2:10",
+    "assessment-on-mcp-concepts": "course:mcp2:11"
+   }
+  },
+  "claude-code-101": {
+   "courseId": "cc101",
+   "title": "Claude Code 101",
+   "lessons": {
+    "what-is-claude-code": "course:cc101:0",
+    "how-claude-code-works": "course:cc101:1",
+    "installing-claude-code": "course:cc101:2",
+    "your-first-prompt": "course:cc101:3",
+    "the-explore-plan-code-commit-workflow": "course:cc101:4",
+    "context-management": "course:cc101:5",
+    "code-review": "course:cc101:6",
+    "the-claude-md-file": "course:cc101:7",
+    "subagents": "course:cc101:8",
+    "skills": "course:cc101:9",
+    "mcp": "course:cc101:10",
+    "hooks": "course:cc101:11",
+    "course-quiz": "course:cc101:12"
+   }
+  },
+  "claude-code-in-action": {
+   "courseId": "ccia",
+   "title": "Claude Code in Action",
+   "lessons": {
+    "steering-long-sessions": "course:ccia:0",
+    "a-claude-md-that-follows": "course:ccia:1",
+    "verification-skills": "course:ccia:2",
+    "permission-modes": "course:ccia:3",
+    "hooks": "course:ccia:4",
+    "routines-and-headless": "course:ccia:5",
+    "github-actions-and-code-review": "course:ccia:6",
+    "trust-it-verifying-unsupervised-runs": "course:ccia:7",
+    "plugins": "course:ccia:8",
+    "course-quiz": "course:ccia:9"
+   }
+  },
+  "introduction-to-agent-skills": {
+   "courseId": "skills",
+   "title": "Introduction to agent skills",
+   "lessons": {
+    "what-are-skills": "course:skills:0",
+    "creating-your-first-skill": "course:skills:1",
+    "configuration-and-multi-file-skills": "course:skills:2",
+    "skills-vs-other-claude-code-features": "course:skills:3",
+    "sharing-skills": "course:skills:4",
+    "troubleshooting-skills": "course:skills:5"
+   }
+  },
+  "introduction-to-subagents": {
+   "courseId": "subagents",
+   "title": "Introduction to subagents",
+   "lessons": {
+    "what-are-subagents": "course:subagents:0",
+    "creating-a-subagent": "course:subagents:1",
+    "designing-effective-subagents": "course:subagents:2",
+    "using-subagents-effectively": "course:subagents:3"
+   }
+  },
+  "ai-native-sdlc-playbook": {
+   "courseId": "sdlc",
+   "title": "The AI-Native SDLC Playbook",
+   "lessons": {
+    "introduction": "course:sdlc:0",
+    "capture-intent": "course:sdlc:1",
+    "requirements-and-design": "course:sdlc:2",
+    "plan-mode": "course:sdlc:3",
+    "claude-md": "course:sdlc:4",
+    "skills-as-institutional-knowledge": "course:sdlc:5",
+    "parallel-sessions-and-subagents": "course:sdlc:6",
+    "give-claude-a-feedback-loop": "course:sdlc:7",
+    "continuous-evals-in-ci": "course:sdlc:8",
+    "ai-in-the-pr-review-loop": "course:sdlc:9",
+    "hooks-as-approval-gates": "course:sdlc:10",
+    "ci-cd-integration-and-deployment": "course:sdlc:11",
+    "closing-the-loop-on-metrics": "course:sdlc:12",
+    "closing-thoughts-and-resources": "course:sdlc:13"
+   }
+  },
+  "claude-with-amazon-bedrock": {
+   "courseId": "bedrock",
+   "title": "Claude with Amazon Bedrock (selected lessons)",
+   "lessons": {
+    "overview-of-claude-models": "course:bedrock:0",
+    "accessing-the-api": "course:bedrock:1",
+    "making-a-request": "course:bedrock:2",
+    "controlling-model-output": "course:bedrock:3",
+    "batch-tool-use": "course:bedrock:4"
+   }
+  }
+ }
+}
