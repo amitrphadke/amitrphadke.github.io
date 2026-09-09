@@ -1,0 +1,36 @@
+{
+ "_name": "02_unanswered_tool",
+ "_expected": "unanswered_tool",
+ "request": {
+  "max_tokens": 500,
+  "messages": [
+   {
+    "role": "user",
+    "content": "time?"
+   },
+   {
+    "role": "assistant",
+    "content": [
+     {
+      "type": "tool_use",
+      "id": "toolu_1",
+      "name": "get_time",
+      "input": {}
+     }
+    ]
+   },
+   {
+    "role": "user",
+    "content": "thanks"
+   }
+  ]
+ },
+ "response": {
+  "error": {
+   "type": "invalid_request_error",
+   "message": "tool_use ids were found without tool_result blocks"
+  }
+ },
+ "status": 400,
+ "repeat": false
+}

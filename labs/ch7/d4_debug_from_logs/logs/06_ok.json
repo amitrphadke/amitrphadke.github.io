@@ -1,0 +1,22 @@
+{
+ "_name": "06_ok",
+ "_expected": "ok",
+ "request": {
+  "max_tokens": 500,
+  "messages": [
+   {
+    "role": "user",
+    "content": "hi"
+   }
+  ]
+ },
+ "response": {
+  "stop_reason": "end_turn",
+  "usage": {
+   "input_tokens": 8,
+   "output_tokens": 9
+  }
+ },
+ "status": 200,
+ "repeat": false
+}

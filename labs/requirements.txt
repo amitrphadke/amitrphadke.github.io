@@ -1,0 +1,7 @@
+anthropic>=0.60
+python-dotenv
+pydantic>=2
+pytest
+httpx
+mcp[cli]>=1.10
+claude-agent-sdk

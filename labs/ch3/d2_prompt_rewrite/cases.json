@@ -1,0 +1,34 @@
+[
+ {
+  "email": "I was charged twice this month for the same plan, please refund one.",
+  "category": "billing"
+ },
+ {
+  "email": "The export button does nothing on Safari, console shows a TypeError.",
+  "category": "bug"
+ },
+ {
+  "email": "Would love a dark mode option in the dashboard.",
+  "category": "feature"
+ },
+ {
+  "email": "What are your office hours in Pune?",
+  "category": "other"
+ },
+ {
+  "email": "My invoice shows the wrong GST number, can you correct it?",
+  "category": "billing"
+ },
+ {
+  "email": "Uploads over 20 MB fail with a 500 error since yesterday.",
+  "category": "bug"
+ },
+ {
+  "email": "Can we get SSO with Okta? Happy to pay extra.",
+  "category": "feature"
+ },
+ {
+  "email": "Is your company hiring backend engineers?",
+  "category": "other"
+ }
+]

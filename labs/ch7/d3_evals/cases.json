@@ -1,0 +1,42 @@
+[
+ {
+  "input": "Invoice 1001\nItem A 500.00\nItem B 734.50\nGST 0.00\nGrand total: 1234.50",
+  "expected": "1234.50"
+ },
+ {
+  "input": "INVOICE #22\nConsulting 10h x 2500 = 25000.00\nGST 18% = 4500.00\nTOTAL DUE \u20b929,500.00",
+  "expected": "29500.00"
+ },
+ {
+  "input": "Subtotal 99.00 | Discount -9.90 | Total 89.10",
+  "expected": "89.10"
+ },
+ {
+  "input": "Items: 3 x 150.00 = 450.00\nShipping 50.00\nAmount payable: 500.00",
+  "expected": "500.00"
+ },
+ {
+  "input": "Invoice\nService fee 1200\nTax 216\nGrand Total 1416",
+  "expected": "1416.00"
+ },
+ {
+  "input": "Balance brought forward 0.00\nThis month 2,349.99\nTotal 2,349.99",
+  "expected": "2349.99"
+ },
+ {
+  "input": "Line 1 10.00\nLine 2 20.00\nLine 3 30.00\nTotal (incl. tax) 70.80",
+  "expected": "70.80"
+ },
+ {
+  "input": "TOTAL: INR 5,000.00 (paid 2,000.00, due 3,000.00) \u2014 grand total of invoice is 5,000.00",
+  "expected": "5000.00"
+ },
+ {
+  "input": "Amount 0.99\nTax 0.18\nTotal 1.17",
+  "expected": "1.17"
+ },
+ {
+  "input": "Hardware 85,000.00\nInstallation 15,000.00\nGrand Total 1,00,000.00",
+  "expected": "100000.00"
+ }
+]

@@ -1,0 +1,22 @@
+{
+ "_name": "01_truncated",
+ "_expected": "truncated",
+ "request": {
+  "max_tokens": 50,
+  "messages": [
+   {
+    "role": "user",
+    "content": "Write an essay"
+   }
+  ]
+ },
+ "response": {
+  "stop_reason": "max_tokens",
+  "usage": {
+   "input_tokens": 12,
+   "output_tokens": 50
+  }
+ },
+ "status": 200,
+ "repeat": false
+}

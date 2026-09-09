@@ -1,0 +1,33 @@
+{
+ "_name": "05_cache_miss",
+ "_expected": "cache_miss",
+ "request": {
+  "max_tokens": 500,
+  "system": [
+   {
+    "type": "text",
+    "text": "xxxxxxxxxxxxxxxxxxxx",
+    "cache_control": {
+     "type": "ephemeral"
+    }
+   }
+  ],
+  "messages": [
+   {
+    "role": "user",
+    "content": "hi"
+   }
+  ]
+ },
+ "response": {
+  "stop_reason": "end_turn",
+  "usage": {
+   "input_tokens": 3000,
+   "output_tokens": 20,
+   "cache_read_input_tokens": 0,
+   "cache_creation_input_tokens": 0
+  }
+ },
+ "status": 200,
+ "repeat": true
+}

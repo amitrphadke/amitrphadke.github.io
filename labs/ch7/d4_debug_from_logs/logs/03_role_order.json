@@ -1,0 +1,25 @@
+{
+ "_name": "03_role_order",
+ "_expected": "role_order",
+ "request": {
+  "max_tokens": 500,
+  "messages": [
+   {
+    "role": "user",
+    "content": "a"
+   },
+   {
+    "role": "user",
+    "content": "b"
+   }
+  ]
+ },
+ "response": {
+  "error": {
+   "type": "invalid_request_error",
+   "message": "roles must alternate"
+  }
+ },
+ "status": 400,
+ "repeat": false
+}
