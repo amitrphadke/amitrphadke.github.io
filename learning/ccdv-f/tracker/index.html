@@ -29,6 +29,11 @@
   h4{font-size:14px;margin:12px 0 4px}
 
   /* ---------- header ---------- */
+  .sitenav{background:#0c1220;color:#cfd6e6;font-size:13px;padding:7px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .sitenav a{color:#cfd6e6;text-decoration:none;opacity:.9}
+  .sitenav a:hover{color:#fff;text-decoration:underline;opacity:1}
+  .sitenav a.home{color:#ffd28a;font-weight:600;opacity:1}
+  .sitenav .here{color:#fff;font-weight:600;margin-left:auto}
   header{background:var(--ink);color:#fff;padding:22px 20px 0}
   .hwrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
   header h1{margin:0 0 4px;font-size:22px;font-weight:600;letter-spacing:-.01em}
@@ -276,7 +281,7 @@
   @media print{
     header{background:#fff;color:#000;border-bottom:2px solid #000}
     header p,.stat span,.overall small{color:#333}
-    nav.side,.tools,textarea,.tabs,button{display:none!important}
+    nav.side,.tools,textarea,.tabs,button,.sitenav{display:none!important}
     .wrap{display:block;padding:0}
     .view{display:none} .view.on{display:block}
     details{page-break-inside:avoid}
@@ -288,6 +293,7 @@
 </head>
 <body>
 
+<nav class="sitenav" aria-label="Site"><a href="/" class="home">🏠 amitphadke.com</a><a href="/certifications.html">Certifications</a><a href="/learning/">Learning</a><a href="/learning/ccdv-f/">CCDV-F journey</a><a href="/learning/ccdv-f/mindmaps/">Mind maps</a><span class="here">Study tracker</span></nav>
 <header>
   <div class="hwrap">
     <div>
