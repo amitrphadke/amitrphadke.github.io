@@ -129,6 +129,9 @@
   .playermodal .pbackdrop{position:absolute;inset:0;background:rgba(9,14,26,.72)}
   .playermodal .pwin{position:relative;display:flex;flex-direction:column;width:min(1100px,100%);height:min(88vh,900px);background:#0f1626;border:1px solid #2a3757;border-radius:10px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.5)}
   .playermodal .pbar{display:flex;align-items:center;gap:12px;padding:8px 12px;color:#dbe3f3;font-size:13px;flex:0 0 auto}
+  .lno{display:inline-block;min-width:2.1em;color:var(--ink-3);font-variant-numeric:tabular-nums;font-size:12px}
+  ul.ck li.done .lno{color:var(--ink-3)}
+  .playermodal .psub{color:#9fabc6;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .playermodal .pbar b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46%}
   .playermodal .pbar .grow{flex:1}
   .playermodal .pbar a{color:#ffd28a;text-decoration:none;white-space:nowrap}
@@ -2145,7 +2148,7 @@ const COURSES = [
  ]}
 ];
 const COURSE_BY_ID = {}; COURSES.forEach(c=>{ COURSE_BY_ID[c.id]=c; });
-function courseItems(c){ const out=[]; let n=0; c.groups.forEach(g=>g.lessons.forEach((l,i)=>{ out.push({id:"course:"+c.id+":"+n, ch:g.ch, group:g.name, title:l, slug:(g.slugs&&g.slugs[i])||""}); n++; })); return out; }
+function courseItems(c){ const out=[]; let n=0; c.groups.forEach(g=>g.lessons.forEach((l,i)=>{ out.push({id:"course:"+c.id+":"+n, ch:g.ch, group:g.name, title:l, slug:(g.slugs&&g.slugs[i])||"", no:n+1}); n++; })); out.forEach(it=>it.total=out.length); return out; }
 function courseItemsForChapter(chId){ const out=[]; COURSES.forEach(c=>courseItems(c).forEach(it=>{ if(it.ch===chId) out.push({...it, course:c}); })); return out; }
 const LABS = [{"id": "lab:ch1:0", "ch": "ch1", "day": 0, "title": "A typed ask() \u2014 sync and async", "path": "ch1/d0_typed_client", "api": true, "video": "Building with the Claude API \u2192 Accessing the API \u00b7 Getting an API key \u00b7 Making a request"}, {"id": "lab:ch1:1", "ch": "ch1", "day": 1, "title": "Multi-turn chat that keeps history", "path": "ch1/d1_chat_history", "api": true, "video": "Multi-turn conversations \u00b7 System prompts"}, {"id": "lab:ch1:2", "ch": "ch1", "day": 2, "title": "Streaming \u2014 print token by token", "path": "ch1/d2_streaming", "api": true, "video": "Response streaming"}, {"id": "lab:ch1:3", "ch": "ch1", "day": 3, "title": "Validated JSON with retry", "path": "ch1/d3_structured_output", "api": true, "video": "Structured data"}, {"id": "lab:ch1:4", "ch": "ch1", "day": 4, "title": "Image and PDF content blocks", "path": "ch1/d4_vision_pdf", "api": true, "video": "Image support \u00b7 PDF support \u00b7 Citations"}, {"id": "lab:ch2:0", "ch": "ch2", "day": 0, "title": "Your first tool loop", "path": "ch2/d0_first_tool", "api": true, "video": "Introducing tool use \u00b7 Tool functions \u00b7 Tool schemas \u00b7 Handling message blocks \u00b7 Sending tool results"}, {"id": "lab:ch2:1", "ch": "ch2", "day": 1, "title": "Multiple tools, parallel calls, is_error", "path": "ch2/d1_multi_tool", "api": true, "video": "Multi-turn conversations with tools \u00b7 Implementing multiple turns \u00b7 Using multiple tools \u00b7 Fine grained tool calling"}, {"id": "lab:ch2:2", "ch": "ch2", "day": 2, "title": "Prompt caching \u2014 see cache_read_input_tokens > 0", "path": "ch2/d2_prompt_caching", "api": true, "video": "Prompt caching \u00b7 Rules of prompt caching \u00b7 Prompt caching in action"}, {"id": "lab:ch2:3", "ch": "ch2", "day": 3, "title": "Message Batches \u2014 20 prompts, matched by custom_id", "path": "ch2/d3_batches", "api": true, "video": "(docs) Message Batches API \u2014 see Library"}, {"id": "lab:ch2:4", "ch": "ch2", "day": 4, "title": "Errors, retries and backoff (no API needed)", "path": "ch2/d4_errors_backoff", "api": false, "video": "(docs) Errors and rate limits \u2014 see Library"}, {"id": "lab:ch3:0", "ch": "ch3", "day": 0, "title": "One task on three models \u2014 latency, tokens, cost", "path": "ch3/d0_model_compare", "api": true, "video": "Claude Platform 101 \u2192 Choosing the right model"}, {"id": "lab:ch3:1", "ch": "ch3", "day": 1, "title": "Cost calculator + token counting", "path": "ch3/d1_cost_calculator", "api": true, "video": "(docs) Pricing \u00b7 Token counting \u2014 see Library"}, {"id": "lab:ch3:2", "ch": "ch3", "day": 2, "title": "Rewrite a weak prompt three ways and score them", "path": "ch3/d2_prompt_rewrite", "api": true, "video": "Prompt engineering \u00b7 Being clear and direct \u00b7 Being specific \u00b7 Structure with XML tags \u00b7 Providing examples"}, {"id": "lab:ch3:3", "ch": "ch3", "day": 3, "title": "Extended thinking on vs off", "path": "ch3/d3_extended_thinking", "api": true, "video": "Extended thinking"}, {"id": "lab:ch3:4", "ch": "ch3", "day": 4, "title": "Auto-summarise a long conversation", "path": "ch3/d4_context_summary", "api": true, "video": "Claude Platform 101 \u2192 Context management"}, {"id": "lab:ch4:0", "ch": "ch4", "day": 0, "title": "A 3-step prompt chain with a gate", "path": "ch4/d0_prompt_chain", "api": true, "video": "Agents and workflows \u00b7 Chaining workflows"}, {"id": "lab:ch4:1", "ch": "ch4", "day": 1, "title": "Routing and parallelisation", "path": "ch4/d1_router_parallel", "api": true, "video": "Routing workflows \u00b7 Parallelization workflows"}, {"id": "lab:ch4:2", "ch": "ch4", "day": 2, "title": "Agent SDK quickstart with a restricted tool set", "path": "ch4/d2_agent_sdk", "api": false, "video": "Claude Platform 101 \u2192 The agent loop explained \u00b7 Built-in tools"}, {"id": "lab:ch4:3", "ch": "ch4", "day": 3, "title": "Orchestrator + worker with max_turns", "path": "ch4/d3_orchestrator_worker", "api": true, "video": "Agents and tools \u00b7 Workflows vs agents \u00b7 Introduction to subagents"}, {"id": "lab:ch4:4", "ch": "ch4", "day": 4, "title": "Server-side web search with citations", "path": "ch4/d4_web_search_tool", "api": true, "video": "Claude Platform 101 \u2192 Built-in tools"}, {"id": "lab:ch4:5", "ch": "ch4", "day": 5, "title": "Loop, budget and destructive-action guards", "path": "ch4/d5_agent_guards", "api": true, "video": "Quiz on agents and workflows \u00b7 Using subagents effectively"}, {"id": "lab:ch5:1", "ch": "ch5", "day": 1, "title": "An MCP server with a tool, a resource and a prompt", "path": "ch5/d1_mcp_server", "api": false, "video": "Introducing MCP \u00b7 MCP clients \u00b7 Defining tools with MCP \u00b7 Defining resources \u00b7 Defining prompts"}, {"id": "lab:ch5:4", "ch": "ch5", "day": 4, "title": "Calling a remote MCP server through the API", "path": "ch5/d4_mcp_connector", "api": true, "video": "MCP: Advanced Topics \u2192 The StreamableHTTP transport \u00b7 StreamableHTTP in depth"}, {"id": "lab:ch5:5", "ch": "ch5", "day": 5, "title": "Allow-lists and validation on your MCP server", "path": "ch5/d5_mcp_hardening", "api": false, "video": "MCP Advanced Topics \u2192 Roots \u00b7 Roots walkthrough"}, {"id": "lab:ch6:0", "ch": "ch6", "day": 0, "title": "A real CLAUDE.md with imports", "path": "ch6/d0_claude_md", "api": false, "video": "Claude Code 101 \u2192 The CLAUDE.md file \u00b7 Claude Code in Action \u2192 A CLAUDE.md that follows"}, {"id": "lab:ch6:1", "ch": "ch6", "day": 1, "title": "A slash command and a skill", "path": "ch6/d1_commands_skills", "api": false, "video": "Claude Code 101 \u2192 Skills \u00b7 Introduction to agent skills (whole course)"}, {"id": "lab:ch6:2", "ch": "ch6", "day": 2, "title": "Hooks: lint after every edit, block dangerous commands", "path": "ch6/d2_hooks", "api": false, "video": "Claude Code 101 \u2192 Hooks \u00b7 Claude Code in Action \u2192 Hooks \u00b7 Permission modes"}, {"id": "lab:ch6:3", "ch": "ch6", "day": 3, "title": "A reviewer subagent with a restricted tool set", "path": "ch6/d3_subagent", "api": false, "video": "Claude Code 101 \u2192 Subagents \u00b7 Introduction to subagents"}, {"id": "lab:ch6:4", "ch": "ch6", "day": 4, "title": "Headless: claude -p with JSON output", "path": "ch6/d4_headless", "api": false, "video": "Claude Code in Action \u2192 Routines and headless \u00b7 GitHub Actions and Code Review"}, {"id": "lab:ch7:1", "ch": "ch7", "day": 1, "title": "Prompt-injection defences and an approval gate", "path": "ch7/d1_injection_defences", "api": true, "video": "AI-Native SDLC Playbook \u2192 Hooks as approval gates \u00b7 Give Claude a feedback loop"}, {"id": "lab:ch7:2", "ch": "ch7", "day": 2, "title": "A Haiku moderation pre-check", "path": "ch7/d2_moderation", "api": true, "video": "Building with the Claude API \u2192 (Prompt evaluation module) \u00b7 docs: Usage policy"}, {"id": "lab:ch7:3", "ch": "ch7", "day": 3, "title": "An eval harness that catches a regression", "path": "ch7/d3_evals", "api": true, "video": "Prompt evaluation \u00b7 A typical eval workflow \u00b7 Generating test datasets \u00b7 Running the eval \u00b7 Model based grading \u00b7 Code based grading"}, {"id": "lab:ch7:4", "ch": "ch7", "day": 4, "title": "Diagnose failures from logs alone (offline)", "path": "ch7/d4_debug_from_logs", "api": false, "video": "Building with the Claude API \u2192 Running the eval (debugging habits) \u00b7 docs: stop reasons"}];
 const LAB_BY_DAY = {}; LABS.forEach(l=>{ LAB_BY_DAY[l.ch+':'+l.day] = l; });
@@ -2180,10 +2183,19 @@ const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
 function getToken(){ try{ return localStorage.getItem(TOKEN_KEY) || ""; }catch(e){ return ""; } }
 // Sign-in via URL: open the tracker as .../tracker/#gh=<token> (for browsers that block pasting into the form)
 (function(){ const m = location.hash.match(/[#&]gh=([^&]+)/); if(m){ try{ localStorage.setItem(TOKEN_KEY, decodeURIComponent(m[1])); }catch(e){} try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){} } })();
-// Merge a remote copy into local state: ticks are OR-ed (so lessons ticked by the Academy sync script are never lost); everything else prefers local.
+/* Three-way merge against the copy we last synced with (baseState), so that
+   - a tick added elsewhere (Academy script, labs, another device) is adopted, and
+   - a tick YOU removed here stays removed instead of being resurrected. */
+let baseState = {};
+function setBase(s){ baseState = JSON.parse(JSON.stringify(s || {})); }
 function mergeState(remote, local){
   const out = JSON.parse(JSON.stringify(local || {}));
-  Object.keys(remote || {}).forEach(k => { const v = remote[k]; if(v === true && !out[k]) out[k] = true; else if(!(k in out)) out[k] = v; });
+  Object.keys(remote || {}).forEach(k => {
+    const rv = remote[k], bv = baseState[k];
+    if(k in out) return;                                   // local wins for keys we hold
+    if(JSON.stringify(rv) === JSON.stringify(bv)) return;  // unchanged remotely = we deleted it here
+    out[k] = rv;                                           // genuinely new/changed elsewhere
+  });
   return out;
 }
 async function fetchRemote(t){
@@ -2199,12 +2211,12 @@ const store = {
         const r = await fetch(`${ghUrl()}?ref=${GH.branch}&t=${Date.now()}`, { headers: ghHeaders(t), cache: "no-store" });
         if(r.status === 401 || r.status === 403){ this.status = "Token rejected — sign in again."; }
         else if(r.status === 404){ ownerMode = true; this.mode = "owner"; ghSha = null; return {}; }
-        else if(r.ok){ const j = await r.json(); ghSha = j.sha; ownerMode = true; this.mode = "owner"; const d = JSON.parse(b64dec(j.content) || "{}"); return d.state || {}; }
+        else if(r.ok){ const j = await r.json(); ghSha = j.sha; ownerMode = true; this.mode = "owner"; const d = JSON.parse(b64dec(j.content) || "{}"); setBase(d.state || {}); return d.state || {}; }
       }catch(e){ this.status = "GitHub unreachable — showing the published copy."; }
     }
     try{
       const r = await fetch(`progress.json?t=${Date.now()}`, { cache: "no-store" });
-      if(r.ok){ const d = await r.json(); return d.state || {}; }
+      if(r.ok){ const d = await r.json(); setBase(d.state || {}); return d.state || {}; }
     }catch(e){}
     return {};
   },
@@ -2229,11 +2241,19 @@ const store = {
         const g = await fetch(`${ghUrl()}?ref=${GH.branch}&t=${Date.now()}`, { headers: ghHeaders(t), cache: "no-store" });
         if(g.ok){ body.sha = (await g.json()).sha; r = await fetch(ghUrl(), { method: "PUT", headers: { ...ghHeaders(t), "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
       }
-      if(r.ok){ const j = await r.json(); ghSha = j.content.sha; this.status = "Saved to GitHub ✓ " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
+      if(r.ok){ const j = await r.json(); ghSha = j.content.sha; setBase(state); this.status = "Saved ✓ " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); }
       else { this.status = "Save failed (" + r.status + ") — check the token."; }
     }catch(e){ this.status = "Save failed — offline?"; }
     saving = false; renderStoreNote();
     if(pendingSave){ pendingSave = false; this.flush(); }
+  },
+  async syncNow(){
+    if(!ownerMode) return;
+    this.status = "Syncing…"; renderStoreNote();
+    clearTimeout(saveTimer); await this.flush();
+    try{ const remote = await fetchRemote(getToken());
+      if(remote){ ghSha = remote.sha; const merged = mergeState(remote.state, state); state = merged; setBase(merged); render(); } }catch(e){}
+    this.status = "Synced ✓ " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}); renderStoreNote();
   },
   watch(){
     setInterval(async ()=>{
@@ -2241,13 +2261,14 @@ const store = {
       if(document.activeElement && /TEXTAREA|INPUT/.test(document.activeElement.tagName)) return;
       if(quizRun && !quizRun.graded) return;
       try{ const remote = await fetchRemote(getToken()); if(!remote) return; ghSha = remote.sha;
-        const merged = mergeState(remote.state, state); if(JSON.stringify(merged) !== JSON.stringify(state)){ state = merged; render(); } }catch(e){}
-    }, 60000);
+        const merged = mergeState(remote.state, state);
+        if(JSON.stringify(merged) !== JSON.stringify(state)){ state = merged; setBase(merged); render(); } else setBase(remote.state); }catch(e){}
+    }, 20000);
   }
 };
 function renderStoreNote(){
   const el = document.getElementById("storeNote"); if(!el) return;
-  if(ownerMode){ el.innerHTML = `<b>Owner mode</b> — ${esc(store.status || "changes save to GitHub automatically")} · <a href="#" data-signout="1">sign out</a>`; return; }
+  if(ownerMode){ el.innerHTML = `<b>Owner mode</b> — ${esc(store.status || "changes save automatically")} · <a href="#" data-syncnow="1">sync now</a> · <a href="#" data-signout="1">sign out</a>`; return; }
   const open = el.dataset.signin === "1";
   el.innerHTML = `Viewing Amit's live progress (read-only). ${esc(store.status || "")} ` + (open
     ? `<form data-signinform="1" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"><input type="password" name="tok" placeholder="GitHub fine-grained token" autocomplete="off" style="width:100%;font-size:12px;padding:5px 6px"><div style="display:flex;gap:6px"><button type="submit" class="primary" style="font-size:12px;padding:4px 8px">Sign in</button><button type="button" data-signincancel="1" style="font-size:12px;padding:4px 8px">Cancel</button></div><div class="hint">Contents: read &amp; write on ${GH.owner}/${GH.repo}. Kept only in this browser.</div></form>`
@@ -2272,6 +2293,7 @@ document.addEventListener("click", e => {
   const note=document.getElementById("storeNote");
   if(e.target.closest("[data-signin]")){ e.preventDefault(); note.dataset.signin="1"; renderStoreNote(); const i=note.querySelector("input[name=tok]"); if(i) i.focus(); }
   else if(e.target.closest("[data-signincancel]")){ e.preventDefault(); delete note.dataset.signin; renderStoreNote(); }
+  else if(e.target.closest("[data-syncnow]")){ e.preventDefault(); store.syncNow(); }
   else if(e.target.closest("[data-signout]")){ e.preventDefault(); ownerSignOut(); }
 });
 document.addEventListener("submit", e => {
@@ -2339,16 +2361,16 @@ function dayWatchMap(ch){
 function lessonUrl(it){ return it.course.url + (it.slug ? "/" + it.slug : ""); }
 function lessonRow(it, prefix){
   const url = lessonUrl(it);
-  const play = it.course.academy && it.slug ? `<button class="play" data-play="${url}" data-tick="${it.id}" data-title="${esc(it.title)}" title="Watch here, without leaving this page">▶</button>` : "";
+  const play = it.course.academy && it.slug ? `<button class="play" data-play="${url}" data-tick="${it.id}" data-title="${esc(it.title)}" data-sub="Lesson ${it.no} of ${it.total} · ${esc(it.course.title)}" title="Watch here, without leaving this page">▶</button>` : "";
   const ext = `<a class="ext" href="${url}" target="_blank" rel="noopener" title="Open on Claude Academy (signed in — records your progress there)">↗</a>`;
-  return `<li class="${state[it.id]?'done':''}"><input type="checkbox" id="${prefix}-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="${prefix}-${it.id}">${esc(it.title)}</label><span class="acts">${play}${ext}</span></li>`;
+  return `<li class="${state[it.id]?'done':''}"><input type="checkbox" id="${prefix}-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="${prefix}-${it.id}"><span class="lno">${it.no}</span>${esc(it.title)}</label><span class="acts">${play}${ext}</span></li>`;
 }
 function closePlayer(){ const b=document.getElementById("playerBox"); if(b) b.remove(); document.documentElement.style.overflow=""; }
-function openPlayer(url, tickId, title, anchor){
+function openPlayer(url, tickId, title, sub){
   closePlayer();
   const box=document.createElement("div"); box.id="playerBox"; box.className="playermodal"; box.tabIndex=-1;
   box.innerHTML = `<div class="pbackdrop" data-closeplayer="1"></div><div class="pwin" role="dialog" aria-label="${esc(title||"Lesson")}">
-    <div class="pbar"><b>${esc(title||"Lesson")}</b><span class="grow"></span>`+
+    <div class="pbar"><b>${esc(title||"Lesson")}</b><span class="psub">${esc(sub||"")}</span><span class="grow"></span>`+
     (tickId?`<label class="pmark"><input type="checkbox" data-id="${tickId}" ${state[tickId]?'checked':''}> watched</label>`:"")+
     `<a href="${url}" target="_blank" rel="noopener">open on Academy ↗</a><button data-closeplayer="1" title="Close (Esc)">✕</button></div>
     <iframe src="${url}" title="Lesson" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
@@ -2717,7 +2739,7 @@ document.addEventListener("click", e=>{
   if(e.target.closest("[data-gradequiz]")){ gradeQuiz(); return; }
   if(e.target.closest("[data-endquiz]")){ if(quizRun&&!quizRun.graded&&!confirm("Abandon this quiz? Nothing will be recorded.")) return; if(quizRun) clearInterval(quizRun.timer); quizRun=null; renderQuiz(); return; }
   const gc=e.target.closest("[data-gocheat]"); if(gc){ e.preventDefault(); switchView("cheat"); const h=document.getElementById("cheat-"+gc.dataset.gocheat); if(h){ const d=h.parentElement.querySelector(`details[data-k="cheat:${gc.dataset.gocheat}"]`); if(d) d.open=true; h.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
-  const pl=e.target.closest("[data-play]"); if(pl){ e.preventDefault(); openPlayer(pl.dataset.play, pl.dataset.tick, pl.dataset.title, pl.closest("li")); return; }
+  const pl=e.target.closest("[data-play]"); if(pl){ e.preventDefault(); openPlayer(pl.dataset.play, pl.dataset.tick, pl.dataset.title, pl.dataset.sub); return; }
   if(e.target.closest("[data-closeplayer]")){ e.preventDefault(); closePlayer(); return; }
   const g=e.target.closest("[data-goquiz]"); if(g){ e.preventDefault(); switchView("quiz"); window.scrollTo({top:0}); return; }
   const rv=e.target.closest("[data-reveal]"); if(rv){ rv.closest(".srcard").classList.add("show"); return; }
