@@ -125,16 +125,19 @@
   .play:hover{background:#ece5ff}
   .ext{text-decoration:none;color:var(--ink-3);border:1px solid #e3e7ef;border-radius:4px;padding:1px 6px;font-size:12px;line-height:1.5}
   .ext:hover{color:var(--sea);border-color:var(--sea)}
-  .playerbox{border:1px solid #2a3757;border-radius:8px;overflow:hidden;margin:8px 0;background:#0f1626}
-  .playerbox .pbar{display:flex;align-items:center;gap:10px;padding:6px 10px;color:#dbe3f3;font-size:12.5px}
-  .playerbox .pbar .grow{flex:1}
-  .playerbox .pbar a{color:#ffd28a;text-decoration:none}
-  .playerbox .pbar button{background:transparent;border:1px solid #2a3757;color:#dbe3f3;border-radius:4px;padding:1px 7px;cursor:pointer}
-  .playerbox .pmark{display:flex;align-items:center;gap:5px;cursor:pointer}
-  .playerbox .pframe{position:relative;height:min(78vh,760px);background:#fff}
-  .playerbox .pframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
-  .playerbox .pnote{padding:6px 10px;font-size:12px;color:#b9c3d9}
-  .playerbox .pnote b{color:#ffd28a}
+  .playermodal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}
+  .playermodal .pbackdrop{position:absolute;inset:0;background:rgba(9,14,26,.72)}
+  .playermodal .pwin{position:relative;display:flex;flex-direction:column;width:min(1100px,100%);height:min(88vh,900px);background:#0f1626;border:1px solid #2a3757;border-radius:10px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+  .playermodal .pbar{display:flex;align-items:center;gap:12px;padding:8px 12px;color:#dbe3f3;font-size:13px;flex:0 0 auto}
+  .playermodal .pbar b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:46%}
+  .playermodal .pbar .grow{flex:1}
+  .playermodal .pbar a{color:#ffd28a;text-decoration:none;white-space:nowrap}
+  .playermodal .pbar button{background:transparent;border:1px solid #2a3757;color:#dbe3f3;border-radius:5px;padding:2px 9px;cursor:pointer;font-size:14px}
+  .playermodal .pmark{display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+  .playermodal iframe{flex:1 1 auto;width:100%;border:0;background:#fff}
+  .playermodal .pnote{flex:0 0 auto;padding:6px 12px;font-size:11.5px;color:#9fabc6}
+  .playermodal .pnote b{color:#ffd28a}
+  @media(max-width:700px){ .playermodal{padding:0} .playermodal .pwin{height:100%;border-radius:0;border:0} .playermodal .pnote{display:none} }
   .labrow{display:grid;grid-template-columns:26px 1fr auto;gap:6px;align-items:center;background:#f3f7ff;border:1px solid #dbe6fb;border-radius:6px;padding:5px 8px;margin:6px 0;font-size:13px}
   .labrow.done label{color:var(--ink-3);text-decoration:line-through}
   .labrow b{color:#1d6fb8;text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-right:4px}
@@ -2340,18 +2343,22 @@ function lessonRow(it, prefix){
   const ext = `<a class="ext" href="${url}" target="_blank" rel="noopener" title="Open on Claude Academy (signed in — records your progress there)">↗</a>`;
   return `<li class="${state[it.id]?'done':''}"><input type="checkbox" id="${prefix}-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="${prefix}-${it.id}">${esc(it.title)}</label><span class="acts">${play}${ext}</span></li>`;
 }
-function closePlayer(){ const b=document.getElementById("playerBox"); if(b) b.remove(); }
+function closePlayer(){ const b=document.getElementById("playerBox"); if(b) b.remove(); document.documentElement.style.overflow=""; }
 function openPlayer(url, tickId, title, anchor){
   closePlayer();
-  const box=document.createElement("div"); box.id="playerBox"; box.className="playerbox";
-  box.innerHTML = `<div class="pbar"><b>${esc(title||"Lesson")}</b><span class="grow"></span>`+
+  const box=document.createElement("div"); box.id="playerBox"; box.className="playermodal"; box.tabIndex=-1;
+  box.innerHTML = `<div class="pbackdrop" data-closeplayer="1"></div><div class="pwin" role="dialog" aria-label="${esc(title||"Lesson")}">
+    <div class="pbar"><b>${esc(title||"Lesson")}</b><span class="grow"></span>`+
     (tickId?`<label class="pmark"><input type="checkbox" data-id="${tickId}" ${state[tickId]?'checked':''}> watched</label>`:"")+
-    `<a href="${url}" target="_blank" rel="noopener">open on Academy ↗</a><button data-closeplayer="1" title="Close">✕</button></div>`+
-    `<div class="pframe"><iframe src="${url}" title="Lesson" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>`+
-    `<div class="pnote">Playing inside your site — Claude Academy does not record progress in this frame, so tick <b>watched</b> here. Quizzes and completion badges need the ↗ link.</div>`;
-  anchor.insertAdjacentElement("afterend", box);
-  box.scrollIntoView({behavior:"smooth", block:"start"});
+    `<a href="${url}" target="_blank" rel="noopener">open on Academy ↗</a><button data-closeplayer="1" title="Close (Esc)">✕</button></div>
+    <iframe src="${url}" title="Lesson" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    <div class="pnote">Playing inside your site — Academy does not record progress in this frame, so tick <b>watched</b> here. Quizzes and badges need the ↗ link.</div>
+  </div>`;
+  document.body.appendChild(box);
+  document.documentElement.style.overflow="hidden";
+  box.focus();
 }
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && document.getElementById("playerBox")) closePlayer(); });
 
 /* ============================================================
    RENDER — plan view
