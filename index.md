@@ -18,7 +18,6 @@ key: page-home
         <span><b>Now</b> — DevSecOps platform, UST</span>
         <span><b>Since</b> 2004</span>
         <span><b>Based</b> Pune, India</span>
-        <span><b>Open to</b> architecture conversations</span>
       </div>
     </div>
   </div>
@@ -139,8 +138,8 @@ key: page-home
 <div class="band band--dark">
   <div class="band__inner" style="padding-top:40px;padding-bottom:46px">
     <p class="seclabel">Get in touch</p>
-    <h2 style="font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 10px;letter-spacing:-.015em">Open to platform, DevSecOps and SRE architecture conversations.</h2>
-    <p style="margin:0;color:var(--dark-mute);max-width:56ch;font-size:15px">Whether that is a delivery platform that needs standardising, an observability gap nobody can close, or a second opinion on a design — I am happy to talk.</p>
+    <h2 style="font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 10px;letter-spacing:-.015em">Email is the quickest way to reach me.</h2>
+    <p style="margin:0;color:var(--dark-mute);max-width:56ch;font-size:15px">I am also on LinkedIn and GitHub.</p>
     <div class="cta">
       <a class="btn" href="mailto:amitphadke1001@gmail.com">Email me</a>
       <a class="btn btn--ghost" href="https://www.linkedin.com/in/amitrameshphadke/">LinkedIn</a>
