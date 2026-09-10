@@ -1,6 +1,6 @@
 {
-    "name": "TeXt Theme",
-    "short_name": "TeXt Theme",
+    "name": "Amit Phadke — Software Architect, DevSecOps",
+    "short_name": "Amit Phadke",
     "icons": [
         {
             "src": "android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#0b7a75",
+    "background_color": "#edf0f2",
     "display": "standalone"
 }

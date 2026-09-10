@@ -49,11 +49,14 @@ code, kbd, pre, samp { font-family: var(--mono); }
   border-bottom: 1px solid var(--rule);
   box-shadow: none;
   .main { max-width: var(--wrap); }
-  .header__brand a {
-    font-family: var(--sans);
-    font-weight: 600;
-    letter-spacing: -.015em;
-    color: var(--ink);
+  .header__brand {
+    > svg { color: var(--teal); width: 26px; height: 26px; margin-right: 11px; }
+    a {
+      font-family: var(--sans);
+      font-weight: 600;
+      letter-spacing: -.015em;
+      color: var(--ink);
+    }
   }
   .navigation__item {
     > a {
@@ -440,6 +443,14 @@ code, kbd, pre, samp { font-family: var(--mono); }
   font-size: 14px;
   margin: 0 0 6px;
   b { color: #fff; font-weight: 600; }
+}
+.footer__mark {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+  > svg { color: var(--teal-on-dark); width: 24px; height: 24px; }
+  span { font-family: var(--sans); font-weight: 600; font-size: 15px; color: #fff; letter-spacing: -.015em; }
 }
 
 /* ---------- misc ---------- */
