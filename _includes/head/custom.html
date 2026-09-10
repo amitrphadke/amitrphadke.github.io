@@ -1,3 +1,22 @@
 <!-- start custom head snippets -->
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+{%- include snippets/get-article-title.html article=page -%}
+{%- assign _og_title = __return | default: site.title -%}
+{%- assign _og_desc = page.excerpt | default: site.description | strip_html | strip_newlines | strip | truncate: 200 -%}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ _og_title }}">
+<meta property="og:description" content="{{ _og_desc }}">
+<meta property="og:url" content="{%- include snippets/page-url.html -%}">
+<meta property="og:image" content="{{ site.url }}/assets/images/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ _og_title }}">
+<meta name="twitter:description" content="{{ _og_desc }}">
+<meta name="twitter:image" content="{{ site.url }}/assets/images/og-cover.png">
+<meta name="theme-color" content="#0e1419">
+
 <!-- end custom head snippets -->

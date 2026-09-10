@@ -1,115 +1,95 @@
 ---
-layout: article
-titles:
-  # @start locale config
-  en      : &EN       Projects
-  en-GB   : *EN
-  en-US   : *EN
-  en-CA   : *EN
-  en-AU   : *EN
-  zh-Hans : &ZH_HANS  关于
-  zh      : *ZH_HANS
-  zh-CN   : *ZH_HANS
-  zh-SG   : *ZH_HANS
-  zh-Hant : &ZH_HANT  關於
-  zh-TW   : *ZH_HANT
-  zh-HK   : *ZH_HANT
-  ko      : &KO       소개
-  ko-KR   : *KO
-  fr      : &FR       À propos
-  fr-BE   : *FR
-  fr-CA   : *FR
-  fr-CH   : *FR
-  fr-FR   : *FR
-  fr-LU   : *FR
-  # @end locale config
+layout: page
 permalink: /projects.html
 key: page-projects
+titles:
+  en: Work
 ---
-## DevSecOps Platform - Wolters Kluwer (UST)
-**Mar 2025 - Present**
 
-Enterprise DevSecOps programme for a global information and software services provider. The engagement modernises the delivery platform by standardising secure CI/CD pipelines, infrastructure as code and observability across product teams, with security and compliance gating built into every release.
+<p class="lede">Platforms, pipelines and the occasional rescue. Roughly reverse-chronological; durations are the length of my involvement, not the programme.</p>
 
-**Roles and Responsibilities**
-- Software Architect for the DevSecOps platform
-- Architecting cloud infrastructure and landing zones
-- Terraform IaC implementations
-- Security gating with policy-as-code and scanning
-- Implementing observability with ADOT
-- Standardising the CI/CD landscape using GitHub Actions and ArgoCD
+<div class="plate">
+  <span class="plate__no">PL-01</span>
+  <div>
+    <h3>DevSecOps platform — Wolters Kluwer</h3>
+    <div class="plate__sub">UST · Mar 2025 – present · 19 months · Software Architect</div>
+    <p>Enterprise DevSecOps programme for a global information and software services provider. The engagement modernises the delivery platform by standardising secure CI/CD pipelines, infrastructure as code and observability across product teams, with security and compliance gating built into every release.</p>
+    <ul style="margin:11px 0 0;color:var(--muted);font-size:14.5px">
+      <li>Architecting cloud infrastructure and landing zones</li>
+      <li>Terraform IaC implementations across product teams</li>
+      <li>Security gating with policy-as-code and container scanning</li>
+      <li>Observability with OpenTelemetry / ADOT</li>
+      <li>Standardising the CI/CD landscape on GitHub Actions and ArgoCD</li>
+    </ul>
+    <div class="tags"><span class="tag">EKS</span><span class="tag">Helm</span><span class="tag">AWS</span><span class="tag">Terraform</span><span class="tag">AMP</span><span class="tag">AMG</span><span class="tag">ADOT</span><span class="tag">GitHub Actions</span><span class="tag">ArgoCD</span><span class="tag">Checkov</span><span class="tag">SonarQube</span></div>
+  </div>
+</div>
 
-**Technology Stack:** EKS, Helm, AWS, Terraform, AMP, AMG, ADOT, Jira, GitHub Actions, ArgoCD, Checkov, SonarQube
+<div class="plate">
+  <span class="plate__no">PL-02</span>
+  <div>
+    <h3>dCloud — Cisco</h3>
+    <div class="plate__sub">Infosys · 24 months · Infrastructure architect</div>
+    <p>A sales-supporting platform spanning on-prem and cloud infrastructure, where sales engineers build live demos of Cisco products. The platform was rebuilt greenfield on a new stack as the cost of change on the legacy estate kept climbing.</p>
+    <ul style="margin:11px 0 0;color:var(--muted);font-size:14.5px">
+      <li>Infrastructure architecture and Terraform IaC</li>
+      <li>Observability implemented with ADOT</li>
+      <li>Tool stack selection for the greenfield build</li>
+      <li>CI/CD landscape remodelled on GitHub Actions</li>
+      <li>Knowledge transfer to the receiving teams</li>
+    </ul>
+    <div class="tags"><span class="tag">EKS</span><span class="tag">Helm</span><span class="tag">AWS</span><span class="tag">Terraform</span><span class="tag">AMP</span><span class="tag">AMG</span><span class="tag">ADOT</span><span class="tag">GitHub Actions</span><span class="tag">ArgoCD</span><span class="tag">Checkov</span></div>
+  </div>
+</div>
 
-## dCloud - Cisco (Infosys)
-**24 Months**
+<div class="plate">
+  <span class="plate__no">PL-03</span>
+  <div>
+    <h3>E-commerce — Adidas</h3>
+    <div class="plate__sub">Infosys · 24 months · SRE and architecture</div>
+    <p>An online sales platform for high-value limited releases, built around a lottery model for hype sales. The programme replaced the Salesforce order system with an in-house API, under launch traffic that arrives all at once or not at all.</p>
+    <ul style="margin:11px 0 0;color:var(--muted);font-size:14.5px">
+      <li>Site reliability engineering and on-call</li>
+      <li>Infrastructure architecture</li>
+      <li>Observability implementation</li>
+      <li>CI/CD landscape remodelling</li>
+    </ul>
+    <div class="tags"><span class="tag">Kubernetes</span><span class="tag">Helm</span><span class="tag">Jenkins</span><span class="tag">Instana</span><span class="tag">Grafana</span><span class="tag">Postgres</span><span class="tag">Kafka</span><span class="tag">OpsGenie</span><span class="tag">Harbor</span><span class="tag">JFrog</span></div>
+  </div>
+</div>
 
-A sales-supporting platform with on-prem and cloud infrastructure. End users and sales executives create demos on this platform to showcase product capabilities. The project was converted into a greenfield implementation with a new technology stack, as the cost of change on the legacy platform kept rising.
+<div class="plate">
+  <span class="plate__no">PL-04</span>
+  <div>
+    <h3>Database DevOps — Li &amp; Fung Logistics</h3>
+    <div class="plate__sub">Infosys · 6 months · DevOps architect / lead</div>
+    <p>A logistics operator wanting an automated DevOps setup across a scoped set of applications: reference CI/CD, installation and setup tooling, gating configuration, and onboarding — with the database side treated as a first-class citizen rather than an afterthought.</p>
+    <div class="tags"><span class="tag">Jenkins</span><span class="tag">Redgate toolbelt</span><span class="tag">Windows agents</span><span class="tag">Groovy</span></div>
+  </div>
+</div>
 
-**Roles and Responsibilities**
-- Architecting infrastructure
-- Terraform IaC implementations
-- Implementing observability with ADOT
-- Suggesting the tool stack for the greenfield project
-- Remodelling the CI/CD landscape using GitHub Actions
-- Carrying out knowledge transfer sessions
+<div class="plate">
+  <span class="plate__no">PL-05</span>
+  <div>
+    <h3>DevOps implementations and presales</h3>
+    <div class="plate__sub">Infosys · ongoing unit work</div>
+    <p>Walk / run / sprint assessments of a client's DevOps posture, gap analysis, and proposals — including the unglamorous part, which is calling out the team size, role mix and commercials that a proposal actually needs to survive delivery.</p>
+    <div class="tags"><span class="tag">Assessment</span><span class="tag">Architecture design</span><span class="tag">POCs</span><span class="tag">Bid support</span></div>
+  </div>
+</div>
 
-**Technology Stack:** EKS, Helm, AWS, Terraform, AMP, AMG, ADOT, Jira, GitHub Actions, ArgoCD, Checkov
-
-## E-commerce - Adidas (Infosys)
-**24 Months**
-
-An online sales platform for high-value articles of a large retail customer. The product is based on FOMO, where users enrol in a lottery system to win unique hype sales. The programme replaced the Salesforce order system with an in-house developed API.
-
-**Roles and Responsibilities**
-- SRE
-- Architecting infrastructure
-- Implementing observability
-- Remodelling the CI/CD landscape
-- On-call support
-
-**Technology Stack:** Kubernetes, Helm, Jenkins, Instana, Grafana, Postgres, Jira, Kafka, OpsGenie, Bitbucket, SonarQube, Harbor, JFrog, Groovy, Maven
-
-## DB DevOps - Li & Fung Logistics
-**6 Months**
-
-A logistics company wanted an automated DevOps setup for its applications. A set of applications was identified for DevOps implementation; the scope covered creating reference CI/CD pipelines, installing and setting up tools, configuring gating, and onboarding the scoped applications onto DevOps.
-
-**Roles and Responsibilities**
-- DevOps Architect / Lead
-- Developing reference CI/CD pipelines
-- Assessing databases for DevOps implementation
-- Carrying out POCs for the best DB DevOps tools
-- Imparting training to the development team
-
-**Technology Stack:** Jenkins, Redgate toolbelt, Windows Jenkins nodes, Groovy
-
-## DevOps Implementations and Presales
-**6 Months**
-
-Unit-level activities where, as DevOps specialists, we were responsible for providing solutions and proposals to existing and new clients. This included walk/run/sprint assessments of the client's DevOps posture, identifying gaps and proposing best-in-class solutions, assessing existing applications from a DevOps point of view, and calling out the required team size, role proportions and commercials.
-
-**Roles and Responsibilities**
-- DevOps presales support to internal / external teams during bidding
-- Infrastructure architecture design following industry best practices and standards
-- Keeping abreast of technological advancements and emerging standards
-- Technical guidance to junior colleagues
-- Conducting POC and demo activities to assist sales in closing deals
-
-**Technology Stack:** DevOps tools and processes
-
-## Solution Design and Development (Microsoft stack)
-**168 Months**
-
-Application solution design and development on the Microsoft stack, including migration of mainframe online screens to ASP.NET applications and .NET-based development for various enhancement projects.
-
-**Roles and Responsibilities**
-- Requirement analysis
-- Creating design documents
-- Hands-on code implementation
-
-**Technology Stack:** C# 2.0 / 3.0, ASP.NET, Oracle, SharePoint
+<div class="plate">
+  <span class="plate__no">PL-06</span>
+  <div>
+    <h3>Solution design and development — Microsoft stack</h3>
+    <div class="plate__sub">2004 – 2018 · 168 months · Developer to technology lead</div>
+    <p>Fourteen years of application design and development on the Microsoft stack, including migration of mainframe online screens to ASP.NET and a long run of enhancement projects across BFSI and telecom clients.</p>
+    <div class="tags"><span class="tag">C# 2.0 / 3.0</span><span class="tag">ASP.NET</span><span class="tag">Oracle</span><span class="tag">SharePoint</span></div>
+  </div>
+</div>
 
 ## Clients
 
-Wolters Kluwer, Cisco, Adidas, BUPA, AMP Bank, ANZ Bank, Estee Lauder, Telstra, Wells Fargo Bank, Morgan Stanley, McKinsey, HP, Pfizer, Vedanta Engineering, Dyno Nobel, Newmont, Volvo, Open University
+<div class="chipset" style="margin-top:14px">
+<span class="chip">Cisco</span><span class="chip">Adidas</span><span class="chip">Wolters Kluwer</span><span class="chip">BUPA</span><span class="chip">AMP Bank</span><span class="chip">ANZ Bank</span><span class="chip">Estée Lauder</span><span class="chip">Telstra</span><span class="chip">Wells Fargo</span><span class="chip">Morgan Stanley</span><span class="chip">McKinsey</span><span class="chip">HP</span><span class="chip">Pfizer</span><span class="chip">Vedanta Engineering</span><span class="chip">Dyno Nobel</span><span class="chip">Newmont</span><span class="chip">Volvo</span><span class="chip">Open University</span>
+</div>

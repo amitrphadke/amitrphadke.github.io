@@ -1,14 +1,12 @@
 ---
 layout: page
-#articles:
-#   excerpt_type: html
+permalink: /tools.html
+key: page-tools
+titles:
+  en: Tools
+sitemap: false
 ---
-**DevSecOps / Cloud:**
-- Kubernetes, EKS, Helm, Docker, Harbor, AWS, Azure
-- Terraform, Checkov, GitHub Actions, ArgoCD, Jenkins, Azure DevOps, AWS CodeBuild
-- OpenTelemetry (ADOT), Prometheus (AMP), Grafana (AMG), Instana, Kibana
-- Git, GitHub, Bitbucket, SonarQube, JFrog, OpsGenie, Kafka, Jira, Venafi, Fortanix
 
-**Microsoft / Data:**
-- Visual Studio, Microsoft SQL Server, Azure portal, Office 365, ReSharper, SharePoint Designer, MS Visio
-- Redgate SQL toolbelt, Postgres, Redis
+The tools list now lives with the rest of the skills, grouped by what they are for.
+
+<p style="margin-top:18px"><a class="btn" href="{{ '/skills.html' | relative_url }}">Go to Skills</a></p>

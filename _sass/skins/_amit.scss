@@ -1,0 +1,74 @@
+///
+// Skin: Amit — drawing sheet + instrument panel
+// Light "drawing board" ground, teal primary, ochre secondary,
+// dark instrument bands handled in custom.scss.
+///
+
+// main colors
+$main-color-1:     #0b7a75;
+$text-color-1:     #fff;
+
+$main-color-2:     #b4762a;
+$text-color-2:     #fff;
+
+$main-color-3:     #ffffff;
+$text-color-3:     #10161b;
+
+$main-color-theme-light: rgba(#000, .9);
+$main-color-theme-dark:  rgba(#fff, .9);
+
+// page background
+$background-color: #edf0f2;
+
+// text colors
+$text-color-theme-light-d: #0a0f13;
+$text-color-theme-light:   #10161b;
+$text-color-theme-light-l: #5a6771;
+
+$text-color-theme-dark-d:  #ffffff;
+$text-color-theme-dark:    rgba(#fff, .95);
+$text-color-theme-dark-l:  rgba(#fff, .85);
+
+$text-color-d:     $text-color-theme-light-d;
+$text-color:       $text-color-theme-light;
+$text-color-l:     $text-color-theme-light-l;
+
+$text-background-color: rgba(#0b7a75, .07);
+
+// header and footer colors
+$header-text-color: $text-color-3;
+$header-background: $main-color-3;
+
+$footer-text-color: rgba(#fff, .72);
+$footer-background: #0e1419;
+
+// border and shadow colors
+$border-color:     #d5dde2;
+$border-color-l:   #e3e9ec;
+$decorate-color:   rgba(#10161b, .1);
+$mask-color:       rgba(#10161b, .9);
+$select-color:     rgba($main-color-1, .3);
+
+// function colors
+$green:           #0b7a75;
+$blue:            #1f6feb;
+$yellow:          #b4762a;
+$red:             #c0392b;
+$text-color-function: #fff;
+
+// logo colors
+$mail-color:       #0b7a75;
+$facebook-color:   #4267b2;
+$twitter-color:    #1da1f2;
+$weibo-color:      #e6162d;
+$google-plus-color:#ea4335;
+$telegram-color:   #32afed;
+$medium-color:     #000;
+$zhihu-color:      #0084ff;
+$douban-color:     #42bd56;
+$linkedin-color:   #1074af;
+$github-color:     #10161b;
+$npm-color:        #fff;
+
+// highlight colors
+@import "skins/highlight/tomorrow";

@@ -1,45 +1,24 @@
 header:
   - titles:
-      # @start locale config
-      en      : &EN       About
-      # @end locale config
+      en: About
     url: /about.html
-  
-  - titles:
-      # @start locale config
-      en      : &EN       Certifications / Education
-      # @end locale config
-    url: /certifications.html
 
   - titles:
-      # @start locale config
-      en      : &EN       Learning
-      # @end locale config
-    url: /learning/
-
-  - titles:
-      # @start locale config
-      en      : &EN       Skills
-      # @end locale config
-    url: /skills.html
-
-  - titles:
-      # @start locale config
-      en      : &EN       Tools
-      # @end locale config
-    url: /tools.html
-    
-  - titles:
-        # @start locale config
-      en      : &EN       Projects
-        # @end locale config
+      en: Work
     url: /projects.html
 
   - titles:
-      # @start locale config
-      en      : &EN       Employers
-      # @end locale config
+      en: Experience
     url: /employers.html
-   
 
- 
+  - titles:
+      en: Skills
+    url: /skills.html
+
+  - titles:
+      en: Learning
+    url: /learning/
+
+  - titles:
+      en: Certifications
+    url: /certifications.html

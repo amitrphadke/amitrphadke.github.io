@@ -42,3 +42,15 @@
       {%- endif -%}
     </div>
   </header>
+
+{%- comment -%} drawing title block — sits under the nav on every page {%- endcomment -%}
+{%- include snippets/get-article-title.html article=page -%}
+{%- assign _tb_sheet = __return | default: 'Home' -%}
+<div class="titleblock d-print-none">
+  <div class="titleblock__inner">
+    <div class="tb"><span class="tb__k">Drawing title</span><span class="tb__v">Amit Phadke — Software Architect, DevSecOps</span></div>
+    <div class="tb"><span class="tb__k">Location</span><span class="tb__v">Pune, IN</span></div>
+    <div class="tb"><span class="tb__k">Revision</span><span class="tb__v">{{ site.time | date: "%Y.%m" }}</span></div>
+    <div class="tb"><span class="tb__k">Sheet</span><span class="tb__v">{{ _tb_sheet }}</span></div>
+  </div>
+</div>
