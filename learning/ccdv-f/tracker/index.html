@@ -120,6 +120,21 @@
   .examfocus{background:#fff8ec;border:1px solid #f1d9a6;border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--ink-2);margin:6px 0 10px;line-height:1.45}
   .examfocus b{display:block;color:#7a4a00;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
   .examfocus .mmlink{display:block;margin-top:5px;font-size:13px}
+  ul.ck.compact li .acts{display:flex;gap:4px;align-items:center;white-space:nowrap}
+  .play{border:1px solid #d9d2f0;background:#f6f3ff;color:#6b4fbb;border-radius:4px;padding:1px 8px;font-size:12px;line-height:1.5;cursor:pointer}
+  .play:hover{background:#ece5ff}
+  .ext{text-decoration:none;color:var(--ink-3);border:1px solid #e3e7ef;border-radius:4px;padding:1px 6px;font-size:12px;line-height:1.5}
+  .ext:hover{color:var(--sea);border-color:var(--sea)}
+  .playerbox{border:1px solid #2a3757;border-radius:8px;overflow:hidden;margin:8px 0;background:#0f1626}
+  .playerbox .pbar{display:flex;align-items:center;gap:10px;padding:6px 10px;color:#dbe3f3;font-size:12.5px}
+  .playerbox .pbar .grow{flex:1}
+  .playerbox .pbar a{color:#ffd28a;text-decoration:none}
+  .playerbox .pbar button{background:transparent;border:1px solid #2a3757;color:#dbe3f3;border-radius:4px;padding:1px 7px;cursor:pointer}
+  .playerbox .pmark{display:flex;align-items:center;gap:5px;cursor:pointer}
+  .playerbox .pframe{position:relative;height:min(78vh,760px);background:#fff}
+  .playerbox .pframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+  .playerbox .pnote{padding:6px 10px;font-size:12px;color:#b9c3d9}
+  .playerbox .pnote b{color:#ffd28a}
   .labrow{display:grid;grid-template-columns:26px 1fr auto;gap:6px;align-items:center;background:#f3f7ff;border:1px solid #dbe6fb;border-radius:6px;padding:5px 8px;margin:6px 0;font-size:13px}
   .labrow.done label{color:var(--ink-3);text-decoration:line-through}
   .labrow b{color:#1d6fb8;text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-right:4px}
@@ -247,7 +262,7 @@
   .course .cbar i{display:block;height:100%;background:var(--done)}
   .course .grp{font-weight:600;font-size:13.5px;margin:10px 0 2px}
   .course .grp span{font-weight:400;color:var(--sea);font-size:12px;margin-left:6px}
-  ul.ck.compact li{padding:3px 0;font-size:13.5px}
+  ul.ck.compact li{padding:3px 0;font-size:13.5px;grid-template-columns:26px 1fr auto}
   .chcourses .grp{font-weight:600;font-size:13.5px;margin:8px 0 2px}
   .chcourses .grp a{font-weight:400;font-size:12px;margin-left:6px}
   /* ---------- library ---------- */
@@ -2316,6 +2331,28 @@ function dayWatchMap(ch){
   for(let d=0; d<useDays && k<items.length; d++){ const take = Math.min(per, items.length-k, Math.ceil((items.length-k)/(useDays-d))); map[d]=items.slice(k,k+take); k+=take; }
   return map;
 }
+
+/* ---- inline lesson rows: ▶ plays the lesson on this page, ↗ opens it on Academy ---- */
+function lessonUrl(it){ return it.course.url + (it.slug ? "/" + it.slug : ""); }
+function lessonRow(it, prefix){
+  const url = lessonUrl(it);
+  const play = it.course.academy && it.slug ? `<button class="play" data-play="${url}" data-tick="${it.id}" data-title="${esc(it.title)}" title="Watch here, without leaving this page">▶</button>` : "";
+  const ext = `<a class="ext" href="${url}" target="_blank" rel="noopener" title="Open on Claude Academy (signed in — records your progress there)">↗</a>`;
+  return `<li class="${state[it.id]?'done':''}"><input type="checkbox" id="${prefix}-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="${prefix}-${it.id}">${esc(it.title)}</label><span class="acts">${play}${ext}</span></li>`;
+}
+function closePlayer(){ const b=document.getElementById("playerBox"); if(b) b.remove(); }
+function openPlayer(url, tickId, title, anchor){
+  closePlayer();
+  const box=document.createElement("div"); box.id="playerBox"; box.className="playerbox";
+  box.innerHTML = `<div class="pbar"><b>${esc(title||"Lesson")}</b><span class="grow"></span>`+
+    (tickId?`<label class="pmark"><input type="checkbox" data-id="${tickId}" ${state[tickId]?'checked':''}> watched</label>`:"")+
+    `<a href="${url}" target="_blank" rel="noopener">open on Academy ↗</a><button data-closeplayer="1" title="Close">✕</button></div>`+
+    `<div class="pframe"><iframe src="${url}" title="Lesson" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>`+
+    `<div class="pnote">Playing inside your site — Claude Academy does not record progress in this frame, so tick <b>watched</b> here. Quizzes and completion badges need the ↗ link.</div>`;
+  anchor.insertAdjacentElement("afterend", box);
+  box.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
 /* ============================================================
    RENDER — plan view
    ============================================================ */
@@ -2350,7 +2387,7 @@ function renderPlan(){
       const lb = LAB_BY_DAY[ch.id+":"+i];
       const labId = lb?"lab:"+ch.id+":"+i:null;
       const labHtml = lb?`<div class="labrow ${state[labId]?'done':''}"><input type="checkbox" id="lb-${labId}" data-id="${labId}"${state[labId]?' checked':''}><label for="lb-${labId}"><b>Lab</b> ${esc(lb.title)}</label> <a class="lnk" href="${LABS_BASE}${lb.path}/" target="_blank" rel="noopener">open lab ↗</a> <code>python check.py ${esc(lb.path.split("/")[0])}/d${lb.day}</code></div>`:"";
-      const watch = w.length?`<div class="watch"><b>Watch</b><ul class="ck compact">${w.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="w-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="w-${it.id}">${esc(it.title)}</label> <a class="lnk" href="${it.course.url}${it.slug?'/'+it.slug:''}" target="_blank" rel="noopener" title="${esc(it.course.title)} — ${esc(it.group)}">▶</a></li>`).join("")}</ul></div>`:"";
+      const watch = w.length?`<div class="watch"><b>Watch</b><ul class="ck compact">${w.map(it=>lessonRow(it,"w")).join("")}</ul></div>`:"";
       const detail = (steps||refs)?`<details class="daydetail" data-k="${ch.id}:day${i}"><summary>Build steps${refs?" · if stuck":""}</summary><div class="dd">
           ${steps?`<ol>${steps}</ol>`:""}
           ${refs?`<div class="refs"><b>If stuck, read in the Library:</b> ${refs}</div>`:""}</div></details>`:"";
@@ -2367,7 +2404,7 @@ function renderPlan(){
     const retroHtml = RETRO_PROMPTS.map((p,i)=>`<label>${esc(p)}<textarea data-retro="${ch.id}" data-i="${i}">${esc(retro[i]||"")}</textarea></label>`).join("");
     const crsAll = courseItemsForChapter(ch.id); const crsDone = crsAll.filter(it=>state[it.id]).length;
     const byCourse = {}; crsAll.forEach(it=>{ (byCourse[it.course.id]=byCourse[it.course.id]||{c:it.course,groups:{}}); (byCourse[it.course.id].groups[it.group]=byCourse[it.course.id].groups[it.group]||[]).push(it); });
-    const courseHtml = Object.values(byCourse).map(b=>Object.entries(b.groups).map(([g,items])=>`<div class="grp">${esc(b.c.title)} — ${esc(g)} <a href="${b.c.url}" target="_blank" rel="noopener">open course ↗</a></div><ul class="ck compact">${items.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="p-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="p-${it.id}">${esc(it.title)}</label></li>`).join("")}</ul>`).join("")).join("");
+    const courseHtml = Object.values(byCourse).map(b=>Object.entries(b.groups).map(([g,items])=>`<div class="grp">${esc(b.c.title)} — ${esc(g)} <a href="${b.c.url}" target="_blank" rel="noopener">open course ↗</a></div><ul class="ck compact">${items.map(it=>lessonRow(it,"p")).join("")}</ul>`).join("")).join("");
     const lDone = ch.lessons.filter((l,i)=>state[ch.id+":l"+i]).length;
     const cDone = ch.checklist.filter((c,i)=>state[ch.id+":c"+i]).length;
     const keys = ch.keys||[];
@@ -2411,8 +2448,8 @@ function renderCourses(){
   const totalItems = COURSES.reduce((a,c)=>a+courseItems(c).length,0);
   const totalDone = COURSES.reduce((a,c)=>a+courseItems(c).filter(it=>state[it.id]).length,0);
   const cards = COURSES.map(c=>{
-    const items=courseItems(c); const done=items.filter(it=>state[it.id]).length; const pct=items.length?Math.round(100*done/items.length):0;
-    const groups = c.groups.map(g=>{ const its=items.filter(it=>it.group===g.name&&it.ch===g.ch); return `<div class="grp">${esc(g.name)}<span>watch in ${chName(g.ch)}</span></div><ul class="ck compact">${its.map(it=>`<li class="${state[it.id]?'done':''}"><input type="checkbox" id="c-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="c-${it.id}">${esc(it.title)}</label></li>`).join("")}</ul>`; }).join("");
+    const items=courseItems(c).map(it=>({...it, course:c})); const done=items.filter(it=>state[it.id]).length; const pct=items.length?Math.round(100*done/items.length):0;
+    const groups = c.groups.map(g=>{ const its=items.filter(it=>it.group===g.name&&it.ch===g.ch); return `<div class="grp">${esc(g.name)}<span>watch in ${chName(g.ch)}</span></div><ul class="ck compact">${its.map(it=>lessonRow(it,"c")).join("")}</ul>`; }).join("");
     return `<div class="course"><h3><a href="${c.url}" target="_blank" rel="noopener">${esc(c.title)} ↗</a></h3><div class="meta">≈ ${c.hours} h · ${items.length} lessons${c.quiz?" · quizzes + completion badge":""} · ${done}/${items.length} done</div><div class="cbar"><i style="width:${pct}%"></i></div><div class="hint">${esc(c.note)}</div>${groups}</div>`;
   }).join("");
   el.innerHTML=`<div class="card"><h2>Anthropic's own courses</h2><div class="sub">Free video courses from Anthropic Academy (academy.claude.com — sign in with your personal Gmail so completions and badges are saved), plus the official prep path and the older GitHub notebooks. Every lesson is assigned to the chapter where it fits, appears in that chapter's plan, and counts toward chapter progress. Tick lessons as you finish them — the Academy keeps its own progress, this page keeps yours alongside the labs. ${totalDone}/${totalItems} lessons done overall.</div>
@@ -2673,6 +2710,8 @@ document.addEventListener("click", e=>{
   if(e.target.closest("[data-gradequiz]")){ gradeQuiz(); return; }
   if(e.target.closest("[data-endquiz]")){ if(quizRun&&!quizRun.graded&&!confirm("Abandon this quiz? Nothing will be recorded.")) return; if(quizRun) clearInterval(quizRun.timer); quizRun=null; renderQuiz(); return; }
   const gc=e.target.closest("[data-gocheat]"); if(gc){ e.preventDefault(); switchView("cheat"); const h=document.getElementById("cheat-"+gc.dataset.gocheat); if(h){ const d=h.parentElement.querySelector(`details[data-k="cheat:${gc.dataset.gocheat}"]`); if(d) d.open=true; h.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
+  const pl=e.target.closest("[data-play]"); if(pl){ e.preventDefault(); openPlayer(pl.dataset.play, pl.dataset.tick, pl.dataset.title, pl.closest("li")); return; }
+  if(e.target.closest("[data-closeplayer]")){ e.preventDefault(); closePlayer(); return; }
   const g=e.target.closest("[data-goquiz]"); if(g){ e.preventDefault(); switchView("quiz"); window.scrollTo({top:0}); return; }
   const rv=e.target.closest("[data-reveal]"); if(rv){ rv.closest(".srcard").classList.add("show"); return; }
   const sr=e.target.closest("[data-sr]"); if(sr){ markTrap(sr.dataset.sr, sr.dataset.ok==="1"); return; }
