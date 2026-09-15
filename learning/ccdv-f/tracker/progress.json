@@ -23,7 +23,12 @@
   "ch0:l3": true,
   "ch0:c3": true,
   "ch0:c5": true,
-  "ch0:c6": true
+  "ch0:c6": true,
+  "retro": {
+   "ch0": {
+    "0": "Nothing much but set "
+   }
+  }
  },
- "savedAt": "2026-09-15T10:14:24.561Z"
+ "savedAt": "2026-09-15T10:15:13.405Z"
 }
