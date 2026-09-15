@@ -4491,6 +4491,10 @@ const ghHeaders = t => ({ "Authorization": "Bearer " + t, "Accept": "application
 const b64enc = s => btoa(unescape(encodeURIComponent(s)));
 const b64dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
 function getToken(){ try{ return localStorage.getItem(TOKEN_KEY) || ""; }catch(e){ return ""; } }
+// iOS/iPadOS clears a site's storage after ~7 days without a visit; leave a breadcrumb so the page can explain itself.
+const SEEN_KEY = "ccdvf-was-owner";
+function markOwnerSeen(){ try{ localStorage.setItem(SEEN_KEY, "1"); sessionStorage.setItem(SEEN_KEY, "1"); }catch(e){} }
+function wasOwnerBefore(){ try{ return !!(localStorage.getItem(SEEN_KEY) || sessionStorage.getItem(SEEN_KEY)); }catch(e){ return false; } }
 // Sign-in via URL: open the tracker as .../tracker/#gh=<token> (for browsers that block pasting into the form)
 (function(){ const m = location.hash.match(/[#&]gh=([^&]+)/); if(m){ try{ localStorage.setItem(TOKEN_KEY, decodeURIComponent(m[1])); }catch(e){} try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){} } })();
 /* Three-way merge against the copy we last synced with (baseState), so that
@@ -4521,7 +4525,7 @@ const store = {
         const r = await fetch(`${ghUrl()}?ref=${GH.branch}&t=${Date.now()}`, { headers: ghHeaders(t), cache: "no-store" });
         if(r.status === 401 || r.status === 403){ this.status = "Token rejected — sign in again."; }
         else if(r.status === 404){ ownerMode = true; this.mode = "owner"; ghSha = null; return {}; }
-        else if(r.ok){ const j = await r.json(); ghSha = j.sha; ownerMode = true; this.mode = "owner"; const d = JSON.parse(b64dec(j.content) || "{}"); setBase(d.state || {}); return d.state || {}; }
+        else if(r.ok){ const j = await r.json(); ghSha = j.sha; ownerMode = true; this.mode = "owner"; markOwnerSeen(); const d = JSON.parse(b64dec(j.content) || "{}"); setBase(d.state || {}); return d.state || {}; }
       }catch(e){ this.status = "GitHub unreachable — showing the published copy."; }
     }
     try{
@@ -4586,8 +4590,10 @@ function renderStoreNote(){
     return;
   }
   const open = el.dataset.signin === "1";
-  el.innerHTML = `Viewing Amit's live progress (read-only). ${esc(store.status || "")} ` + (open
-    ? `<form data-signinform="1" style="margin-top:6px;display:flex;flex-direction:column;gap:4px"><input type="password" name="tok" placeholder="GitHub fine-grained token" autocomplete="off" style="width:100%;font-size:12px;padding:5px 6px"><div style="display:flex;gap:6px"><button type="submit" class="primary" style="font-size:12px;padding:4px 8px">Sign in</button><button type="button" data-signincancel="1" style="font-size:12px;padding:4px 8px">Cancel</button></div><div class="hint">Contents: read &amp; write on ${GH.owner}/${GH.repo}. Kept only in this browser.</div></form>`
+  const lapsed = !open && wasOwnerBefore() && !getToken();
+  el.innerHTML = (lapsed ? `<b>Signed out by the browser.</b> iPadOS and Safari clear a site's storage after about a week without a visit — sign in again and it will stick while you keep studying.<br>` : "")
+    + `Viewing Amit's live progress (read-only). ${esc(store.status || "")} ` + (open
+    ? `<form data-signinform="1" style="margin-top:6px;display:flex;flex-direction:column;gap:5px"><button type="button" data-pastetoken="1" class="primary" style="font-size:12px;padding:5px 8px">📋 Paste token from clipboard</button><input type="password" name="tok" placeholder="…or type/paste it here" autocomplete="off" style="width:100%;font-size:12px;padding:5px 6px"><div style="display:flex;gap:6px"><button type="submit" style="font-size:12px;padding:4px 8px">Sign in</button><button type="button" data-signincancel="1" style="font-size:12px;padding:4px 8px">Cancel</button></div><div class="hint">On iPad just copy the token, then tap <b>Paste token</b> (or long-press anywhere on this page and choose Paste). Contents: read &amp; write on ${GH.owner}/${GH.repo}. Kept only in this browser.</div></form>`
     : `<a href="#" data-signin="1">Owner sign-in</a>`);
 }
 function signInUrl(){ return location.origin + location.pathname + "#gh=" + encodeURIComponent(getToken()); }
@@ -4628,6 +4634,23 @@ document.addEventListener("click", e => {
       ()=>{ const ta=document.createElement("textarea"); ta.value=u; ta.className="qrta"; document.getElementById("qrImg").after(ta); ta.select(); });
   }
   else if(e.target.closest("[data-signout]")){ e.preventDefault(); ownerSignOut(); }
+});
+const looksLikeToken = s => /^(github_pat_[A-Za-z0-9_]{20,}|ghp_[A-Za-z0-9]{30,}|gho_[A-Za-z0-9]{30,})$/.test((s||"").trim());
+document.addEventListener("click", async e => {
+  if(!e.target.closest("[data-pastetoken]")) return;
+  e.preventDefault();
+  try{
+    const txt = (await navigator.clipboard.readText() || "").trim();
+    if(!txt){ store.status = "Clipboard was empty — copy the token first."; renderStoreNote(); return; }
+    if(!looksLikeToken(txt)){ store.status = "That does not look like a GitHub token."; renderStoreNote(); return; }
+    ownerSignIn(txt);
+  }catch(err){ store.status = "This browser would not share the clipboard — long-press the page and choose Paste instead."; renderStoreNote(); }
+});
+// Paste anywhere on the page: if the clipboard holds a GitHub token, sign in with it.
+document.addEventListener("paste", e => {
+  if(ownerMode) return;
+  const txt = ((e.clipboardData || window.clipboardData)?.getData("text") || "").trim();
+  if(looksLikeToken(txt)){ e.preventDefault(); ownerSignIn(txt); }
 });
 document.addEventListener("submit", e => {
   const f=e.target.closest("form[data-signinform]"); if(!f) return; e.preventDefault(); ownerSignIn(f.tok.value);
