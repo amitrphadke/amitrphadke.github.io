@@ -4,6 +4,8 @@ One small lab per study day of the [CCDV-F study tracker](https://www.amitphadke
 
 ## Setup (once)
 
+**New machine? Follow [SETUP.md](SETUP.md) — it covers Homebrew, Python, VS Code, git and the keys, step by step.** The short version:
+
 ```bash
 cd labs
 python3 -m venv .venv && source .venv/bin/activate
