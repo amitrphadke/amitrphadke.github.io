@@ -166,6 +166,32 @@
   .labbody pre.code .cp{position:absolute;top:6px;right:6px;background:#1b2540;border:1px solid #2a3757;color:#9fabc6;border-radius:4px;font-size:10.5px;padding:2px 7px;cursor:pointer}
   .labbody pre.code .cp:hover{color:#fff}
   .labbody .runline{background:#f3f7ff;border-left:3px solid #1d6fb8;padding:5px 9px;border-radius:0 4px 4px 0;font-size:12.5px}
+  .sprintcard .sprinthead{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+  .sprintstats{display:flex;gap:16px}
+  .sprintstats div{text-align:center}
+  .sprintstats b{display:block;font-size:22px;color:var(--sea)}
+  .sprintstats span{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+  .sday{background:#fff;border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+  .sday.today{border-color:var(--sea);box-shadow:0 0 0 2px var(--sea-soft)}
+  .sday.full{opacity:.62}
+  .sday.missed{border-left:4px solid #c2711c}
+  .sdhead{display:grid;grid-template-columns:26px auto 1fr auto;gap:10px;align-items:center;padding:10px 14px;background:#fafbfd;border-bottom:1px solid var(--line)}
+  .sdwhen b{display:block;font-size:13px}
+  .sdwhen span{font-size:11px;color:var(--ink-3)}
+  .sdtitle label{font-weight:600;cursor:pointer}
+  .sday.full .sdtitle label{text-decoration:line-through;color:var(--ink-3)}
+  .sddoms{margin-top:3px;display:flex;gap:5px;flex-wrap:wrap}
+  .dchip{font-size:10.5px;padding:1px 7px;border-radius:10px;font-weight:600}
+  .sdprog{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .sdbody{padding:10px 14px 12px}
+  .sdblock{margin-bottom:8px}
+  .sdblock>b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);margin-bottom:3px}
+  .plainlist{list-style:none;margin:0;padding:0;font-size:13.5px}
+  .plainlist li{padding:2px 0}
+  .sddone{background:var(--sea-soft);border-radius:5px;padding:7px 10px;font-size:13px;color:var(--ink-2)}
+  .sddone b{color:var(--sea);text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-right:5px}
+  .sdbody li.miss{color:#8a2f2f;font-size:13px}
+  @media(max-width:700px){ .sdhead{grid-template-columns:26px 1fr;row-gap:6px} .sdwhen{grid-column:2} .sdtitle{grid-column:1/-1} .sdprog{grid-column:1/-1} }
   .labrow{display:grid;grid-template-columns:26px 1fr auto;gap:6px;align-items:center;background:#f3f7ff;border:1px solid #dbe6fb;border-radius:6px;padding:5px 8px;margin:6px 0;font-size:13px}
   .labrow.done label{color:var(--ink-3);text-decoration:line-through}
   .labrow b{color:#1d6fb8;text-transform:uppercase;font-size:11px;letter-spacing:.04em;margin-right:4px}
@@ -2665,7 +2691,8 @@ var qrcode = function() {
     </div>
   </div>
   <div class="tabs" role="tablist">
-    <button class="tab on" data-view="plan" role="tab">Study plan</button>
+    <button class="tab on" data-view="sprint" role="tab">🏁 Exam sprint</button>
+    <button class="tab" data-view="plan" role="tab">Full plan</button>
     <button class="tab" data-view="courses" role="tab">Courses</button>
     <button class="tab" data-view="quiz" role="tab">Question bank</button>
     <button class="tab" data-view="traps" role="tab">Trap review <span class="badge" id="srBadge">0</span></button>
@@ -2689,7 +2716,8 @@ var qrcode = function() {
   </nav>
 
   <main id="main">
-    <div class="view on" id="view-plan"></div>
+    <div class="view on" id="view-sprint"></div>
+    <div class="view" id="view-plan"></div>
     <div class="view" id="view-courses"></div>
     <div class="view" id="view-quiz"></div>
     <div class="view" id="view-traps"></div>
@@ -5111,7 +5139,158 @@ function switchView(v){
   document.getElementById("sidenav").hidden = v!=="plan";
   try{ localStorage.setItem("ccdvf-view", v); }catch(e){}
 }
-function render(){ renderPlan(); renderCourses(); renderQuiz(); renderTraps(); renderDash(); renderCheat(); renderLib(); renderHeader(); }
+/* ============================================================
+   EXAM SPRINT — 18 days, 1.5 h/day, written 16 Oct 2026
+   Triaged by domain weight. Labs dropped. Every lesson tick here
+   is the same tick as in the Courses tab.
+   ============================================================ */
+const SPRINT_META = {
+  start: "2026-10-16", exam: "2026-11-03", hours: 1.5,
+  why: "53 questions, 720 to pass. Applications &amp; Integration, Model Selection and Agents &amp; Workflows are 64.6% of the paper — they get 10 of the 13 learning days. Claude Code and Eval are 5.7% between them and get one shared afternoon."
+};
+const SPRINT = [
+ {d:"2026-10-16", k:["AI"], t:"Messages API, field by field",
+  w:["building-with-the-claude-api/accessing-the-api","building-with-the-claude-api/getting-an-api-key","building-with-the-claude-api/making-a-request","building-with-the-claude-api/multi-turn-conversations","building-with-the-claude-api/system-prompts","building-with-the-claude-api/temperature"],
+  r:"Messages API", q:"AI",
+  done:"You can name every top-level field of a request and of a response, and say what each stop_reason means and what you do next."},
+ {d:"2026-10-17", k:["AI"], t:"Streaming and structured output",
+  w:["building-with-the-claude-api/response-streaming","building-with-the-claude-api/structured-data","building-with-the-claude-api/quiz-on-accessing-claude-with-the-api"],
+  r:"streaming", q:"traps",
+  done:"You can recite the streaming event order, and rank the four ways to get JSON from weakest to strongest."},
+ {d:"2026-10-18", k:["AI"], t:"Images, PDFs, citations — and every error code",
+  w:["building-with-the-claude-api/image-support","building-with-the-claude-api/pdf-support","building-with-the-claude-api/citations"],
+  r:"error", q:"AI",
+  done:"Image and document block shapes from memory; you can sort 400 / 401 / 429 / 500 / 529 into “my bug” vs “retry”."},
+ {d:"2026-10-19", k:["AI","TM"], t:"Tool use: the round trip",
+  w:["building-with-the-claude-api/introducing-tool-use","building-with-the-claude-api/tool-functions","building-with-the-claude-api/tool-schemas","building-with-the-claude-api/handling-message-blocks","building-with-the-claude-api/sending-tool-results"],
+  r:"tool_use", q:"traps",
+  done:"You can draw tool_use → tool_result on paper and name the two mistakes that return a 400."},
+ {d:"2026-10-20", k:["AI","TM"], t:"Many tools, parallel calls, forcing a tool",
+  w:["building-with-the-claude-api/multi-turn-conversations-with-tools","building-with-the-claude-api/using-multiple-tools","building-with-the-claude-api/fine-grained-tool-calling","building-with-the-claude-api/the-web-search-tool","building-with-the-claude-api/quiz-on-tool-use-with-claude"],
+  r:"tool_choice", q:"TM",
+  done:"All four tool_choice modes; parallel results go in ONE user message; server tools vs client tools."},
+ {d:"2026-10-21", k:["AI"], t:"Prompt caching, batches, files",
+  w:["building-with-the-claude-api/prompt-caching","building-with-the-claude-api/rules-of-prompt-caching","building-with-the-claude-api/prompt-caching-in-action","building-with-the-claude-api/code-execution-and-the-files-api","building-with-the-claude-api/quiz-on-features-of-claude"],
+  r:"caching", q:"AI",
+  done:"Minimum cacheable length, both TTLs, write vs read cost, the tools→system→messages order; batch discount and ceiling."},
+ {d:"2026-10-22", k:["MSO"], t:"Choosing a model, and the four cost levers",
+  w:["claude-with-amazon-bedrock/overview-of-claude-models"],
+  r:"pricing", q:"MSO",
+  done:"Given a scenario you pick a tier and defend it; you can order the cost levers by how much they actually save."},
+ {d:"2026-10-23", k:["MSO","PCE"], t:"Extended thinking and the context window",
+  w:["building-with-the-claude-api/extended-thinking"],
+  r:"thinking", q:"MSO",
+  done:"budget_tokens rules, adaptive vs manual, what thinking is incompatible with, and when it is pure waste."},
+ {d:"2026-10-24", k:["AW"], t:"Workflows vs agents, and the five patterns",
+  w:["building-with-the-claude-api/agents-and-workflows","building-with-the-claude-api/parallelization-workflows","building-with-the-claude-api/chaining-workflows","building-with-the-claude-api/routing-workflows"],
+  r:"workflow", q:"AW",
+  done:"Name all five patterns with one scenario each, and say out loud when NOT to build an agent."},
+ {d:"2026-10-25", k:["AW"], t:"The agent loop, subagents, and how agents fail",
+  w:["building-with-the-claude-api/agents-and-tools","building-with-the-claude-api/environment-inspection","building-with-the-claude-api/workflows-vs-agents","building-with-the-claude-api/quiz-on-agents-and-workflows","introduction-to-subagents/what-are-subagents","introduction-to-subagents/designing-effective-subagents"],
+  r:"agent", q:"AW",
+  done:"The loop, its stopping conditions, why subagents get their own context, and the four named failure modes."},
+ {d:"2026-10-26", k:["PCE"], t:"Prompt and context engineering",
+  w:["building-with-the-claude-api/prompt-engineering","building-with-the-claude-api/being-clear-and-direct","building-with-the-claude-api/being-specific","building-with-the-claude-api/structure-with-xml-tags","building-with-the-claude-api/providing-examples","building-with-the-claude-api/quiz-on-prompt-engineering-techniques"],
+  r:"prompt engineering", q:"PCE",
+  done:"Anthropic's technique order in sequence; where a long document goes in the prompt and why."},
+ {d:"2026-10-27", k:["TM"], t:"MCP: the three primitives and the two transports",
+  w:["introduction-to-model-context-protocol/introducing-mcp","introduction-to-model-context-protocol/mcp-clients","introduction-to-model-context-protocol/defining-tools-with-mcp","introduction-to-model-context-protocol/defining-resources","introduction-to-model-context-protocol/defining-prompts","model-context-protocol-advanced-topics/the-stdio-transport","model-context-protocol-advanced-topics/the-streamablehttp-transport"],
+  r:"MCP", q:"TM",
+  done:"Who controls tools vs resources vs prompts; stdio vs Streamable HTTP; when a plain tool beats a whole server."},
+ {d:"2026-10-28", k:["SS","ETD","CC"], t:"Injection defences, evals, and Claude Code words",
+  w:["building-with-the-claude-api/prompt-evaluation","building-with-the-claude-api/a-typical-eval-workflow","building-with-the-claude-api/model-based-grading","building-with-the-claude-api/code-based-grading","claude-code-101/the-claude-md-file","claude-code-101/subagents","claude-code-101/hooks"],
+  r:"injection", q:"SS",
+  done:"Injection defences in priority order; dataset → run → grade; commands vs skills vs hooks vs subagents vs MCP in one line each."},
+ {d:"2026-10-29", k:[], t:"Half mock — 30 questions in 70 minutes, then repair",
+  w:[], r:"", q:"mixed", mock:30,
+  done:"Every wrong answer has a one-line reason written into My notes — the reason, not the right option."},
+ {d:"2026-10-30", k:[], t:"Repair your two weakest domains",
+  w:[], r:"", q:"weak",
+  done:"Both weak-domain quizzes back at 80% or better."},
+ {d:"2026-10-31", k:[], t:"Full timed mock — 53 questions, 120 minutes, no notes", hours:2,
+  w:[], r:"", q:"mixed", mock:53,
+  done:"Score entered per domain in the Domain dashboard. Treat anything under 75% in a domain as a red flag."},
+ {d:"2026-11-01", k:[], t:"Review every miss, then the cheat sheet twice", hours:2,
+  w:[], r:"", q:"traps",
+  done:"Each miss cited to a sentence in the docs; every trap sitting in box 3 or higher."},
+ {d:"2026-11-02", k:[], t:"Light day — traps only, then logistics and sleep",
+  w:[], r:"", q:"traps",
+  done:"Room cleared, ID out, OnVUE system test passed, alarms set for a 10:00 check-in. Then stop."}
+];
+
+/* slug ("course-slug/lesson-slug") -> the course item, so ticks are shared with the Courses tab */
+let SPRINT_LESSON = null;
+function sprintLesson(path){
+  if(!SPRINT_LESSON){
+    SPRINT_LESSON = {};
+    COURSES.forEach(c=>{ if(!c.academy) return; courseItems(c).forEach(it=>{ if(it.slug) SPRINT_LESSON[c.academy+"/"+it.slug] = {...it, course:c}; }); });
+  }
+  return SPRINT_LESSON[path] || null;
+}
+function sprintIds(day, i){
+  const ids = ["sprint:d"+i];
+  (day.w||[]).forEach(p=>{ const it = sprintLesson(p); if(it) ids.push(it.id); });
+  return ids;
+}
+function sprintPct(){
+  let done=0, all=0;
+  SPRINT.forEach((day,i)=>{ sprintIds(day,i).forEach(id=>{ all++; if(state[id]) done++; }); });
+  return all?Math.round(100*done/all):0;
+}
+function renderSprint(){
+  const el = document.getElementById("view-sprint"); if(!el) return;
+  const today = todayStr();
+  const openKeys = new Set([...el.querySelectorAll("details[data-k][open]")].map(d=>d.dataset.k));
+  const firstRender = !el.children.length;
+  const examLeft = Math.max(0, Math.round((new Date(SPRINT_META.exam) - new Date(today))/864e5));
+  const left = SPRINT.filter(s=>s.d>=today).length;
+
+  const rows = SPRINT.map((day,i)=>{
+    const dayId = "sprint:d"+i, isToday = day.d===today, past = day.d<today;
+    const ids = sprintIds(day,i);
+    const doneN = ids.filter(id=>state[id]).length;
+    const watch = (day.w||[]).map(p=>{
+      const it = sprintLesson(p);
+      if(!it) return `<li class="miss">${esc(p)} <span class="hint">— not in the tracker, open it on Academy</span></li>`;
+      const url = it.course.url + "/" + it.slug;
+      return `<li class="${state[it.id]?'done':''}"><input type="checkbox" id="sp-${it.id}" data-id="${it.id}" ${state[it.id]?'checked':''}><label for="sp-${it.id}"><span class="lno">${it.no}</span>${esc(it.title)}</label><span class="acts"><button class="play" data-play="${url}" data-tick="${it.id}" data-title="${esc(it.title)}" data-sub="Lesson ${it.no} of ${it.total} · ${esc(it.course.title)}" title="Watch here">▶</button><a class="ext" href="${url}" target="_blank" rel="noopener">↗</a></span></li>`;
+    }).join("");
+    const doms = (day.k||[]).map(k=>`<span class="dchip" style="background:${DOMAINS[k].color}1a;color:${DOMAINS[k].color}">${esc(DOMAINS[k].name)} ${DOMAINS[k].weight}%</span>`).join("");
+    let drill = "";
+    if(day.q==="traps") drill = `<a href="#" data-gotraps="1">Trap review — clear everything due</a>`;
+    else if(day.q==="mixed") drill = `<a href="#" data-goquiz="AI">Question bank — ${day.mock} questions, timed, mixed domains</a>`;
+    else if(day.q==="weak") drill = `<a href="#" data-godash="1">Domain dashboard → pick your two lowest, retake both</a>`;
+    else if(day.q) drill = `<a href="#" data-goquiz="${day.q}">${esc(DOMAINS[day.q].name)} quiz${quizBest(day.q)!=null?` — best so far ${quizBest(day.q)}%`:""}</a>`;
+    const read = day.r ? `<a href="#" data-golibsearch="${esc(day.r)}">Library: ${esc(day.r)}</a>` : "";
+    return `<div class="sday${isToday?" today":""}${past&&doneN<ids.length?" missed":""}${doneN===ids.length?" full":""}" id="sday-${i}">
+      <div class="sdhead">
+        <input type="checkbox" id="${dayId}" data-id="${dayId}" ${state[dayId]?'checked':''} title="Day done">
+        <div class="sdwhen"><b>${fmt(day.d)}</b><span>${day.hours||SPRINT_META.hours} h</span></div>
+        <div class="sdtitle"><label for="${dayId}">${esc(day.t)}</label><div class="sddoms">${doms}</div></div>
+        <div class="sdprog">${doneN}/${ids.length}</div>
+      </div>
+      <div class="sdbody">
+        ${watch?`<div class="sdblock"><b>Watch</b><ul class="ck compact">${watch}</ul></div>`:""}
+        ${read||drill?`<div class="sdblock"><b>Then</b><ul class="plainlist">${read?`<li>${read}</li>`:""}${drill?`<li>${drill}</li>`:""}</ul></div>`:""}
+        <div class="sddone"><b>Done when</b> ${esc(day.done)}</div>
+      </div>
+    </div>`;
+  }).join("");
+
+  el.innerHTML = `<div class="card sprintcard">
+    <div class="sprinthead">
+      <div><h2 style="border:0;margin:0">Exam sprint — ${SPRINT.length} days to 3 November</h2>
+      <div class="sub" style="margin:4px 0 0">${SPRINT_META.why}</div></div>
+      <div class="sprintstats"><div><b>${examLeft}</b><span>days left</span></div><div><b>${left}</b><span>sessions left</span></div><div><b>${sprintPct()}%</b><span>sprint done</span></div></div>
+    </div>
+    <div class="tip"><b>How to run a day:</b> watch the listed lessons (▶ plays them here), skim the Library entry, then spend the last 25 minutes on the drill. Tick the day only when the <b>Done when</b> line is true out loud. If a day runs over, cut the Library skim — never the drill. <b>The labs are out of the plan</b>; the exam is multiple-choice and you no longer have the hours.</div>
+  </div>${rows}`;
+
+  el.querySelectorAll("details[data-k]").forEach(d=>{ d.open = openKeys.has(d.dataset.k); });
+  if(firstRender){ const t = el.querySelector(".sday.today") || el.querySelector(".sday:not(.full)"); if(t && view==="sprint") setTimeout(()=>t.scrollIntoView({block:"center"}),80); }
+}
+
+function render(){ renderSprint(); renderPlan(); renderCourses(); renderQuiz(); renderTraps(); renderDash(); renderCheat(); renderLib(); renderHeader(); }
 function goLib(id){ switchView("lib"); const el=document.getElementById("lib-"+id); if(el){ el.scrollIntoView({behavior:"smooth",block:"start"}); el.classList.add("hit"); setTimeout(()=>el.classList.remove("hit"),1600); } }
 
 /* ============================================================
@@ -5159,6 +5338,9 @@ document.addEventListener("click", e=>{
     (navigator.clipboard?navigator.clipboard.writeText(code):Promise.reject()).then(()=>{ cc.textContent="copied"; setTimeout(()=>cc.textContent="copy",1200); },()=>{ cc.textContent="select it"; setTimeout(()=>cc.textContent="copy",1200); }); return; }
   const pl=e.target.closest("[data-play]"); if(pl){ e.preventDefault(); openPlayer(pl.dataset.play, pl.dataset.tick, pl.dataset.title, pl.dataset.sub); return; }
   if(e.target.closest("[data-closeplayer]")){ e.preventDefault(); closePlayer(); return; }
+  const gt=e.target.closest("[data-gotraps]"); if(gt){ e.preventDefault(); switchView("traps"); window.scrollTo({top:0}); return; }
+  const gd=e.target.closest("[data-godash]"); if(gd){ e.preventDefault(); switchView("dash"); window.scrollTo({top:0}); return; }
+  const gls=e.target.closest("[data-golibsearch]"); if(gls){ e.preventDefault(); libQuery=gls.dataset.golibsearch; switchView("lib"); renderLib(); window.scrollTo({top:0}); return; }
   const g=e.target.closest("[data-goquiz]"); if(g){ e.preventDefault(); switchView("quiz"); window.scrollTo({top:0}); return; }
   const rv=e.target.closest("[data-reveal]"); if(rv){ rv.closest(".srcard").classList.add("show"); return; }
   const sr=e.target.closest("[data-sr]"); if(sr){ markTrap(sr.dataset.sr, sr.dataset.ok==="1"); return; }
@@ -5187,7 +5369,8 @@ window.addEventListener("beforeunload", e=>{ if(quizRun&&!quizRun.graded){ e.pre
 (async()=>{
   state = await store.load() || {};
   render(); store.watch();
-  let v="plan"; try{ v=localStorage.getItem("ccdvf-view")||"plan"; }catch(e){}
+  let v="sprint"; try{ v=localStorage.getItem("ccdvf-view")||"sprint"; }catch(e){}
+  if(v==="plan" && !localStorage.getItem("ccdvf-seen-sprint")){ v="sprint"; try{ localStorage.setItem("ccdvf-seen-sprint","1"); }catch(e){} }
   switchView(v);
 })();
 </script>
