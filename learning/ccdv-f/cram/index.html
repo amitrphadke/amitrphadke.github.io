@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCDV-F 90-minute cram sheet</title>
+<style>
+:root{--ink:#14213d;--ink-2:#3d4a63;--ink-3:#7b879e;--line:#e3e7ef;--sea:#0b7a75;--sea-soft:#e8f5f3;--amber:#c2711c;--red:#8a2f2f;--bg:#f2f5f9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{background:var(--ink);color:#fff;padding:16px 20px}
+header h1{margin:0;font-size:20px}
+header p{margin:4px 0 0;font-size:13px;color:#b9c3d9}
+nav.dom{position:sticky;top:0;z-index:10;background:#0c1220;display:flex;gap:2px;overflow-x:auto;padding:7px 10px;scrollbar-width:none}
+nav.dom::-webkit-scrollbar{display:none}
+nav.dom a{color:#cfd6e6;text-decoration:none;font-size:12px;white-space:nowrap;padding:5px 9px;border-radius:5px}
+nav.dom a:hover{background:#1b2540;color:#fff}
+nav.dom a b{color:#ffd28a}
+main{max-width:860px;margin:0 auto;padding:16px 14px 60px}
+section{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 14px}
+h2{margin:0 0 2px;font-size:17px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+h2 .wt{font-size:12px;font-weight:600;color:#fff;background:var(--sea);padding:2px 8px;border-radius:10px}
+h2 .qn{font-size:12px;color:var(--ink-3);font-weight:500}
+h3{margin:14px 0 4px;font-size:14px;color:var(--sea);border-bottom:1px solid var(--line);padding-bottom:3px}
+p{margin:7px 0}
+ul{margin:6px 0 6px 18px;padding:0}
+li{margin:4px 0}
+code{background:#eef1f7;border-radius:3px;padding:1px 5px;font-size:13px;word-break:break-word}
+.k{background:#fff8ec;border:1px solid #f1d9a6;border-radius:7px;padding:9px 12px;margin:9px 0;font-size:13.5px}
+.k b{color:#7a4a00;text-transform:uppercase;font-size:11px;letter-spacing:.04em;display:block;margin-bottom:2px}
+.trap{background:#fdf1f1;border-left:3px solid var(--red);padding:7px 11px;margin:8px 0;border-radius:0 5px 5px 0;font-size:13.5px}
+.trap b{color:var(--red)}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);border-bottom:1px solid var(--line);padding:5px 7px}
+td{padding:6px 7px;border-bottom:1px solid #eceff5;vertical-align:top}
+td:first-child{font-weight:600;white-space:nowrap}
+.plan{background:var(--sea-soft);border-radius:8px;padding:12px 14px}
+.plan td:first-child{color:var(--sea)}
+.big{font-size:15px}
+.big li{margin:7px 0}
+footer{text-align:center;color:var(--ink-3);font-size:12px;padding:18px}
+a{color:var(--sea)}
+@media print{nav.dom{display:none}body{background:#fff}section{break-inside:avoid;border:0;padding:0 0 10px}}
+</style></head><body>
+
+<header>
+<h1>CCDV-F — the 90-minute cram sheet</h1>
+<p>53 questions · 120 minutes · 720 of 1000 scaled to pass (~70%) · no notes in the room</p>
+</header>
+
+<nav class="dom">
+<a href="#plan"><b>Plan</b></a>
+<a href="#tactics"><b>MCQ tactics</b></a>
+<a href="#ai">Apps &amp; Integration <b>33%</b></a>
+<a href="#mso">Model Selection <b>17%</b></a>
+<a href="#aw">Agents <b>15%</b></a>
+<a href="#pce">Prompting <b>11%</b></a>
+<a href="#tm">Tools &amp; MCP <b>11%</b></a>
+<a href="#ss">Security <b>8%</b></a>
+<a href="#cc">Claude Code <b>3%</b></a>
+<a href="#etd">Eval <b>3%</b></a>
+<a href="#last">Last 5 min</a>
+</nav>
+
+<main>
+
+<section id="plan">
+<h2>How to spend the 90 minutes</h2>
+<p>Read in this order and <b>do not</b> go back to fix gaps. Two thirds of the paper sits in the first three sections.</p>
+<table class="plan">
+<tr><td>0–8 min</td><td>MCQ tactics below. This is worth more than any single domain, because it earns marks on questions you do not know.</td></tr>
+<tr><td>8–38 min</td><td>Applications &amp; Integration. ~18 of 53 questions. If you only truly learn one section, this is it.</td></tr>
+<tr><td>38–53 min</td><td>Model Selection &amp; Optimisation. ~9 questions.</td></tr>
+<tr><td>53–66 min</td><td>Agents &amp; Workflows. ~8 questions.</td></tr>
+<tr><td>66–78 min</td><td>Prompting, then Tools &amp; MCP. ~12 questions together.</td></tr>
+<tr><td>78–86 min</td><td>Security, Claude Code, Eval. ~7 questions together.</td></tr>
+<tr><td>86–90 min</td><td>The last-five-minutes list at the bottom. Read it twice.</td></tr>
+</table>
+<div class="k"><b>On video</b>Skip it today. A single Academy module runs 40–60 minutes and covers one slice of one domain; this page covers all eight. Video is the right tool when you have weeks, not when you have ninety minutes.</div>
+</section>
+
+<section id="tactics">
+<h2>MCQ tactics — how to earn marks you did not study for</h2>
+<p class="big">You need roughly 37 of 53. Tactics reliably convert a chunk of your unknowns into marks.</p>
+<ul class="big">
+<li><b>Answer every question.</b> There is no negative marking. An unanswered question is a guaranteed zero; a guess between two survivors is a coin flip.</li>
+<li><b>Eliminate absolutes.</b> Options containing <i>always</i>, <i>never</i>, <i>only</i>, <i>all</i>, <i>must never</i> are usually wrong. Real engineering answers are conditional. Options saying <i>it depends on X</i>, <i>when Y, prefer Z</i> are usually right.</li>
+<li><b>The option that does more work for less privilege usually wins.</b> Anthropic's documented guidance consistently favours: the simplest thing that works, least privilege, validate everything, keep a human on irreversible actions, prefer the cheapest model that passes your eval.</li>
+<li><b>Two options that say the same thing in different words are both wrong.</b> If A and C are paraphrases, the answer is B or D.</li>
+<li><b>The longest, most qualified option is right more often than not</b> — correct answers need caveats; wrong ones are crisp and clean.</li>
+<li><b>Read the last line of the stem first</b> on long scenarios. "Which is MOST cost-effective?" and "Which is MOST secure?" have different answers to the same scenario. Find the adjective before you read the story.</li>
+<li><b>Scenario questions: find the constraint.</b> High volume → cheaper tier. Latency-sensitive → no batching, consider streaming. Irreversible → human approval. Untrusted content → treat as data. Repeated identical prefix → caching.</li>
+<li><b>If two options are both technically true, pick the one that answers the asked question</b>, not the one that is most impressive.</li>
+<li><b>Flag and move.</b> 120 minutes for 53 questions is ~2m15s each. If you are 90 seconds in with no progress, mark your best guess, flag it, move on. Come back with the time you saved.</li>
+<li><b>Later questions leak answers to earlier ones.</b> Terminology in a question you can answer often disambiguates one you flagged.</li>
+</ul>
+<div class="trap"><b>Trap pattern:</b> an option that is <i>true in general</i> but does not solve the scenario's stated problem. Example: "lower the temperature" is a true sentence about reducing variability, and the wrong answer to almost every question about length, cost or truncation.</div>
+</section>
+
+<section id="ai">
+<h2>Applications &amp; Integration <span class="wt">33.1%</span> <span class="qn">≈18 questions</span></h2>
+
+<h3>Request anatomy</h3>
+<ul>
+<li><code>model</code> (required). Dated id = pinned snapshot; alias moves to the newest. <b>Pin dated ids in production.</b></li>
+<li><code>max_tokens</code> (required) caps <b>output only</b>. It is a hard stop, not a hint.</li>
+<li><code>messages</code> (required): list of <code>{role, content}</code>. Roles are <b>only</b> user and assistant, must alternate, first must be user. Content is a string or a <b>list of blocks</b>.</li>
+<li><code>system</code> is a <b>top-level parameter</b>, not a message role. Role, rules, stable reference material.</li>
+<li><code>temperature</code> 0–1. <code>top_p</code>/<code>top_k</code> are legacy; do not send both temperature and top_p; newest models reject non-default values.</li>
+<li><code>stop_sequences</code>, <code>stream</code>, <code>tools</code>, <code>tool_choice</code>, <code>thinking</code>, <code>metadata</code>.</li>
+</ul>
+<div class="trap"><b>Two consecutive same-role messages = 400.</b> Merge them into one message with several content blocks.</div>
+
+<h3>stop_reason — the single most-tested field</h3>
+<table>
+<tr><td>end_turn</td><td>Finished naturally. Normal.</td></tr>
+<tr><td>max_tokens</td><td><b>You</b> cut it off. Raise max_tokens or ask for less. Not a model failure.</td></tr>
+<tr><td>stop_sequence</td><td>Hit one of your stop strings; <code>stop_sequence</code> names which.</td></tr>
+<tr><td>tool_use</td><td>Your turn to act: run the tool, return results, call again.</td></tr>
+<tr><td>refusal</td><td>Model declined. A terminal state to <b>handle</b>, not an error to retry around.</td></tr>
+<tr><td>pause_turn</td><td>Long-running server tool paused; continue the turn.</td></tr>
+</table>
+
+<h3>The tool loop</h3>
+<ol>
+<li>Call with <code>tools</code>. Response has <code>stop_reason: "tool_use"</code> and one or more <code>tool_use</code> blocks (each with <code>id</code>, <code>name</code>, <code>input</code>).</li>
+<li>Append the assistant message <b>unchanged</b>.</li>
+<li>Append <b>one user message</b> containing a <code>tool_result</code> block per tool_use, each with the matching <code>tool_use_id</code>.</li>
+<li>Call again. Repeat until <code>end_turn</code>.</li>
+</ol>
+<ul>
+<li>Tool failed? Return <code>tool_result</code> with <code>is_error: true</code> and the message. The model recovers. <b>Never leave a tool_use unanswered</b> — that is a 400.</li>
+<li><code>tool_choice</code>: <code>auto</code> (decide) · <code>any</code> (must use one) · <code>tool</code> (must use this one) · <code>none</code> (must not). <code>disable_parallel_tool_use</code> forces one at a time.</li>
+<li>Forcing a tool is the classic way to get <b>structured extraction</b> — schema in <code>input_schema</code>, read <code>block.input</code>.</li>
+<li><b>Server tools</b> (web search, web fetch, code execution) run on Anthropic's side: you see <code>server_tool_use</code> and a result block, you return <b>nothing</b>. <b>Client tools</b> you execute yourself. Cap server tools with <code>max_uses</code>.</li>
+<li>The <b>tool description is the interface</b>. Vague or overlapping descriptions cause wrong tool choice.</li>
+</ul>
+
+<h3>Streaming</h3>
+<p>Event order: <code>message_start</code> → (<code>content_block_start</code> → <code>content_block_delta</code>* → <code>content_block_stop</code>)* → <code>message_delta</code> → <code>message_stop</code>. Plus periodic <code>ping</code>.</p>
+<div class="k"><b>Where usage lives</b>Input tokens in <code>message_start</code>. Final <code>stop_reason</code> and cumulative <code>output_tokens</code> in <code>message_delta</code>. Streaming changes delivery and time-to-first-token, <b>never cost</b>.</div>
+
+<h3>Structured output</h3>
+<p>Reliability, weakest to strongest: <b>plain instruction &lt; prefill (legacy) &lt; forced tool &lt; structured outputs</b>. Always parse, validate against a schema, and retry once with the validation error appended. Treat model output as untrusted input.</p>
+<div class="trap">Prefill is incompatible with extended thinking.</div>
+
+<h3>Vision and documents</h3>
+<ul>
+<li>Image block: <code>{"type":"image","source":{"type":"base64"|"url", ...}}</code>. Document block for PDFs: <code>{"type":"document", ...}</code>.</li>
+<li>They go in a <b>user</b> message, as blocks, <b>before</b> the question.</li>
+<li>PDFs are charged as text <b>plus an image per page</b>, and have page and size ceilings. Oversized → <b>413</b>.</li>
+<li><code>citations: {enabled: true}</code> is opt-in per document; answers come back with source spans attached.</li>
+</ul>
+
+<h3>Prompt caching</h3>
+<ul>
+<li>Mark the end of the stable prefix with <code>cache_control: {"type":"ephemeral"}</code>. Everything <b>before</b> the breakpoint is cached. Up to 4 breakpoints.</li>
+<li>Prefix order is fixed: <b>tools → system → messages</b>. Change something early and every cache after it is invalidated.</li>
+<li><b>Minimum cacheable length</b> (~1024 tokens on Sonnet/Opus, higher on Haiku tiers). Below it, the breakpoint is <b>silently ignored</b> — the single most-tested caching trap.</li>
+<li>Default TTL 5 minutes, refreshed on each hit; a longer 1-hour option exists at a higher write price.</li>
+<li><b>Writes cost more</b> than normal input; <b>reads cost a fraction</b>. One write needs several reads to pay off — so <b>cache for reuse, not for size</b>.</li>
+<li>Check <code>usage.cache_read_input_tokens</code> &gt; 0 to prove a hit. <code>cache_creation_input_tokens</code> is the write.</li>
+</ul>
+
+<h3>Message Batches</h3>
+<ul>
+<li><b>50% cheaper</b>, results within <b>24 hours</b> (usually far sooner). Up to ~100k requests / 256MB per batch; results retrievable for 29 days.</li>
+<li>Match results to requests by <b>custom_id</b> — results are <b>not</b> in submission order.</li>
+<li>Four result types: <b>succeeded, errored, canceled, expired</b>.</li>
+<li>Use when nobody is waiting. Never for interactive work; incompatible with streaming.</li>
+</ul>
+
+<h3>Errors</h3>
+<table>
+<tr><td>400</td><td>invalid_request — your bug (bad roles, unanswered tool_use, bad schema)</td></tr>
+<tr><td>401 / 403</td><td>auth / permission — the key</td></tr>
+<tr><td>404</td><td>not found</td></tr>
+<tr><td>413</td><td>request too large — split the document</td></tr>
+<tr><td>429</td><td>rate limit — <b>honour retry-after</b>, then back off</td></tr>
+<tr><td>500</td><td>Anthropic's fault — retry</td></tr>
+<tr><td>529</td><td>overloaded — retry</td></tr>
+</table>
+<p>Retry <b>429 / 500 / 529</b> with exponential backoff and jitter. Everything else is a fix, not a retry. SDKs retry a couple of times by default (<code>max_retries</code>). Rate limits are RPM, input TPM and output TPM; <code>anthropic-ratelimit-*</code> headers report what is left.</p>
+
+<h3>Statelessness</h3>
+<p>The API stores nothing. You resend the whole transcript each turn, so <b>input tokens grow every turn</b> — the reason long chats need summarisation or caching, and the reason agent loops get expensive.</p>
+<p><code>count_tokens</code> is a <b>free</b> pre-flight input count (supports tools, system, images, PDFs). It does not predict output.</p>
+</section>
+
+<section id="mso">
+<h2>Model Selection &amp; Optimisation <span class="wt">16.8%</span> <span class="qn">≈9 questions</span></h2>
+
+<h3>Picking a tier</h3>
+<table>
+<tr><td>Haiku</td><td>Fastest, cheapest. Classification, extraction, routing, moderation, high volume.</td></tr>
+<tr><td>Sonnet</td><td>The default workhorse. Most production work, balanced cost and capability.</td></tr>
+<tr><td>Opus</td><td>Hardest reasoning, agentic coding, long-horizon planning. Reach for it last.</td></tr>
+</table>
+<div class="k"><b>The rule</b>Pick the <b>cheapest tier that passes your eval</b>. And cost optimisation is a function of <b>volume</b>: at 50 calls a day, buy the quality; at 2 million, buy the savings.</div>
+
+<h3>Cost levers, in order of impact</h3>
+<p><b>1. Model choice</b> (changes the per-token rate) → <b>2. Caching</b> (repeated prefix to a fraction) → <b>3. Prompt length</b> (incremental) → <b>4. Batching</b> (flat 50% on what is left).</p>
+<p>Measure <b>cost per successful task</b>, not per token: a cheap model that needs retries or human escalation can cost more overall.</p>
+
+<h3>Extended thinking</h3>
+<ul>
+<li>Manual: <code>thinking: {type:"enabled", budget_tokens: N}</code> where <b>N ≥ 1024 and N &lt; max_tokens</b>.</li>
+<li>Newer models: <code>{type:"adaptive"}</code> with an effort setting — the model scales its own reasoning. Prefer it where available.</li>
+<li>Thinking tokens are billed as <b>output</b>.</li>
+<li><b>Incompatible with:</b> forced <code>tool_choice</code>, prefill, and changing temperature/top_p.</li>
+<li><b>Worth it:</b> multi-step maths, planning, hard debugging. <b>Waste:</b> lookup, extraction, classification, formatting.</li>
+</ul>
+
+<h3>Context window</h3>
+<p>Window = <b>input + output in one request</b>. <code>max_tokens</code> caps only the output half. Overflow raises <code>model_context_window_exceeded</code> — distinct from <code>max_tokens</code> truncation, which is self-inflicted.</p>
+<p>Near the limit: cache the stable, retrieve only the relevant, summarise the old, keep recent turns verbatim. Quality degrades <b>before</b> it errors.</p>
+
+<h3>Platforms</h3>
+<p>Claude API, Amazon Bedrock and Google Vertex serve the <b>same models</b>. Choose on data residency, compliance boundary, existing cloud contracts and ops — not capability.</p>
+</section>
+
+<section id="aw">
+<h2>Agents &amp; Workflows <span class="wt">14.7%</span> <span class="qn">≈8 questions</span></h2>
+
+<div class="k"><b>The defining distinction</b><b>Workflow</b> = predefined code paths you wrote. <b>Agent</b> = the model decides the path at runtime. Prefer the simplest thing that works; most production "agents" should be workflows.</div>
+
+<h3>The five patterns</h3>
+<table>
+<tr><td>Prompt chaining</td><td>Sequential steps, with <b>gates in code</b> between them. Trades latency for accuracy.</td></tr>
+<tr><td>Routing</td><td>Cheap classifier picks <b>one</b> specialist branch. The classic cost-and-quality win.</td></tr>
+<tr><td>Parallelisation</td><td><b>Sectioning</b>: different subtasks at once. <b>Voting</b>: same task n times, take the majority — buys confidence with tokens.</td></tr>
+<tr><td>Orchestrator-workers</td><td>A model decides the subtasks <b>at runtime</b> and delegates. (Versus parallelisation, where <b>you</b> fixed them in advance.)</td></tr>
+<tr><td>Evaluator-optimiser</td><td>Generate → critique → revise, looping to a stated quality bar.</td></tr>
+</table>
+
+<h3>The agent loop and its guards</h3>
+<p>model → tool call → observe result → repeat → stop. Named failure modes: <b>infinite loops, runaway cost, hallucinated tools, lost context, unapproved destructive actions</b>.</p>
+<ul>
+<li><b>Always</b>: a max-turn cap and a cost ceiling.</li>
+<li>Loop detection: same tool + same arguments N times in a row → break out and tell the model.</li>
+<li>Irreversible actions need <b>human approval enforced in code</b>, never by instruction.</li>
+<li><b>Observe before acting</b> — a cheap read beats a wrong write.</li>
+</ul>
+
+<h3>Subagents</h3>
+<p>Exist for <b>context isolation</b>: the noisy search happens in their window, the parent receives only the conclusion. Give them restricted tools. You must pass them everything they need, because they cannot see the parent's context.</p>
+
+<h3>Agent SDK</h3>
+<p>Claude Code's loop as a library: built-in tools, the tool loop, permission prompts, context compaction, CLAUDE.md loading, MCP, subagents, hooks. Use the raw Messages API when you need full control or a non-filesystem agent.</p>
+</section>
+
+<section id="pce">
+<h2>Prompt &amp; Context Engineering <span class="wt">11.0%</span> <span class="qn">≈6 questions</span></h2>
+
+<h3>Technique order (memorise the sequence)</h3>
+<p><b>1.</b> Be clear and direct → <b>2.</b> Multishot examples → <b>3.</b> Let it think (chain of thought) → <b>4.</b> XML tags → <b>5.</b> System prompt role → <b>6.</b> Prefill → <b>7.</b> Chain prompts → <b>8.</b> Long-context tips.</p>
+
+<ul>
+<li><b>Long documents go first, the question last.</b> One of the best-measured long-context behaviours.</li>
+<li><b>XML tags</b> separate instructions from data — a quality technique <i>and</i> the first line of injection defence.</li>
+<li><b>Examples beat adjectives.</b> Three or four covering the edge cases beat any amount of describing. Too many examples crowd the window and bias output.</li>
+<li><b>Specific and checkable beats polite and vague.</b> "Exactly three bullets, under 20 words each, covering risk, cost, timeline" — not "summarise well".</li>
+<li><b>What goes where:</b> system = role, rules, stable reference (and your cache prefix). user = this call's task and data. assistant = prefill only.</li>
+</ul>
+
+<h3>RAG, briefly</h3>
+<ul>
+<li>Retrieve when the corpus exceeds the window <b>or</b> when most of it is noise for this question.</li>
+<li><b>Chunking</b>: too small loses context, too large retrieves noise; overlap protects boundaries.</li>
+<li><b>Hybrid search</b>: embeddings catch meaning, BM25 catches exact tokens (error codes, identifiers). Rerank the merged list.</li>
+</ul>
+</section>
+
+<section id="tm">
+<h2>Tools &amp; MCP <span class="wt">10.6%</span> <span class="qn">≈6 questions</span></h2>
+
+<div class="k"><b>Who controls what — guaranteed to be tested</b><b>Tools = model-controlled.</b> <b>Resources = application-controlled.</b> <b>Prompts = user-controlled.</b></div>
+
+<ul>
+<li>MCP is <b>JSON-RPC 2.0</b>. Handshake: <code>initialize</code> → capability negotiation → then <code>tools/list</code>, <code>tools/call</code>, <code>resources/read</code>, <code>prompts/get</code>.</li>
+<li>Architecture: <b>host → client → server</b>.</li>
+<li><b>Transports:</b> <code>stdio</code> = local child process. <b>Streamable HTTP</b> = remote. A remote server cannot use stdio; a hosted API cannot spawn a stdio server.</li>
+<li><b>Sampling</b>: the server asks the <i>host's</i> model for a completion, mediated by the client — model access stays with the host.</li>
+<li><b>Roots</b>: the client tells the server which directories/URIs it may touch — a least-privilege boundary.</li>
+<li>Also: log and progress <b>notifications</b>.</li>
+<li>The Messages API's MCP connector reaches <b>remote HTTP</b> servers and surfaces their tools as <code>mcp_tool_use</code> / <code>mcp_tool_result</code>; restrict with <code>allowed_tools</code>.</li>
+<li><b>Plain tool vs MCP server:</b> one app needing one function → a tool. Several hosts, discoverable, reusable, remote → an MCP server.</li>
+<li>Skills vs tools vs MCP: a <b>tool</b> is one function; a <b>Skill</b> packages instructions and files for a task; <b>MCP</b> is the protocol serving tools, resources and prompts.</li>
+</ul>
+</section>
+
+<section id="ss">
+<h2>Security &amp; Safety <span class="wt">8.1%</span> <span class="qn">≈4 questions</span></h2>
+<ul>
+<li><b>Indirect prompt injection is the threat</b> — hostile instructions arriving inside documents, tool results, web pages, issue comments. Not the user typing an attack.</li>
+<li><b>Defences, in order of actual effectiveness:</b> least-privilege tools → human approval on irreversible actions → separate data from instructions with XML tags and state it is untrusted → validate inputs and outputs → monitor and log.</li>
+<li><b>Instructions reduce likelihood; privilege limits bound the damage.</b> If an option says "tell the model to ignore instructions in documents" <i>as the whole answer</i>, it is the weaker choice.</li>
+<li>Never a general shell or full-database tool. Narrow verbs, validated arguments, allow-listed targets. A JSON schema checks <i>shape</i>, not <i>authorisation</i>.</li>
+<li>PII: minimise what you send, redact what the task does not need, and keep it out of logs — logs usually have a wider audience than the system.</li>
+<li>A cheap moderation model in front of the expensive one is both a safety and a cost control.</li>
+<li><code>stop_reason: "refusal"</code> is a normal terminal state to handle gracefully.</li>
+</ul>
+</section>
+
+<section id="cc">
+<h2>Claude Code <span class="wt">3.1%</span> <span class="qn">≈2 questions</span></h2>
+<ul>
+<li><b>CLAUDE.md</b> = project memory, committed at the repo root, loaded into every session. Keep it short. <code>@path</code> imports.</li>
+<li><b>Precedence, highest first:</b> managed policy → user (<code>~/.claude/</code>) → project (committed) → local (git-ignored).</li>
+<li><b>Commands</b> (<code>.claude/commands</code>) are <b>user</b>-invoked via <code>/name</code>, with <code>$ARGUMENTS</code>. <b>Skills</b> are <b>model</b>-invoked from their description. <b>Hooks</b> are deterministic shell on lifecycle events. <b>Subagents</b> (<code>.claude/agents</code>) get their own context and tool set. <b>MCP</b> brings external tools. <b>Plugins</b> bundle these.</li>
+<li><b>Hook exit codes:</b> 0 = allow, <b>2 = block</b> (stderr is returned to Claude), other = non-blocking error.</li>
+<li><b>Permission modes:</b> <code>default</code> (ask) · <code>acceptEdits</code> · <code>plan</code> (read-only) · <code>bypassPermissions</code> (sandboxes and CI only).</li>
+<li><b>Headless:</b> <code>claude -p</code> with <code>--output-format json</code>, <code>--allowedTools</code>, <code>--max-turns</code> for CI.</li>
+</ul>
+</section>
+
+<section id="etd">
+<h2>Eval, Testing &amp; Debugging <span class="wt">2.6%</span> <span class="qn">≈1–2 questions</span></h2>
+<ul>
+<li><b>Workflow:</b> build a test dataset → run the prompt over it → grade → <b>track the score over time</b>. The tracking is what catches regressions when a prompt or model changes.</li>
+<li><b>Code-graded</b> whenever the answer is checkable exactly (value, schema, number) — faster, cheaper, deterministic. <b>Model-graded</b> only for open-ended qualities, and then with a clear rubric <i>and</i> spot-checks of the judge against human labels.</li>
+<li><b>Debug order:</b> <code>stop_reason</code> → <code>usage</code> → the message list → response headers. Most "the model is broken" reports are truncation, a missing <code>tool_result</code>, or role order.</li>
+</ul>
+</section>
+
+<section id="last">
+<h2>The last five minutes — read twice</h2>
+<ol class="big">
+<li><code>max_tokens</code> caps <b>output</b>. <code>stop_reason: max_tokens</code> means <b>you</b> truncated it.</li>
+<li><code>system</code> is top-level. Message roles are user and assistant only, alternating, user first.</li>
+<li>N tool_use blocks → <b>one</b> user message with N tool_result blocks, matched by <code>tool_use_id</code>. Failure → <code>is_error: true</code>.</li>
+<li>Final <code>stop_reason</code> and output tokens arrive in <b>message_delta</b>.</li>
+<li>Caching: order is tools → system → messages; under the minimum length the breakpoint is <b>silently ignored</b>; writes cost more, reads cost a fraction; cache for <b>reuse</b>, not size.</li>
+<li>Batches: 50% off, within 24h, match by <b>custom_id</b>, four result types, never interactive.</li>
+<li>Retry <b>429 / 500 / 529</b> and honour <code>retry-after</code>. Everything else is your bug.</li>
+<li>The API is <b>stateless</b> — input tokens grow every turn.</li>
+<li>Cheapest tier that passes the eval. Cost levers: model → cache → prompt → batch.</li>
+<li>Thinking: ≥1024 and &lt; max_tokens, billed as output, no forced tool_choice, no prefill. Useless on lookups.</li>
+<li>Workflow = fixed path. Agent = model decides. Orchestrator-workers decides subtasks <b>at runtime</b>.</li>
+<li>Every agent needs a <b>turn cap and a cost cap</b>; irreversible actions need a human gate <b>in code</b>.</li>
+<li>Subagents = context isolation.</li>
+<li>MCP: JSON-RPC 2.0, <code>initialize</code> first. Tools = model, resources = app, prompts = user. stdio local, Streamable HTTP remote.</li>
+<li>Injection arrives in <b>data</b>. Least privilege and human approval bound the damage; wrapping in XML tags reduces the odds.</li>
+<li>Prompting order: clear and direct → examples → let it think → XML → system role. Documents first, question last.</li>
+<li>Hook exit <b>2 blocks</b>. Permission modes: default, acceptEdits, plan, bypassPermissions.</li>
+<li>Evals: dataset → run → grade → track. Code-grade what you can check exactly.</li>
+<li>Debug: stop_reason → usage → messages → headers.</li>
+<li><b>Answer every question.</b> Eliminate absolutes. Find the adjective in the stem. Flag and move at 90 seconds.</li>
+</ol>
+<div class="k"><b>In the room</b>Check in at 10:00 for a 10:30 start. Clear desk, ID ready, no second screen, no phone, no talking aloud. 120 minutes, 53 questions, ~2m15s each — bank time on the ones you know.</div>
+</section>
+
+</main>
+<footer>CCDV-F cram sheet · built 3 Nov 2026 · <a href="/learning/ccdv-f/tracker/">study tracker</a> · <a href="/learning/ccdv-f/">journey</a></footer>
+</body></html>
