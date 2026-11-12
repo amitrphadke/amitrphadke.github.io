@@ -1,13 +1,16 @@
 # One block per certification. status: planned | studying | scheduled | passed | failed | expired
 # This file drives /certifications.html and /learning/. Add a block, commit, done.
-in_progress:
+in_progress: []
+
+achieved:
   - id: ccdv-f
     name: Claude Certified Developer – Foundations
     code: CCDV-F
     vendor: Anthropic
-    status: studying
+    status: passed
     started: 2026-09-05
     exam_date: 2026-11-03
+    passed: 2026-11-03
     exam_time: "10:30 IST, Pearson VUE online"
     registered: true
     funded_by: employer
@@ -26,10 +29,9 @@ in_progress:
       - {name: "Claude Code", weight: 3.1}
       - {name: "Eval, Testing & Debugging", weight: 2.6}
     plan: "9 chapters over 60 days, 1.5 h/day: 45 min docs, 45 min lab built with Claude Code on a real DevOps project"
-    progress_pct: 3          # updated at each weekly publish
-    last_update: 2026-09-07
+    progress_pct: 100
+    last_update: 2026-11-12
 
-achieved:
   - name: DevOps Professional
     vendor: ""
     status: passed

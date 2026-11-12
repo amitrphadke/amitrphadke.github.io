@@ -7,12 +7,15 @@ aside:
   toc: true
 ---
 
-{% assign c = site.data.certifications.in_progress | where: "id", "ccdv-f" | first %}
+{% assign all_certs = site.data.certifications.in_progress | concat: site.data.certifications.achieved %}
+{% assign c = all_certs | where: "id", "ccdv-f" | first %}
 
-**Claude Certified Developer – Foundations** (Anthropic, exam code CCDV-F). Exam booked for **{{ c.exam_date | date: "%A %-d %B %Y" }}**, {{ c.exam_time }}. {{ c.format }}.
+<div style="border:1px solid #0b7a75;background:#e8f5f3;border-radius:10px;padding:14px 16px;margin:12px 0 18px">
+<strong style="font-size:18px">Passed — {{ c.passed | date: "%-d %B %Y" }}</strong><br>
+<strong>Claude Certified Developer – Foundations</strong> (Anthropic, exam code CCDV-F) · {{ c.format }}
+</div>
 
-<div style="height:10px;background:#e6eaf1;border-radius:999px;overflow:hidden;max-width:480px;margin:8px 0 2px"><div style="width:{{ c.progress_pct }}%;height:100%;background:#0b7a75"></div></div>
-<small>{{ c.progress_pct }}% of the plan complete · last updated {{ c.last_update | date: "%-d %b %Y" }}</small>
+Everything below is the record of how it actually went, left up unchanged — the plan, the material, the tracker, the practice bank and the mind maps. If you are sitting the same exam, all of it is free to use.
 
 <a class="button button--primary button--rounded" href="{{ c.tracker_url }}">Open the study tracker</a>
 
@@ -72,5 +75,5 @@ The same maps are available as FreeMind files for SimpleMind (File → Import �
 {% endfor %}
 </ul>
 {% else %}
-The first entry lands on Sunday 13 September, at the end of Chapter 1.
+No entries.
 {% endif %}

@@ -8,6 +8,7 @@ titles:
 
 ## In progress
 
+{% if site.data.certifications.in_progress.size == 0 %}Nothing in flight right now — next one not yet chosen.{% endif %}
 {% for c in site.data.certifications.in_progress %}
 **[{{ c.name }}]({{ c.journey_url }})** — {{ c.vendor }} · {{ c.code }}
 <span style="display:inline-block;padding:1px 8px;border-radius:999px;background:#c2711c;color:#fff;font-size:12px;vertical-align:middle">{{ c.status }}</span>
@@ -22,7 +23,7 @@ titles:
 ## Achieved
 
 {% for c in site.data.certifications.achieved -%}
-- {{ c.name }}{% if c.vendor != "" %} — {{ c.vendor }}{% endif %}{% if c.year %} ({{ c.year }}){% endif %}
+- {% if c.journey_url %}**[{{ c.name }}]({{ c.journey_url }})**{% else %}{{ c.name }}{% endif %}{% if c.vendor != "" and c.vendor %} — {{ c.vendor }}{% endif %}{% if c.passed %} · passed {{ c.passed | date: "%-d %b %Y" }}{% elsif c.year %} ({{ c.year }}){% endif %}
 {% endfor %}
 
 ## Education
